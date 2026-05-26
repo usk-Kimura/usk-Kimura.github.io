@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://usk-kimura.github.io/sitemap-index.xml
