@@ -55,6 +55,18 @@ export const ui = {
       'corresponding-author': '責任著者',
       invited: '招待',
     },
+    newsKinds: {
+      paper: '論文',
+      award: '受賞',
+      grant: '助成金',
+      talk: '講演',
+      media: 'メディア',
+      position: '着任',
+      misc: 'お知らせ',
+    },
+    recent: {
+      heading: '最新の活動',
+    },
     footer: {
       built: 'このサイトは Astro と Tailwind CSS で構築されています。',
     },
@@ -109,6 +121,18 @@ export const ui = {
       'first-author': 'First author',
       'corresponding-author': 'Corresponding author',
       invited: 'Invited',
+    },
+    newsKinds: {
+      paper: 'Paper',
+      award: 'Award',
+      grant: 'Grant',
+      talk: 'Talk',
+      media: 'Media',
+      position: 'Position',
+      misc: 'Update',
+    },
+    recent: {
+      heading: 'Recent activity',
     },
     footer: {
       built: 'Built with Astro and Tailwind CSS.',
