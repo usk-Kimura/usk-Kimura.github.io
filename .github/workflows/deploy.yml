@@ -12,6 +12,12 @@ concurrency:
   group: pages
   cancel-in-progress: true
 
+# Opt into Node.js 24 for actions runtime. Node 20 is being removed from
+# runners in late 2026; this silences the deprecation warning and ensures
+# we're ahead of the cutover.
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
