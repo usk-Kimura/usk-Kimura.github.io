@@ -87,8 +87,9 @@ export type Publication = {
   url?: string;
   /** Author-written abstract. Scholar's inclusion policy says detail pages
    *  with bare bibliographic data may not be indexed — fill this in to
-   *  improve odds of getting picked up. */
-  abstract?: LocalizedString;
+   *  improve odds of getting picked up. Partial localization is allowed:
+   *  only `en` is fine for an English paper. */
+  abstract?: Partial<LocalizedString>;
 };
 
 export type GrantEntry = {

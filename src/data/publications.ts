@@ -88,6 +88,10 @@ export const publications: Publication[] = [
     pages: '274-281',
     type: 'international-conference',
     flags: ['peer-reviewed'],
+    doi: '10.1109/ICDEW67478.2025.00039',
+    abstract: {
+      en: "Understanding people's health conditions is essential in modern society, and diet management, which is directly linked to understanding health conditions, is one of the most critical issues. Calculating the nutritional value of meals is essential for diet management, but it is not easy. It requires specialist knowledge of the nutrients contained in each ingredient. If we could teach computers to learn about food, there would be a glimmer of hope for achieving this, but no method has yet been established. In this study, we propose a method for estimating the nutritional value of each recipe by constructing a heterogeneous graph using data from multiple data resources. Our heterogeneous graph (RICGraph) is built based on the relationships between the recipe's ingredients, the nutrients contained in those ingredients, and the compounds that make up those nutrients. Therefore, it can consider the relationships between the recipe and the compounds. By performing the learning process according to that structure, it is possible to understand which compounds affect the nutritional value of which recipes and accurately estimate the nutritional value. We estimate the values of the nutrients in the recipes, including protein, fat, saturated fatty acids, carbohydrates, sodium, and energy, and evaluate the accuracy of the estimates. Comparative experiments with multiple LLMs of different types demonstrate the effectiveness of the proposed method.",
+    },
   },
   {
     title: 'L3Masking: Multi-task Fine-tuning for Language Models by Leveraging Lessons Learned from Vanilla Models',
@@ -99,6 +103,10 @@ export const publications: Publication[] = [
     pages: '53-62',
     type: 'workshop',
     flags: ['peer-reviewed', 'first-author'],
+    url: 'https://aclanthology.org/2024.customnlp4u-1.6/',
+    abstract: {
+      en: 'When distributional differences exist between pre-training and fine-tuning data, language models (LMs) may perform poorly on downstream tasks. Recent studies have reported that multi-task learning of downstream task and masked language modeling (MLM) task during the fine-tuning phase improves the performance of the downstream task. Typical MLM tasks (e.g., random token masking (RTM)) tend not to care tokens corresponding to the knowledge already acquired during the pre-training phase, therefore LMs may not notice the important clue or not effective to acquire linguistic knowledge of the task or domain. To overcome this limitation, we propose a new masking strategy for MLM task, called L3Masking, that leverages lessons (specifically, token-wise likelihood in a context) learned from the vanilla language model to be fine-tuned. L3Masking actively masks tokens with low likelihood on the vanilla model. Experimental evaluations on text classification tasks in different domains confirms a multi-task text classification method with L3Masking performed task adaptation more effectively than that with RTM. These results suggest the usefulness of assigning a preference to the tokens to be learned as the task or domain adaptation.',
+    },
   },
   {
     title: 'A Soft Actor-Critic Algorithm for Sequential Recommendation',
@@ -109,6 +117,10 @@ export const publications: Publication[] = [
     pages: '258-266',
     type: 'international-conference',
     flags: ['peer-reviewed'],
+    doi: '10.1007/978-3-031-68309-1_22',
+    abstract: {
+      en: "Recently, it has become common knowledge that using reinforcement learning for a sequential recommendation, which predicts a user's next action, can improve recommendation performance. This is because reinforcement learning can be used to efficiently learn behavioral changes, which can help you better understand user behavior patterns. Previous research has attempted to incorporate dynamic user characteristics through Actor-Critic algorithms, but these methods are limited in their ability to adequately learn user behavior because they learn without distinguishing between past and present behavior. Therefore, in this study, we propose a framework that incorporates the SAC algorithm, a reinforcement learning technique, to identify correlations between users and items in a dynamic environment where the recommender system continuously receives the next time series of data. Our framework outperformed from the viewpoint of the accuracy in the recommender system compared with the existing methods, and we could confirm that the SAC algorithm has the potential to improve the quality of the sequential recommendations in capturing the temporal dynamics of user interactions.",
+    },
   },
   {
     title: 'ドメイン適応のためのトークン単位の擬似尤度に基づくマスク戦略',
@@ -162,6 +174,10 @@ export const publications: Publication[] = [
     month: 2,
     type: 'international-conference',
     flags: ['peer-reviewed'],
+    doi: '10.1109/BigComp60711.2024.00025',
+    abstract: {
+      en: 'One of the research methods of food computing that utilizes large amounts of recipe data is the construction of food ingredient embeddings. Ingredient embedding is expected to be applied to a wide range of food-related applications because it enables computers to handle the characteristics of food ingredients. In the existing method of contract ingredient embedding, it was calculated using a graph structure of ingredients and compounds created based on the co-occurrence probability of ingredients in each recipe. However, this method must consider which ingredients are used in which recipes, and whether a correct ingredient vector can be constructed is questionable. In this study, we propose a method for constructing an ingredient embedding by explicitly representing in a graph whether or not each ingredient is included in any recipe. The difference from existing studies is that we construct a heterogeneous graph that includes ingredients, compounds, and recipes. The evaluation experiments showed that the food ingredient classification task using the food ingredient vectors constructed by our method could classify food ingredients with up to 45.8 points higher accuracy than existing methods.',
+    },
   },
   {
     title: 'An Automatic Labeling Method for Subword-Phrase Recognition in Effective Text Classification',
@@ -172,6 +188,10 @@ export const publications: Publication[] = [
     pages: '47(3)',
     type: 'journal',
     flags: ['peer-reviewed', 'first-author'],
+    doi: '10.31449/inf.v47i3.4742',
+    abstract: {
+      en: 'Text classification methods using deep learning, which is trained with a tremendous amount of text, have achieved superior performance than traditional methods. In addition to its success, multi-task learning (MTL for short) has become a promising approach for text classification; for instance, a multi-task learning approach employs the named entity recognition as an auxiliary task for text classification, and it showcases that the auxiliary task helps make the text classification model higher classification performance. The existing MTL-based text classification methods depend on auxiliary tasks using supervised labels. Obtaining such supervision signals requires additional human and financial costs in addition to those for the main text classification task. To reduce these costs, this paper proposes a multi-task learning-based text classification framework reducing the additional costs on supervised label creation by automatically labeling phrases in texts for the auxiliary recognition task. A basic idea to realize the proposed framework is to utilize phrasal expressions consisting of subwords (called subword-phrase) and to deal with the recent situation in which the pre-trained neural language models such as BERT are designed upon subword-based tokenization to avoid out-of-vocabulary words being missed. To the best of our knowledge, there has been no text classification approach on top of subword-phrases, because subwords only sometimes express a coherent set of meanings. The proposed framework is novel in adding subword-phrase recognition as an auxiliary task and utilizing subword-phrases for text classification. It extracts subword-phrases in an unsupervised manner, particularly the statistics approach. In order to construct labels for effective subword-phrase recognition tasks, extracted subword-phrases are classified for document classes so that subword-phrases dedicated to some classes can be distinguishable. The experimental evaluation of the five popular datasets for text classification showcases the effectiveness of the involvement of the subword-phrase recognition as an auxiliary task. It also shows comparative results with the state-of-the-art method, and the comparison of various labeling schemes indicates insights for labeling common subword-phrases among several document classes.',
+    },
   },
   {
     title: '商品説明に着目したレビュー文からの教師なしキーフレーズ抽出',
@@ -211,6 +231,10 @@ export const publications: Publication[] = [
     pages: '225, 3948-3957',
     type: 'journal',
     flags: ['peer-reviewed'],
+    doi: '10.1016/j.procs.2023.10.390',
+    abstract: {
+      en: 'With the recent popularity of food computing, there is a growing demand for research on creating ingredient embeddings by representation learning. The general-purpose representation obtained from a latent space of food ingredients can aid in developing various applications related to food computing. Existing methods create ingredient embeddings based on the ingredient-compound graph, and the co-occurrence in recipe data construct ingredient relationship. However, existing methods need help with the learning process for ingredient representation. When generating a path to input to the graph embedding model, the path disregards the cooccurrence information in the recipe. This method treats high-frequency and low-frequency ingredients in the same way. Hence, when using ingredient embeddings created with existing methods, the need for detailed recipe information may prevent accurate food ingredient recommendations based on the recipe (food pairing recommendation, alternative ingredient recommendation). Our study proposes a novel ingredient embedding method that can solve the abovementioned problems by constructing an ingredient-compound network expressing a containment relationship between an ingredient and its chemical compounds. Our experimental evaluation in the classification task of food ingredients indicated that our method outperforms existing methods, so our ingredient embeddings can express their features in the task.',
+    },
   },
   {
     title: 'Multi-task Learning-based Text Classification with Subword-Phrase Extraction',
@@ -220,6 +244,10 @@ export const publications: Publication[] = [
     month: 12,
     type: 'international-conference',
     flags: ['peer-reviewed', 'first-author'],
+    doi: '10.1145/3568562.3568635',
+    abstract: {
+      en: 'Text classification using deep learning, which is trained with a tremendous amount of text, has achieved superior performance than traditional methods. In addition to its success, multi-task learning has become a promising approach for text classification; for instance, a multi-task learning approach employs named entity recognition as an auxiliary task for text classification. The existing MTL-based text classification methods depend on auxiliary tasks using supervised labels, which require large human and/or financial efforts to create. To reduce these efforts, this paper proposes a multi-task learning-based text classification framework which reduces the additional efforts on supervised label creation. A basic idea to realize this is that to utilize phrasal expressions consisting of subwords (called subword-phrase). To the best of our knowledge, there has been no text classification approach on top of subword-phrases, because subwords do not always express a coherent set of meanings. The proposed framework is new to add subword-phrase recognition as an auxiliary task, and to utilize subword-phrases for text classification. To realize the low-cost auxiliary recognition task, the framework extracts subword-phrases in an unsupervised manner. The experimental evaluation of the five popular datasets for text classification showcases the effectiveness of the involvement of the subword-phrase recognition as an auxiliary task. It also shows comparative results with the state-of-the-art method.',
+    },
   },
   {
     title: '前後文のアスペクトを考慮したレビュー文に対する教師ありアスペクト推定の高精度化',
@@ -280,6 +308,10 @@ export const publications: Publication[] = [
     pages: '411-421',
     type: 'international-conference',
     flags: ['peer-reviewed', 'first-author'],
+    doi: '10.1007/978-3-030-73603-3_38',
+    abstract: {
+      en: 'Automatic Terminology Extraction (ATE) is a technique for extracting phrases representing a dataset. This technique is required for translating specialistic books and documents. An existing method focused on the fact that terminologies tend to be composed of two or more single nouns. However, it does not deal with modification relations but only co-occurrence relations among single nouns. Moreover, we have to consider the fact that phrases defined as terminology tend to be explained in another sentence when we propose a novel approach. In this study, we propose a method for extracting terminologies from a dataset considering the modification relations obtained by dependency analysis. In particular, we propose how to extract features enabling us to distinguish whether or not the phrase is terminology from a dependency structure of a sentence.',
+    },
   },
   {
     title: '単語埋め込みと名詞句の共起グラフを用いた教師なしキーフレーズ抽出手法の提案',
@@ -329,6 +361,10 @@ export const publications: Publication[] = [
     pages: '176, 420-429',
     type: 'journal',
     flags: ['peer-reviewed'],
+    doi: '10.1016/j.procs.2020.08.043',
+    abstract: {
+      en: 'If there is a bias in the number of instances that make up the class in a dataset, the predicted results will be affected when applied to machine learning as training data. A method called resampling, which adjusts the number of majority and minority instances, is usually used to solve the imbalance in training data. Although resampling can eliminate imbalances, it may cause data complexity that deteriorates classification accuracy. Noise and overlap are well-known factors of data complexity. Noise is mixture of instances with features that can be classified into other classes at the time of training, and overlap represents the state in which classes cannot be linearly separated because they partially overlap each other. However, conventional methods could not consider these factors at a time, so that their classification accuracy would be not praiseworthy. In order to deal with both noise and overlap, we just need to integrate each of the methods that can deal with them. We know that there have already been established the methods to deal with each problem; however a simple integration of them may remove instances from the dataset that do not need to be removed, or may leave ones that should be removed. Therefore, we have to quantify these factors to take into account for data complexity, and have to consider more effective ways of their integration. In this paper, we propose a method for integrating well-known two resampling methods, which are called SMOTE-ENN and SMOTE-Tomek. In four out of ten datasets, our experimental result showed that our method is effective compared with the latest conventional methods.',
+    },
   },
   {
     title: '係り受け構造に着目した専門用語自動抽出手法の提案',

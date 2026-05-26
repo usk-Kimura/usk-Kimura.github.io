@@ -42,8 +42,6 @@ function bibtexEscape(s: string): string {
   return s.replace(/\\/g, '\\\\').replace(/[{}]/g, '\\$&');
 }
 
-import type { Publication } from './types';
-
 export function bibtexEntry(pub: Publication, venueText: string): string {
   const key = `kimura${pub.year}${pubSlug(pub).split('-')[1]}`;
   const entryType =
