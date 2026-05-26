@@ -100,12 +100,18 @@ export type Publication = {
   abstract?: Partial<LocalizedString>;
 };
 
+/** Distinguishes a money grant from non-monetary support (compute allocation,
+ *  fellowship, etc.). Lets us label cards accurately without lumping HPC
+ *  allocations under "Grants". */
+export type GrantCategory = 'funding' | 'hpc' | 'fellowship';
+
 export type GrantEntry = {
   title: LocalizedString;
   funder: LocalizedString;
   start: string;
   end: string;
   role?: LocalizedString;
+  category: GrantCategory;
 };
 
 export type ServiceEntry = {

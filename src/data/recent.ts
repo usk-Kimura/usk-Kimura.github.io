@@ -53,9 +53,13 @@ export function buildRecent(locale: Locale, limit = 4): RecentItem[] {
   }
 
   for (const g of grants) {
+    // Map the grant category to a more specific news kind so HPC allocations
+    // aren't shown as "助成金/Grant" in the Recent feed.
+    const kind: NewsKind =
+      g.category === 'hpc' ? 'hpc' : g.category === 'fellowship' ? 'fellowship' : 'grant';
     items.push({
       date: padDate(g.start),
-      kind: 'grant',
+      kind,
       title: g.title[locale],
       detail: g.funder[locale],
     });

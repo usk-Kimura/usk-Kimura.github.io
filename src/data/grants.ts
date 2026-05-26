@@ -12,6 +12,7 @@ export const grants: GrantEntry[] = [
     },
     start: '2026-06',
     end: '2027-03',
+    category: 'hpc',
   },
   {
     title: {
@@ -19,11 +20,12 @@ export const grants: GrantEntry[] = [
       en: 'Efficient Adapter Learning via Layer-wise Dynamic Quantization Driven by Training Progress',
     },
     funder: {
-      ja: '東京大学情報基盤センター 若手・女性利用者推薦',
-      en: 'University of Tokyo Information Technology Center, Young/Female User Recommendation',
+      ja: '東京大学情報基盤センター 若手・女性利用者推薦（Miyabi）',
+      en: 'University of Tokyo Information Technology Center, Young/Female User Recommendation (Miyabi)',
     },
     start: '2026-04',
     end: '2027-03',
+    category: 'hpc',
   },
   {
     title: {
@@ -31,11 +33,12 @@ export const grants: GrantEntry[] = [
       en: 'Development of Efficient LLM Adapter Learning with a Quantization Scheduler',
     },
     funder: {
-      ja: '学際大規模情報基盤共同利用・共同研究拠点 萌芽型共同研究課題',
+      ja: '学際大規模情報基盤共同利用・共同研究拠点 (JHPCN) 萌芽型共同研究課題',
       en: 'JHPCN Seed-Type Collaborative Research',
     },
     start: '2025-09',
     end: '2026-03',
+    category: 'hpc',
   },
   {
     title: {
@@ -48,6 +51,7 @@ export const grants: GrantEntry[] = [
     },
     start: '2025-09',
     end: '2026-03',
+    category: 'hpc',
   },
 ];
 

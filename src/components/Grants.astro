@@ -20,11 +20,16 @@ const s = t(locale);
             const parts = formatRangeParts(g.start, g.end, locale, s.labels.present);
             return (
               <li class="surface p-5">
-                <p class="text-xs font-mono text-muted tabular-nums">
-                  <time datetime={isoYearMonth(g.start)}>{parts.start}</time>
-                  {' – '}
-                  <time datetime={isoYearMonth(g.end)}>{parts.end}</time>
-                </p>
+                <div class="flex items-baseline justify-between gap-3">
+                  <p class="text-xs font-mono text-muted tabular-nums">
+                    <time datetime={isoYearMonth(g.start)}>{parts.start}</time>
+                    {' – '}
+                    <time datetime={isoYearMonth(g.end)}>{parts.end}</time>
+                  </p>
+                  <span class="text-[10px] uppercase tracking-wider font-mono px-1.5 py-0.5 rounded border hairline text-muted">
+                    {s.grantCategories[g.category]}
+                  </span>
+                </div>
                 <h4 class="mt-2 font-medium leading-snug">{g.title[locale]}</h4>
                 <p class="mt-1 text-sm text-muted">{g.funder[locale]}</p>
               </li>

@@ -4,6 +4,8 @@ export type NewsKind =
   | 'paper'
   | 'award'
   | 'grant'
+  | 'hpc'
+  | 'fellowship'
   | 'talk'
   | 'media'
   | 'position'
