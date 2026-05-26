@@ -4,6 +4,7 @@ import type { Locale } from '~/data/types';
 import { profile } from '~/data';
 import Header from '~/components/Header.astro';
 import Footer from '~/components/Footer.astro';
+import HeadIntegrations from '~/components/HeadIntegrations.astro';
 
 type Props = {
   locale: Locale;
@@ -51,6 +52,8 @@ const otherLocalePath = locale === 'ja' ? alternateEn : alternateJa;
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta name="theme-color" content="#0d4f5c" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#0a1f25" media="(prefers-color-scheme: dark)" />
+
+    <HeadIntegrations />
 
     <!-- Language alternates -->
     <link rel="alternate" hreflang="ja" href={altJaUrl} />

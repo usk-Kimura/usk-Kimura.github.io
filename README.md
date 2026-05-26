@@ -56,24 +56,73 @@ Type errors surface immediately with `npm run check`.
 
 ## Deployment to GitHub Pages
 
-A workflow is committed at `.github/workflows/deploy.yml` that builds and publishes the site on every push to `main`. Enable it once:
+The site is published at https://usk-kimura.github.io/. GitHub Pages is configured to serve from the **`gh-pages` branch** (Settings → Pages → Source). The previous version of the site lives on the `backup-old` branch.
 
-1. Push this repo to GitHub.
-2. **Settings → Pages → Build and deployment → Source: GitHub Actions**.
-3. Push to `main` (or trigger the workflow manually) — the site goes live.
+### Manual deploy (works today)
+
+```sh
+npm run build                # produces ./dist
+git checkout --orphan deploy-tmp
+git --work-tree=dist add -A
+git --work-tree=dist commit -m "Deploy"
+git push -f origin HEAD:gh-pages
+git checkout main
+git branch -D deploy-tmp
+```
+
+### Automated deploy (one-time setup)
+
+`.github/workflows/deploy.yml` builds and pushes to `gh-pages` on every commit to `main`, using [`peaceiris/actions-gh-pages`](https://github.com/peaceiris/actions-gh-pages). To commit this workflow file the first time, the local `gh` CLI token needs the `workflow` scope. Refresh it once:
+
+```sh
+gh auth refresh -s workflow -h github.com
+git add .github/workflows/deploy.yml
+git commit -m "Add deploy workflow"
+git push
+```
+
+After that, edit any data file and `git push` — the workflow rebuilds and republishes automatically.
 
 ### `site` and `base` in `astro.config.mjs`
 
-- **User / org site** — repo name is `<user>.github.io` (e.g. `yusuke-kimura.github.io`). Leave `base` commented; the site is served from `/`.
-- **Project page** — any other repo name (e.g. `myhp`). Uncomment `base: '/<repo>/'` in `astro.config.mjs` and update `site` to match the final URL.
+- **User / org site** — repo name is `<user>.github.io` (current setup). Leave `base` commented; served from `/`.
+- **Project page** — repo name is anything else. Uncomment `base: '/<repo>/'` in `astro.config.mjs` and update `site` accordingly.
 
-```js
-// astro.config.mjs
-export default defineConfig({
-  site: 'https://yusuke-kimura.github.io', // ← edit me
-  // base: '/myhp/',                       // ← uncomment for project pages
-});
-```
+## Analytics & SEO
+
+### Cloudflare Web Analytics
+
+1. Visit [Cloudflare Web Analytics](https://dash.cloudflare.com/?to=/:account/web-analytics).
+2. Click **Add a site**, enter `usk-kimura.github.io`, finish setup.
+3. Cloudflare gives you a beacon snippet — copy the token (the value of `data-cf-beacon`'s `"token"` field).
+4. Paste it into `src/site.config.ts`:
+   ```ts
+   cloudflareAnalyticsToken: 'YOUR_TOKEN_HERE',
+   ```
+5. Commit and push. The beacon loads on every page, with no cookies and no consent banner needed.
+
+### Google Search Console
+
+1. Open [Search Console](https://search.google.com/search-console), add property `https://usk-kimura.github.io/`.
+2. Pick the **HTML tag** verification method and copy the `content="..."` value.
+3. Paste it into `src/site.config.ts`:
+   ```ts
+   googleSiteVerification: 'YOUR_CONTENT_VALUE',
+   ```
+4. Commit, push, then click **Verify** in Search Console.
+5. After verification, submit the sitemap: `https://usk-kimura.github.io/sitemap-index.xml`.
+
+### Google Scholar indexing
+
+- Each publication has its own page at `/p/{slug}/` with `citation_*` meta tags and a JSON-LD ScholarlyArticle block (the format Google Scholar expects).
+- Scholar's [inclusion guidelines](https://scholar.google.com/intl/en/scholar/inclusion.html) note that pages with bare bibliographic data may not be indexed. To improve odds, fill in `abstract` for entries in `src/data/publications.ts`:
+  ```ts
+  {
+    title: '...',
+    abstract: { ja: '日本語の要旨', en: 'English abstract' },
+    // ...
+  }
+  ```
 
 ## Accessibility & SEO
 

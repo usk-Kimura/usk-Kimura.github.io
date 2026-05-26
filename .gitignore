@@ -31,3 +31,6 @@ public/og-image.png
 public/portrait-*.avif
 public/portrait-*.webp
 public/portrait-*.jpg
+
+# Claude Code local state
+.claude/

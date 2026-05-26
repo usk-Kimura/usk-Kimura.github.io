@@ -1,0 +1,20 @@
+---
+import { siteConfig } from '~/site.config';
+---
+
+{
+  siteConfig.googleSiteVerification && (
+    <meta name="google-site-verification" content={siteConfig.googleSiteVerification} />
+  )
+}
+
+{
+  siteConfig.cloudflareAnalyticsToken && (
+    <script
+      is:inline
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon={`{"token": "${siteConfig.cloudflareAnalyticsToken}"}`}
+    />
+  )
+}

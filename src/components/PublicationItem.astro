@@ -2,6 +2,7 @@
 import type { Locale, Publication } from '~/data/types';
 import { t } from '~/i18n/ui';
 import { formatYearMonth, isoYearMonth } from '~/i18n/format';
+import { pubSlug } from '~/data/util';
 
 type Props = {
   pub: Publication;
@@ -10,6 +11,8 @@ type Props = {
 
 const { pub, locale } = Astro.props;
 const s = t(locale);
+const detailHref = `/p/${pubSlug(pub)}/`;
+const externalUrl = pub.url ?? (pub.doi ? `https://doi.org/${pub.doi}` : null);
 
 const dateLabel = pub.month
   ? formatYearMonth(`${pub.year}-${pub.month}`, locale)
@@ -38,19 +41,23 @@ const venueLang: Locale = locale === 'en' && pub.venueEn ? 'en' : CJK.test(pub.v
     </div>
     <div class="min-w-0 flex-1">
       <h3 class="font-medium leading-snug text-balance">
+        <a
+          href={detailHref}
+          class="hover:underline underline-offset-4 decoration-[var(--accent)]"
+        >
+          <span lang={titleLang}>{pub.title}</span>
+        </a>
         {
-          pub.url || pub.doi ? (
+          externalUrl && (
             <a
-              href={pub.url ?? `https://doi.org/${pub.doi}`}
+              href={externalUrl}
               target="_blank"
-              rel="noreferrer"
-              class="hover:underline underline-offset-4 decoration-[var(--accent)]"
+              rel="noopener noreferrer external"
+              class="ml-1 inline-flex items-center text-muted hover:text-[var(--fg)]"
+              aria-label={pub.doi ? `DOI${locale === 'ja' ? '（新しいタブで開きます）' : ' (opens in a new tab)'}` : (locale === 'ja' ? '外部リンク（新しいタブで開きます）' : 'External link (opens in a new tab)')}
             >
-              <span lang={titleLang}>{pub.title}</span>
-              <span class="sr-only">{locale === 'ja' ? '（新しいタブで開きます）' : '(opens in a new tab)'}</span>
+              <span aria-hidden="true" class="text-xs">↗</span>
             </a>
-          ) : (
-            <span lang={titleLang}>{pub.title}</span>
           )
         }
       </h3>
