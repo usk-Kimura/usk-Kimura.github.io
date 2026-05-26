@@ -7,7 +7,7 @@
 export const siteConfig = {
   /** Cloudflare Web Analytics beacon token. Get one from
    *  https://dash.cloudflare.com → Analytics → Web Analytics → Add a site. */
-  cloudflareAnalyticsToken: '' as string,
+  cloudflareAnalyticsToken: '327adac0b9d7494586e9c3c42dc7ee4f' as string,
 
   /** Google Search Console site-verification token (the value of `content` in
    *  the `<meta name="google-site-verification">` tag). Empty = no tag. */
