@@ -10,6 +10,7 @@ const s = t(locale);
 
 const primary = profile.emails.find((e) => e.primary) ?? profile.emails[0];
 const others = profile.emails.filter((e) => e !== primary);
+const opp = profile.openToOpportunities;
 ---
 
 <Section
@@ -20,6 +21,24 @@ const others = profile.emails.filter((e) => e !== primary);
     ? '研究に関するお問い合わせや共同研究のご相談は、以下のメールアドレスまたは外部リンクからお気軽にご連絡ください。'
     : 'Feel free to reach out about research, collaborations, or invitations via email or the links below.'}
 >
+  {
+    opp && (
+      <div class="mb-6 surface p-5 md:p-6 border-l-4 border-l-[var(--accent)] flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5">
+        <span class="inline-flex items-center gap-2 self-start font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--accent)]">
+          <span class="relative flex w-2 h-2" aria-hidden="true">
+            <span class="absolute inline-flex w-full h-full rounded-full bg-[var(--accent)] opacity-60 motion-safe:animate-ping" />
+            <span class="relative inline-flex w-2 h-2 rounded-full bg-[var(--accent)]" />
+          </span>
+          {locale === 'ja' ? 'ポジション募集中' : 'Open to opportunities'}
+        </span>
+        <p class="text-sm md:text-base leading-snug">
+          <strong class="font-semibold">{opp.startFrom[locale]}</strong>
+          {locale === 'ja' ? '、' : ' — '}{opp.detail[locale]}
+        </p>
+      </div>
+    )
+  }
+
   <div class="grid gap-6 md:grid-cols-[1fr_auto] md:items-end">
     <div class="surface p-6 md:p-8">
       <p class="text-xs font-mono uppercase tracking-wider text-muted">{primary.label[locale]}</p>

@@ -31,6 +31,14 @@ export type Profile = {
     src: string; // fallback JPEG src
     alt: LocalizedString;
   };
+  /** "Looking for next position" banner. Set to `null` once a position is
+   *  secured so the badge stops rendering site-wide. */
+  openToOpportunities?: {
+    /** Short text for the start-time (e.g. "2027年度以降"). */
+    startFrom: LocalizedString;
+    /** What kind of position is being sought. */
+    detail: LocalizedString;
+  } | null;
 };
 
 export type CareerEntry = {

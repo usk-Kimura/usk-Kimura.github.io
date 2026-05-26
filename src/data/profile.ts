@@ -43,6 +43,16 @@ export const profile: Profile = {
       en: 'Portrait of Yusuke Kimura',
     },
   },
+  openToOpportunities: {
+    startFrom: {
+      ja: '2027年度以降',
+      en: 'starting April 2027',
+    },
+    detail: {
+      ja: '研究職を募集中（アカデミア・産業界とも）',
+      en: 'Open to research positions in academia and industry',
+    },
+  },
   links: [
     {
       label: { ja: 'ORCID', en: 'ORCID' },
