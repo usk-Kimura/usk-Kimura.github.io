@@ -1,0 +1,36 @@
+---
+import type { Locale } from '~/data/types';
+import { awards } from '~/data';
+import { t } from '~/i18n/ui';
+import { formatYearMonth, isoYearMonth } from '~/i18n/format';
+import Section from './Section.astro';
+
+type Props = { locale: Locale };
+const { locale } = Astro.props;
+const s = t(locale);
+---
+
+<Section id="awards" eyebrow="03" title={s.sections.awards} count={awards.length} countLabel={s.labels.total}>
+  <ol class="grid gap-4 md:grid-cols-2">
+    {
+      awards.map((a) => (
+        <li class="surface p-5 md:p-6 flex flex-col gap-2">
+          <div class="flex items-baseline justify-between gap-3">
+            <time
+              class="text-xs font-mono text-muted tabular-nums"
+              datetime={isoYearMonth(a.date)}
+            >
+              {formatYearMonth(a.date, locale)}
+            </time>
+            <p class="text-xs text-muted text-right">{a.organization[locale]}</p>
+          </div>
+          <h3 class="font-serif text-lg leading-snug">{a.name[locale]}</h3>
+          <p class="text-sm text-muted">{a.work[locale]}</p>
+          <p class="text-xs text-muted mt-auto pt-2">
+            <span class="font-mono uppercase tracking-wider">{s.labels.recipients}</span>: {a.recipients}
+          </p>
+        </li>
+      ))
+    }
+  </ol>
+</Section>

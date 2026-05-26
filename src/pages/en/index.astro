@@ -1,0 +1,24 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import Hero from '~/components/Hero.astro';
+import About from '~/components/About.astro';
+import Research from '~/components/Research.astro';
+import Publications from '~/components/Publications.astro';
+import Awards from '~/components/Awards.astro';
+import Timeline from '~/components/Timeline.astro';
+import Grants from '~/components/Grants.astro';
+import Contact from '~/components/Contact.astro';
+
+const locale = 'en' as const;
+---
+
+<BaseLayout locale={locale}>
+  <Hero locale={locale} />
+  <About locale={locale} />
+  <Research locale={locale} />
+  <Publications locale={locale} />
+  <Awards locale={locale} />
+  <Timeline locale={locale} />
+  <Grants locale={locale} />
+  <Contact locale={locale} />
+</BaseLayout>

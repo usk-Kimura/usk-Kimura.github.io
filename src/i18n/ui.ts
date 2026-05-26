@@ -1,0 +1,120 @@
+import type { Locale } from '~/data/types';
+
+export const defaultLocale: Locale = 'ja';
+export const locales: Locale[] = ['ja', 'en'];
+
+export const ui = {
+  ja: {
+    nav: {
+      about: 'About',
+      research: 'Research',
+      publications: 'Publications',
+      awards: 'Awards',
+      career: 'Career',
+      grants: 'Grants',
+      contact: 'Contact',
+    },
+    sections: {
+      about: '研究者として',
+      research: '研究分野・キーワード',
+      keywords: 'キーワード',
+      fields: '研究分野',
+      publications: '論文',
+      awards: '受賞',
+      career: '経歴',
+      education: '学歴',
+      grants: '競争的資金等',
+      services: '学術貢献活動',
+      contact: 'お問い合わせ',
+    },
+    labels: {
+      present: '現在',
+      total: '件',
+      filter: 'タイプで絞り込み',
+      all: 'すべて',
+      copyEmail: 'メールアドレスをコピー',
+      copied: 'コピーしました',
+      switchLang: 'English',
+      backToTop: 'トップへ戻る',
+      affiliation: '所属',
+      position: '職位',
+      degree: '学位',
+      recipients: '受賞者',
+    },
+    pubTypes: {
+      journal: 'ジャーナル',
+      'international-conference': '国際会議',
+      'domestic-conference': '国内会議',
+      workshop: 'ワークショップ',
+      'technical-report': '研究会・技報',
+      other: 'その他',
+    },
+    flags: {
+      'peer-reviewed': '査読あり',
+      'first-author': '筆頭著者',
+      'corresponding-author': '責任著者',
+      invited: '招待',
+    },
+    footer: {
+      built: 'このサイトは Astro と Tailwind CSS で構築されています。',
+    },
+  },
+  en: {
+    nav: {
+      about: 'About',
+      research: 'Research',
+      publications: 'Publications',
+      awards: 'Awards',
+      career: 'Career',
+      grants: 'Grants',
+      contact: 'Contact',
+    },
+    sections: {
+      about: 'About me',
+      research: 'Research interests',
+      keywords: 'Keywords',
+      fields: 'Fields',
+      publications: 'Publications',
+      awards: 'Awards',
+      career: 'Career',
+      education: 'Education',
+      grants: 'Grants & Funding',
+      services: 'Academic Service',
+      contact: 'Contact',
+    },
+    labels: {
+      present: 'Present',
+      total: 'items',
+      filter: 'Filter by type',
+      all: 'All',
+      copyEmail: 'Copy email',
+      copied: 'Copied',
+      switchLang: '日本語',
+      backToTop: 'Back to top',
+      affiliation: 'Affiliation',
+      position: 'Position',
+      degree: 'Degree',
+      recipients: 'Recipients',
+    },
+    pubTypes: {
+      journal: 'Journal',
+      'international-conference': 'International Conference',
+      'domestic-conference': 'Domestic Conference',
+      workshop: 'Workshop',
+      'technical-report': 'Technical Report',
+      other: 'Other',
+    },
+    flags: {
+      'peer-reviewed': 'Peer-reviewed',
+      'first-author': 'First author',
+      'corresponding-author': 'Corresponding author',
+      invited: 'Invited',
+    },
+    footer: {
+      built: 'Built with Astro and Tailwind CSS.',
+    },
+  },
+} as const;
+
+export type UiKey = typeof ui;
+export const t = (locale: Locale) => ui[locale];

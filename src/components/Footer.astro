@@ -1,0 +1,42 @@
+---
+import type { Locale } from '~/data/types';
+import { profile } from '~/data';
+import { t } from '~/i18n/ui';
+
+type Props = { locale: Locale };
+const { locale } = Astro.props;
+const s = t(locale);
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-32 border-t hairline print:hidden">
+  <div class="container-page py-10 grid gap-4 md:grid-cols-2 md:items-end">
+    <div>
+      <p class="text-sm text-muted">© {year} {profile.name[locale]}</p>
+      <p class="mt-1 text-xs text-muted">{s.footer.built}</p>
+    </div>
+    <div class="flex flex-wrap gap-x-4 gap-y-1 text-sm md:justify-end">
+      <a
+        href={locale === 'ja' ? '/cv' : '/en/cv'}
+        class="text-muted hover:text-[var(--fg)] underline-offset-4 hover:underline"
+      >
+        {locale === 'ja' ? '履歴書 (CV)' : 'Curriculum Vitae'}
+      </a>
+      {
+        profile.links.map((l) => (
+          <a
+            href={l.href}
+            target="_blank"
+            rel="noreferrer me"
+            class="text-muted hover:text-[var(--fg)] underline-offset-4 hover:underline"
+          >
+            {l.label[locale]}
+          </a>
+        ))
+      }
+      <a href="#main" class="text-muted hover:text-[var(--fg)] underline-offset-4 hover:underline">
+        ↑ {s.labels.backToTop}
+      </a>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,126 @@
+---
+import '~/styles/global.css';
+import type { Locale } from '~/data/types';
+import { profile } from '~/data';
+import Header from '~/components/Header.astro';
+import Footer from '~/components/Footer.astro';
+
+type Props = {
+  locale: Locale;
+  title?: string;
+  description?: string;
+  /** Hide section-anchor nav (e.g. on the CV page where #about etc. don't exist). */
+  slim?: boolean;
+  /** Path of the JA-equivalent of this page (for hreflang + language switch). */
+  alternateJa?: string;
+  /** Path of the EN-equivalent of this page (for hreflang + language switch). */
+  alternateEn?: string;
+};
+
+const {
+  locale,
+  title,
+  description,
+  slim = false,
+  alternateJa = '/',
+  alternateEn = '/en/',
+} = Astro.props;
+
+const pageTitle = title
+  ? `${title} — ${profile.name[locale]}`
+  : `${profile.name[locale]} | ${profile.tagline[locale]}`;
+
+const pageDesc = description ?? profile.bio[locale];
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const ogImageUrl = new URL('/og-image.png', Astro.site).toString();
+const altJaUrl = new URL(alternateJa, Astro.site).toString();
+const altEnUrl = new URL(alternateEn, Astro.site).toString();
+const otherLocalePath = locale === 'ja' ? alternateEn : alternateJa;
+---
+
+<!doctype html>
+<html lang={locale === 'ja' ? 'ja' : 'en'}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDesc} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#0d4f5c" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0a1f25" media="(prefers-color-scheme: dark)" />
+
+    <!-- Language alternates -->
+    <link rel="alternate" hreflang="ja" href={altJaUrl} />
+    <link rel="alternate" hreflang="en" href={altEnUrl} />
+    <link rel="alternate" hreflang="x-default" href={altJaUrl} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="profile" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDesc} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content={locale === 'ja' ? 'ja_JP' : 'en_US'} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${profile.name.en} — researcher portfolio`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDesc} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={`${profile.name.en} — researcher portfolio`} />
+
+    <!-- Theme bootstrap: read pref before paint to avoid flash -->
+    <script is:inline>
+      (() => {
+        try {
+          const saved = localStorage.getItem('theme');
+          if (saved === 'light' || saved === 'dark') {
+            document.documentElement.dataset.theme = saved;
+          }
+        } catch {
+          /* ignore */
+        }
+      })();
+    </script>
+
+    <!-- JSON-LD Person -->
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Person',
+        name: profile.name.en,
+        alternateName: profile.name.ja,
+        jobTitle: profile.position[locale],
+        affiliation: { '@type': 'Organization', name: profile.affiliation[locale] },
+        url: canonicalUrl,
+        sameAs: profile.links.map((l) => l.href),
+        email: profile.emails.map((e) => `mailto:${e.address}`),
+        image: new URL('/portrait-1280.jpg', Astro.site).toString(),
+        identifier: `https://orcid.org/${profile.orcid}`,
+      })}
+    />
+  </head>
+  <body class="font-sans antialiased">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2 focus:bg-[var(--bg-elev)] focus:text-[var(--fg)] focus:border focus:hairline focus:rounded-md"
+    >
+      {locale === 'ja' ? 'メインコンテンツへ' : 'Skip to main content'}
+    </a>
+
+    <Header locale={locale} hideSectionNav={slim} otherLocalePath={otherLocalePath} />
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <Footer locale={locale} />
+  </body>
+</html>

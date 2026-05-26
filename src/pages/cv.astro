@@ -1,0 +1,9 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import CV from '~/components/CV.astro';
+const locale = 'ja' as const;
+---
+
+<BaseLayout locale={locale} title="履歴書" slim alternateJa="/cv/" alternateEn="/en/cv/">
+  <CV locale={locale} />
+</BaseLayout>

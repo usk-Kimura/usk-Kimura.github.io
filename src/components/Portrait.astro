@@ -1,0 +1,39 @@
+---
+import type { Locale } from '~/data/types';
+import { profile } from '~/data';
+
+type Props = {
+  locale: Locale;
+  class?: string;
+  sizes?: string;
+};
+
+const { locale, class: extra = '', sizes = '(min-width: 768px) 192px, 144px' } = Astro.props;
+
+if (!profile.portrait) return null;
+const alt = profile.portrait.alt[locale];
+---
+
+<picture class={extra}>
+  <source
+    type="image/avif"
+    srcset="/portrait-480.avif 480w, /portrait-640.avif 640w, /portrait-1280.avif 1280w"
+    sizes={sizes}
+  />
+  <source
+    type="image/webp"
+    srcset="/portrait-480.webp 480w, /portrait-640.webp 640w, /portrait-1280.webp 1280w"
+    sizes={sizes}
+  />
+  <img
+    src="/portrait-640.jpg"
+    srcset="/portrait-480.jpg 480w, /portrait-640.jpg 640w, /portrait-1280.jpg 1280w"
+    sizes={sizes}
+    alt={alt}
+    width="640"
+    height="640"
+    loading="eager"
+    decoding="async"
+    fetchpriority="high"
+  />
+</picture>

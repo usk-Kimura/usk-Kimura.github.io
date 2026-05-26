@@ -1,0 +1,68 @@
+---
+import type { Locale } from '~/data/types';
+import { grants, services } from '~/data';
+import { t } from '~/i18n/ui';
+import { formatRangeParts, isoYearMonth } from '~/i18n/format';
+import Section from './Section.astro';
+
+type Props = { locale: Locale };
+const { locale } = Astro.props;
+const s = t(locale);
+---
+
+<Section id="grants" eyebrow="05" title={s.sections.grants}>
+  <div class="grid gap-8 md:grid-cols-2">
+    <div>
+      <h3 class="font-serif text-xl mb-4">{s.sections.grants}</h3>
+      <ol class="space-y-4">
+        {
+          grants.map((g) => {
+            const parts = formatRangeParts(g.start, g.end, locale, s.labels.present);
+            return (
+              <li class="surface p-5">
+                <p class="text-xs font-mono text-muted tabular-nums">
+                  <time datetime={isoYearMonth(g.start)}>{parts.start}</time>
+                  {' – '}
+                  <time datetime={isoYearMonth(g.end)}>{parts.end}</time>
+                </p>
+                <h4 class="mt-2 font-medium leading-snug">{g.title[locale]}</h4>
+                <p class="mt-1 text-sm text-muted">{g.funder[locale]}</p>
+              </li>
+            );
+          })
+        }
+      </ol>
+    </div>
+
+    <div>
+      <h3 class="font-serif text-xl mb-4">{s.sections.services}</h3>
+      <ol class="space-y-4">
+        {
+          services.map((sv) => {
+            const parts = formatRangeParts(sv.start, sv.end, locale, s.labels.present);
+            return (
+              <li class="surface p-5">
+                <div class="flex items-baseline justify-between gap-3">
+                  <p class="text-xs font-mono text-muted tabular-nums">
+                    <time datetime={isoYearMonth(sv.start)}>{parts.start}</time>
+                    {' – '}
+                    {sv.end ? (
+                      <time datetime={isoYearMonth(sv.end)}>{parts.end}</time>
+                    ) : (
+                      <span>{parts.end}</span>
+                    )}
+                  </p>
+                  <span class="text-[10px] uppercase tracking-wider font-mono px-1.5 py-0.5 rounded border hairline text-muted">
+                    {sv.kind[locale]}
+                  </span>
+                </div>
+                <h4 class="mt-2 font-medium leading-snug">{sv.title[locale]}</h4>
+                {sv.organization && <p class="mt-1 text-sm text-muted">{sv.organization[locale]}</p>}
+              </li>
+            );
+          })
+        }
+      </ol>
+    </div>
+  </div>
+</Section>

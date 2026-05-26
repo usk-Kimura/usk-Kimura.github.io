@@ -1,0 +1,79 @@
+---
+import type { Locale } from '~/data/types';
+import { career, education } from '~/data';
+import { t } from '~/i18n/ui';
+import { formatRangeParts, isoYearMonth } from '~/i18n/format';
+import Section from './Section.astro';
+
+type Props = { locale: Locale };
+const { locale } = Astro.props;
+const s = t(locale);
+
+const sectionTitle = locale === 'ja' ? '経歴 & 学歴' : 'Career & Education';
+---
+
+<Section id="career" eyebrow="04" title={sectionTitle}>
+  <div class="grid gap-12 md:grid-cols-2">
+    <div>
+      <h3 class="font-serif text-xl mb-6">{s.sections.career}</h3>
+      <ol class="relative pl-5 border-l hairline space-y-6">
+        {
+          career.map((c) => {
+            const parts = formatRangeParts(c.start, c.end, locale, s.labels.present);
+            return (
+              <li class="relative">
+                <span
+                  class="absolute -left-[27px] top-1.5 w-3 h-3 rounded-full bg-[var(--accent)] ring-4"
+                  style="--tw-ring-color: var(--bg);"
+                  aria-hidden="true"
+                />
+                <p class="text-xs font-mono text-muted tabular-nums">
+                  <time datetime={isoYearMonth(c.start)}>{parts.start}</time>
+                  {' – '}
+                  {c.end ? (
+                    <time datetime={isoYearMonth(c.end)}>{parts.end}</time>
+                  ) : (
+                    <span>{parts.end}</span>
+                  )}
+                </p>
+                <p class="mt-1 font-medium leading-snug">{c.role[locale]}</p>
+                <p class="text-sm text-muted">{c.organization[locale]}</p>
+              </li>
+            );
+          })
+        }
+      </ol>
+    </div>
+
+    <div>
+      <h3 class="font-serif text-xl mb-6">{s.sections.education}</h3>
+      <ol class="relative pl-5 border-l hairline space-y-6">
+        {
+          education.map((e) => {
+            const parts = formatRangeParts(e.start, e.end, locale, s.labels.present);
+            return (
+              <li class="relative">
+                <span
+                  class="absolute -left-[27px] top-1.5 w-3 h-3 rounded-full bg-[var(--accent)] ring-4"
+                  style="--tw-ring-color: var(--bg);"
+                  aria-hidden="true"
+                />
+                <p class="text-xs font-mono text-muted tabular-nums">
+                  <time datetime={isoYearMonth(e.start)}>{parts.start}</time>
+                  {' – '}
+                  {e.end ? (
+                    <time datetime={isoYearMonth(e.end)}>{parts.end}</time>
+                  ) : (
+                    <span>{parts.end}</span>
+                  )}
+                </p>
+                <p class="mt-1 font-medium leading-snug">{e.program[locale]}</p>
+                <p class="text-sm text-muted">{e.school[locale]}</p>
+              </li>
+            );
+          })
+        }
+      </ol>
+    </div>
+  </div>
+</Section>

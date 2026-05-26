@@ -1,0 +1,547 @@
+---
+import type { Locale } from '~/data/types';
+import { profile, career, education, awards, publications, grants, services } from '~/data';
+import { t } from '~/i18n/ui';
+import { formatRangeParts, formatYearMonth, isoYearMonth } from '~/i18n/format';
+
+type Props = { locale: Locale };
+const { locale } = Astro.props;
+const s = t(locale);
+
+const sortedPubs = [...publications].sort(
+  (a, b) => b.year * 12 + (b.month ?? 0) - (a.year * 12 + (a.month ?? 0)),
+);
+
+const CJK = /[　-ヿ㐀-䶿一-鿿＀-￯]/;
+const SELF_TOKENS = ['木村 優介', '木村優介', 'Yusuke Kimura'];
+
+function escapeHtml(s: string): string {
+  return s
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+// Escape first, then wrap occurrences of the owner's name in <strong>.
+// Source data is static, but escaping keeps us defensible if that ever changes.
+function highlightSelf(authors: string): string {
+  let out = escapeHtml(authors);
+  for (const token of SELF_TOKENS) {
+    out = out.replaceAll(token, `<strong>${token}</strong>`);
+  }
+  return out;
+}
+
+// Drop ORCID from the link list — it's already rendered explicitly above.
+const cvLinks = profile.links.filter((l) => !l.href.startsWith('https://orcid.org/'));
+
+const headings = locale === 'ja'
+  ? {
+      title: '履歴書 (Curriculum Vitae)',
+      contact: '連絡先',
+      affiliation: '所属',
+      degree: '学位',
+      education: '学歴',
+      career: '経歴',
+      awards: '受賞',
+      publications: '論文',
+      grants: '競争的資金',
+      services: '学術貢献活動',
+      back: '← トップへ戻る',
+      print: '印刷 / PDF として保存',
+      lastUpdated: '最終更新',
+    }
+  : {
+      title: 'Curriculum Vitae',
+      contact: 'Contact',
+      affiliation: 'Affiliation',
+      degree: 'Degree',
+      education: 'Education',
+      career: 'Career',
+      awards: 'Awards',
+      publications: 'Publications',
+      grants: 'Grants',
+      services: 'Academic Service',
+      back: '← Back to home',
+      print: 'Print / Save as PDF',
+      lastUpdated: 'Last updated',
+    };
+
+const updated = new Date().toISOString().slice(0, 10);
+const homePath = locale === 'ja' ? '/' : '/en/';
+
+// Group publications by type, with the conventional academic ordering.
+const TYPE_ORDER = [
+  'journal',
+  'international-conference',
+  'workshop',
+  'domestic-conference',
+  'technical-report',
+  'other',
+] as const;
+const pubsByType = TYPE_ORDER
+  .map((type) => ({ type, items: sortedPubs.filter((p) => p.type === type) }))
+  .filter((g) => g.items.length > 0);
+---
+
+<div class="cv-toolbar print:hidden">
+  <div class="container-page py-4 flex flex-wrap gap-2 items-center">
+    <a
+      href={homePath}
+      class="text-sm text-muted hover:text-[var(--fg)] underline-offset-4 hover:underline"
+    >
+      {headings.back}
+    </a>
+    <button
+      type="button"
+      id="cv-print-btn"
+      class="ml-auto text-sm px-3 py-1.5 rounded-md border hairline hover:bg-[var(--accent-soft)] transition-colors"
+    >
+      🖨 {headings.print}
+    </button>
+  </div>
+</div>
+
+<article class="cv container-page py-8 print:py-0">
+  <header class="cv-header">
+    <div class="flex-1">
+      <h1 class="cv-name font-serif">{profile.name[locale]}</h1>
+      <p class="cv-reading">{profile.reading[locale]}</p>
+      <p class="cv-tagline">{profile.tagline[locale]}</p>
+    </div>
+    {
+      profile.portrait && (
+        <picture class="cv-portrait print:block">
+          <source
+            type="image/avif"
+            srcset="/portrait-480.avif 480w, /portrait-640.avif 640w"
+            sizes="120px"
+          />
+          <source
+            type="image/webp"
+            srcset="/portrait-480.webp 480w, /portrait-640.webp 640w"
+            sizes="120px"
+          />
+          <img
+            src="/portrait-640.jpg"
+            srcset="/portrait-480.jpg 480w, /portrait-640.jpg 640w"
+            sizes="120px"
+            alt={profile.portrait.alt[locale]}
+            width="120"
+            height="120"
+            loading="eager"
+          />
+        </picture>
+      )
+    }
+  </header>
+
+  <dl class="cv-meta">
+    <dt>{headings.affiliation}</dt>
+    <dd>{profile.affiliation[locale]} — {profile.position[locale]}</dd>
+    <dt>{headings.degree}</dt>
+    <dd>{profile.degree[locale]}</dd>
+    <dt>{headings.contact}</dt>
+    <dd>
+      {profile.emails.map((e, i) => (
+        <span>
+          {i > 0 && ' / '}
+          <a href={`mailto:${e.address}`}>{e.address}</a>
+          <span class="cv-meta-note"> ({e.label[locale]})</span>
+        </span>
+      ))}
+    </dd>
+    <dt>ORCID</dt>
+    <dd><a href={`https://orcid.org/${profile.orcid}`}>{profile.orcid}</a></dd>
+    {
+      cvLinks.map((l) => (
+        <Fragment>
+          <dt>{l.label[locale]}</dt>
+          <dd><a href={l.href}>{l.href}</a></dd>
+        </Fragment>
+      ))
+    }
+  </dl>
+
+  <section class="cv-section">
+    <h2>{headings.education}</h2>
+    <ol class="cv-list">
+      {
+        education.map((e) => {
+          const parts = formatRangeParts(e.start, e.end, locale, s.labels.present);
+          return (
+            <li>
+              <span class="cv-date tabular-nums">
+                {parts.start} – {parts.end}
+              </span>
+              <span class="cv-body">
+                <strong>{e.program[locale]}</strong>, {e.school[locale]}
+              </span>
+            </li>
+          );
+        })
+      }
+    </ol>
+  </section>
+
+  <section class="cv-section">
+    <h2>{headings.career}</h2>
+    <ol class="cv-list">
+      {
+        career.map((c) => {
+          const parts = formatRangeParts(c.start, c.end, locale, s.labels.present);
+          return (
+            <li>
+              <span class="cv-date tabular-nums">
+                {parts.start} – {parts.end}
+              </span>
+              <span class="cv-body">
+                <strong>{c.role[locale]}</strong>, {c.organization[locale]}
+              </span>
+            </li>
+          );
+        })
+      }
+    </ol>
+  </section>
+
+  <section class="cv-section">
+    <h2>{headings.awards}</h2>
+    <ol class="cv-list">
+      {
+        awards.map((a) => (
+          <li>
+            <time class="cv-date tabular-nums" datetime={isoYearMonth(a.date)}>
+              {formatYearMonth(a.date, locale)}
+            </time>
+            <span class="cv-body">
+              <strong>{a.name[locale]}</strong>, {a.organization[locale]}
+              <br />
+              <span class="cv-detail">{a.work[locale]}</span>
+            </span>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="cv-section">
+    <h2>{headings.publications} <span class="cv-count">({sortedPubs.length})</span></h2>
+    {
+      pubsByType.map((group) => (
+        <div class="cv-pub-group">
+          <h3>{s.pubTypes[group.type]}</h3>
+          <ol class="cv-pubs">
+            {group.items.map((pub) => {
+              const titleLang: Locale = pub.titleLang ?? (CJK.test(pub.title) ? 'ja' : 'en');
+              const venueText = locale === 'en' && pub.venueEn ? pub.venueEn : pub.venue;
+              const venueLang: Locale =
+                locale === 'en' && pub.venueEn ? 'en' : CJK.test(pub.venue) ? 'ja' : 'en';
+              const dateLabel = pub.month
+                ? formatYearMonth(`${pub.year}-${pub.month}`, locale)
+                : String(pub.year);
+              return (
+                <li>
+                  <span class="cv-pub-authors" set:html={highlightSelf(pub.authors)} />
+                  {'. '}
+                  <span class="cv-pub-title" lang={titleLang}>{pub.title}</span>
+                  {'. '}
+                  <em class="cv-pub-venue" lang={venueLang}>{venueText}</em>
+                  {pub.pages ? `, ${pub.pages}` : ''}, {dateLabel}.
+                  {pub.flags && pub.flags.length > 0 && (
+                    <span class="cv-pub-flags">
+                      {pub.flags.map((f) => ` [${s.flags[f]}]`).join('')}
+                    </span>
+                  )}
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+      ))
+    }
+  </section>
+
+  <section class="cv-section">
+    <h2>{headings.grants}</h2>
+    <ol class="cv-list">
+      {
+        grants.map((g) => {
+          const parts = formatRangeParts(g.start, g.end, locale, s.labels.present);
+          return (
+            <li>
+              <span class="cv-date tabular-nums">
+                {parts.start} – {parts.end}
+              </span>
+              <span class="cv-body">
+                <strong>{g.title[locale]}</strong>
+                <br />
+                <span class="cv-detail">{g.funder[locale]}</span>
+              </span>
+            </li>
+          );
+        })
+      }
+    </ol>
+  </section>
+
+  <section class="cv-section">
+    <h2>{headings.services}</h2>
+    <ol class="cv-list">
+      {
+        services.map((sv) => {
+          const parts = formatRangeParts(sv.start, sv.end, locale, s.labels.present);
+          return (
+            <li>
+              <span class="cv-date tabular-nums">
+                {parts.start} – {parts.end}
+              </span>
+              <span class="cv-body">
+                <strong>{sv.title[locale]}</strong>
+                {sv.organization && (
+                  <Fragment>
+                    <br />
+                    <span class="cv-detail">{sv.organization[locale]}</span>
+                  </Fragment>
+                )}
+              </span>
+            </li>
+          );
+        })
+      }
+    </ol>
+  </section>
+
+  <footer class="cv-footer">
+    <p>{headings.lastUpdated}: <time datetime={updated}>{updated}</time></p>
+  </footer>
+</article>
+
+<script>
+  document.getElementById('cv-print-btn')?.addEventListener('click', () => window.print());
+</script>
+
+<style>
+  .cv {
+    --cv-fg: var(--fg);
+    --cv-muted: var(--fg-muted);
+    --cv-accent: var(--accent);
+    --cv-border: var(--border);
+    max-width: 56rem;
+    line-height: 1.55;
+  }
+
+  .cv-toolbar {
+    border-bottom: 1px solid var(--border);
+    background: color-mix(in oklch, var(--bg) 78%, transparent);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    backdrop-filter: blur(6px);
+  }
+
+  .cv-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 2px solid var(--cv-border);
+  }
+
+  .cv-name {
+    font-size: clamp(1.875rem, 3.5vw, 2.5rem);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+  }
+
+  .cv-reading {
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+    color: var(--cv-muted);
+  }
+
+  .cv-tagline {
+    margin-top: 0.5rem;
+    font-size: 0.9375rem;
+    color: var(--cv-muted);
+  }
+
+  .cv-portrait {
+    flex-shrink: 0;
+    width: 96px;
+    height: 96px;
+    border-radius: 9999px;
+    overflow: hidden;
+    border: 1px solid var(--cv-border);
+  }
+  .cv-portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .cv-meta {
+    margin-top: 1.25rem;
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+    gap: 0.25rem 1rem;
+    font-size: 0.875rem;
+  }
+  .cv-meta dt {
+    color: var(--cv-muted);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding-top: 0.15rem;
+  }
+  .cv-meta dd {
+    overflow-wrap: anywhere;
+  }
+  .cv-meta dd a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    text-decoration-color: var(--cv-accent);
+  }
+  .cv-meta-note {
+    color: var(--cv-muted);
+    font-size: 0.75rem;
+  }
+
+  .cv-section {
+    margin-top: 2rem;
+  }
+  .cv-section > h2,
+  .cv-pub-group > h3 {
+    break-after: avoid-page;
+    page-break-after: avoid;
+  }
+  .cv-section > h2 {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    font-weight: 600;
+    padding-bottom: 0.3rem;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid var(--cv-border);
+  }
+  .cv-list > li,
+  .cv-pubs > li,
+  .cv-pub-group {
+    break-inside: avoid-page;
+    page-break-inside: avoid;
+  }
+  .cv-count {
+    color: var(--cv-muted);
+    font-size: 0.875rem;
+    font-weight: 400;
+  }
+
+  .cv-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .cv-list > li {
+    display: grid;
+    grid-template-columns: 9rem 1fr;
+    gap: 1rem;
+    font-size: 0.9rem;
+  }
+  .cv-date {
+    color: var(--cv-muted);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    padding-top: 0.05rem;
+  }
+  .cv-detail {
+    color: var(--cv-muted);
+  }
+
+  .cv-pub-group {
+    margin-top: 0.75rem;
+  }
+  .cv-pub-group h3 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--cv-accent);
+    font-family: var(--font-mono);
+    margin: 1rem 0 0.5rem;
+  }
+  .cv-pubs {
+    list-style: decimal;
+    padding-left: 1.5rem;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .cv-pubs > li {
+    font-size: 0.875rem;
+    line-height: 1.55;
+  }
+  .cv-pub-title {
+    font-weight: 500;
+  }
+  .cv-pub-flags {
+    color: var(--cv-muted);
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+  }
+
+  .cv-footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--cv-border);
+    color: var(--cv-muted);
+    font-size: 0.75rem;
+  }
+
+  /* --- Print --- */
+  @media print {
+    @page {
+      size: A4;
+      margin: 16mm 14mm;
+    }
+
+    :root {
+      --bg: #ffffff;
+      --bg-elev: #ffffff;
+      --fg: #111111;
+      --fg-muted: #555555;
+      --border: #cccccc;
+      --accent: #1f4f5c;
+    }
+
+    body {
+      background: #ffffff !important;
+    }
+
+    .cv {
+      max-width: none;
+      padding: 0 !important;
+      font-size: 10pt;
+      line-height: 1.45;
+    }
+    .cv-name { font-size: 22pt; }
+    .cv-tagline { font-size: 11pt; }
+    .cv-meta { font-size: 9pt; grid-template-columns: 5.5rem 1fr; }
+    .cv-section > h2 { font-size: 13pt; margin-top: 1.2rem; }
+    .cv-list { gap: 0.3rem; }
+    .cv-list > li { font-size: 9.5pt; grid-template-columns: 7rem 1fr; }
+    .cv-pubs > li { font-size: 9pt; }
+    .cv-pub-group h3 { font-size: 8pt; }
+    .cv-date { font-size: 9pt; }
+
+    a { color: inherit; text-decoration: none; }
+
+    .cv-portrait { width: 72px; height: 72px; }
+  }
+</style>

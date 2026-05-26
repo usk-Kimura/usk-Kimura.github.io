@@ -1,0 +1,74 @@
+---
+import type { Locale, Publication } from '~/data/types';
+import { t } from '~/i18n/ui';
+import { formatYearMonth, isoYearMonth } from '~/i18n/format';
+
+type Props = {
+  pub: Publication;
+  locale: Locale;
+};
+
+const { pub, locale } = Astro.props;
+const s = t(locale);
+
+const dateLabel = pub.month
+  ? formatYearMonth(`${pub.year}-${pub.month}`, locale)
+  : `${pub.year}`;
+
+const dateAttr = pub.month
+  ? isoYearMonth(`${pub.year}-${pub.month}`)
+  : String(pub.year);
+
+// Heuristic: if the title contains any CJK code point, mark it as Japanese,
+// otherwise English. Authors of explicit `titleLang` take precedence.
+const CJK = /[　-ヿ㐀-䶿一-鿿＀-￯]/;
+const titleLang: Locale = pub.titleLang ?? (CJK.test(pub.title) ? 'ja' : 'en');
+
+const venueText = locale === 'en' && pub.venueEn ? pub.venueEn : pub.venue;
+const venueLang: Locale = locale === 'en' && pub.venueEn ? 'en' : CJK.test(pub.venue) ? 'ja' : 'en';
+---
+
+<article class="py-5">
+  <div class="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4">
+    <div class="md:w-32 shrink-0">
+      <time class="text-xs font-mono text-muted tabular-nums" datetime={dateAttr}>{dateLabel}</time>
+      <p class="mt-1 text-[10px] uppercase tracking-wider text-[var(--accent)] font-mono">
+        {s.pubTypes[pub.type]}
+      </p>
+    </div>
+    <div class="min-w-0 flex-1">
+      <h3 class="font-medium leading-snug text-balance">
+        {
+          pub.url || pub.doi ? (
+            <a
+              href={pub.url ?? `https://doi.org/${pub.doi}`}
+              target="_blank"
+              rel="noreferrer"
+              class="hover:underline underline-offset-4 decoration-[var(--accent)]"
+            >
+              <span lang={titleLang}>{pub.title}</span>
+              <span class="sr-only">{locale === 'ja' ? '（新しいタブで開きます）' : '(opens in a new tab)'}</span>
+            </a>
+          ) : (
+            <span lang={titleLang}>{pub.title}</span>
+          )
+        }
+      </h3>
+      <p class="mt-1 text-sm text-muted">{pub.authors}</p>
+      <p class="mt-1 text-sm text-muted italic" lang={venueLang}>
+        {venueText}{pub.pages ? `, ${pub.pages}` : ''}
+      </p>
+      {
+        pub.flags && pub.flags.length > 0 && (
+          <ul class="mt-2 flex flex-wrap gap-1.5">
+            {pub.flags.map((f) => (
+              <li class="text-[10px] uppercase tracking-wider font-mono px-1.5 py-0.5 rounded border hairline text-muted">
+                {s.flags[f]}
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
+  </div>
+</article>

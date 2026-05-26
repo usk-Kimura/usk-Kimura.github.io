@@ -1,0 +1,63 @@
+---
+import type { Locale } from '~/data/types';
+
+type Props = { locale: Locale };
+const { locale } = Astro.props;
+
+const label = locale === 'ja' ? 'テーマを切り替える' : 'Toggle color theme';
+---
+
+<button
+  type="button"
+  id="theme-toggle"
+  class="inline-flex items-center justify-center w-9 h-9 rounded-md border hairline hover:bg-[var(--accent-soft)] transition-colors"
+  aria-label={label}
+  aria-pressed="false"
+  title={label}
+>
+  <svg class="theme-icon-light w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="4"></circle>
+    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+  </svg>
+  <svg class="theme-icon-dark w-4 h-4 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+  </svg>
+</button>
+
+<script>
+  const btn = document.getElementById('theme-toggle') as HTMLButtonElement | null;
+  const root = document.documentElement;
+  const sunIcon = btn?.querySelector('.theme-icon-light');
+  const moonIcon = btn?.querySelector('.theme-icon-dark');
+
+  function currentTheme(): 'light' | 'dark' {
+    if (root.dataset.theme === 'light' || root.dataset.theme === 'dark') {
+      return root.dataset.theme;
+    }
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+
+  function sync() {
+    const dark = currentTheme() === 'dark';
+    sunIcon?.classList.toggle('hidden', dark);
+    moonIcon?.classList.toggle('hidden', !dark);
+    btn?.setAttribute('aria-pressed', String(dark));
+  }
+
+  sync();
+
+  btn?.addEventListener('click', () => {
+    const next = currentTheme() === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    try {
+      localStorage.setItem('theme', next);
+    } catch {
+      /* ignore */
+    }
+    sync();
+  });
+
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+    if (!localStorage.getItem('theme')) sync();
+  });
+</script>

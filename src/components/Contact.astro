@@ -1,0 +1,117 @@
+---
+import type { Locale } from '~/data/types';
+import { profile } from '~/data';
+import { t } from '~/i18n/ui';
+import Section from './Section.astro';
+
+type Props = { locale: Locale };
+const { locale } = Astro.props;
+const s = t(locale);
+
+const primary = profile.emails.find((e) => e.primary) ?? profile.emails[0];
+const others = profile.emails.filter((e) => e !== primary);
+---
+
+<Section
+  id="contact"
+  eyebrow="06"
+  title={s.sections.contact}
+  description={locale === 'ja'
+    ? '研究に関するお問い合わせや共同研究のご相談は、以下のメールアドレスまたは外部リンクからお気軽にご連絡ください。'
+    : 'Feel free to reach out about research, collaborations, or invitations via email or the links below.'}
+>
+  <div class="grid gap-6 md:grid-cols-[1fr_auto] md:items-end">
+    <div class="surface p-6 md:p-8">
+      <p class="text-xs font-mono uppercase tracking-wider text-muted">{primary.label[locale]}</p>
+      <div class="mt-2 flex flex-wrap items-center gap-3">
+        <a
+          href={`mailto:${primary.address}`}
+          class="font-serif text-2xl md:text-3xl break-all hover:underline underline-offset-4 decoration-[var(--accent)]"
+        >
+          {primary.address}
+        </a>
+        <button
+          type="button"
+          class="copy-email-btn text-xs px-3 py-1.5 rounded-md border hairline hover:bg-[var(--accent-soft)] transition-colors"
+          data-email={primary.address}
+          data-copy={s.labels.copyEmail}
+          data-copied={s.labels.copied}
+        >
+          {s.labels.copyEmail}
+        </button>
+      </div>
+
+      {
+        others.length > 0 && (
+          <ul class="mt-5 pt-5 border-t hairline space-y-2">
+            {others.map((e) => (
+              <li class="flex flex-wrap items-center gap-3 text-sm">
+                <span class="text-xs font-mono uppercase tracking-wider text-muted min-w-24">
+                  {e.label[locale]}
+                </span>
+                <a
+                  href={`mailto:${e.address}`}
+                  class="break-all hover:underline underline-offset-4 decoration-[var(--accent)]"
+                >
+                  {e.address}
+                </a>
+                <button
+                  type="button"
+                  class="copy-email-btn text-xs px-2 py-1 rounded-md border hairline hover:bg-[var(--accent-soft)] transition-colors"
+                  data-email={e.address}
+                  data-copy={s.labels.copyEmail}
+                  data-copied={s.labels.copied}
+                  aria-label={`${s.labels.copyEmail}: ${e.label[locale]} (${e.address})`}
+                >
+                  <span aria-hidden="true">⧉</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+
+      <span id="copy-email-status" role="status" aria-live="polite" class="sr-only"></span>
+    </div>
+
+    <ul class="flex flex-wrap gap-2 md:flex-col md:items-end">
+      {
+        profile.links.map((l) => (
+          <li>
+            <a
+              href={l.href}
+              target="_blank"
+              rel="noreferrer"
+              class="inline-flex items-center gap-2 px-4 py-2 rounded-md border hairline text-sm hover:bg-[var(--accent-soft)] transition-colors"
+            >
+              {l.label[locale]}
+              <span aria-hidden="true">↗</span>
+              <span class="sr-only">{locale === 'ja' ? '（新しいタブで開きます）' : '(opens in a new tab)'}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</Section>
+
+<script>
+  const status = document.getElementById('copy-email-status');
+  document.querySelectorAll<HTMLButtonElement>('.copy-email-btn').forEach((btn) => {
+    const original = btn.dataset.copy ?? 'Copy';
+    const copied = btn.dataset.copied ?? 'Copied';
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(btn.dataset.email ?? '');
+        if (btn.textContent && btn.textContent.length > 2) btn.textContent = copied;
+        if (status) status.textContent = `${copied}: ${btn.dataset.email}`;
+        setTimeout(() => {
+          if (btn.textContent === copied) btn.textContent = original;
+          if (status) status.textContent = '';
+        }, 1500);
+      } catch {
+        if (status) status.textContent = original;
+      }
+    });
+  });
+</script>

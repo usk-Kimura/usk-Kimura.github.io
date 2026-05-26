@@ -1,0 +1,32 @@
+---
+import type { Locale } from '~/data/types';
+import { profile } from '~/data';
+import { t } from '~/i18n/ui';
+import Section from './Section.astro';
+
+type Props = { locale: Locale };
+const { locale } = Astro.props;
+const s = t(locale);
+---
+
+<Section id="about" eyebrow="00" title={s.sections.about}>
+  <div class="grid gap-10 md:grid-cols-3">
+    <p class="md:col-span-2 text-lg leading-relaxed text-[var(--fg)]/90 font-serif">
+      {profile.bio[locale]}
+    </p>
+    <dl class="space-y-3 text-sm">
+      <div>
+        <dt class="text-xs font-mono uppercase tracking-wider text-muted">{s.labels.affiliation}</dt>
+        <dd class="mt-1">{profile.affiliation[locale]}</dd>
+      </div>
+      <div>
+        <dt class="text-xs font-mono uppercase tracking-wider text-muted">{s.labels.position}</dt>
+        <dd class="mt-1">{profile.position[locale]}</dd>
+      </div>
+      <div>
+        <dt class="text-xs font-mono uppercase tracking-wider text-muted">{s.labels.degree}</dt>
+        <dd class="mt-1">{profile.degree[locale]}</dd>
+      </div>
+    </dl>
+  </div>
+</Section>

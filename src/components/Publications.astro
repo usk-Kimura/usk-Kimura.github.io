@@ -1,0 +1,128 @@
+---
+import type { Locale, PublicationType } from '~/data/types';
+import { publications } from '~/data';
+import { t } from '~/i18n/ui';
+import Section from './Section.astro';
+import PublicationItem from './PublicationItem.astro';
+
+type Props = { locale: Locale };
+const { locale } = Astro.props;
+const s = t(locale);
+
+const sorted = [...publications].sort(
+  (a, b) => b.year * 12 + (b.month ?? 0) - (a.year * 12 + (a.month ?? 0)),
+);
+
+// Group by year (newest first).
+const groups = sorted.reduce<Map<number, typeof sorted>>((acc, pub) => {
+  if (!acc.has(pub.year)) acc.set(pub.year, []);
+  acc.get(pub.year)!.push(pub);
+  return acc;
+}, new Map());
+
+// Deterministic, academic-conventional order. Only show categories that exist.
+const TYPE_ORDER: PublicationType[] = [
+  'journal',
+  'international-conference',
+  'domestic-conference',
+  'workshop',
+  'technical-report',
+  'other',
+];
+const types = TYPE_ORDER.filter((tp) => sorted.some((p) => p.type === tp));
+---
+
+<Section
+  id="publications"
+  eyebrow="02"
+  title={s.sections.publications}
+  count={publications.length}
+  countLabel={s.labels.total}
+>
+  <div class="mb-8 flex flex-wrap gap-2 items-center" role="group" aria-label={s.labels.filter}>
+    <span class="text-xs text-muted mr-1 font-mono uppercase tracking-wider">{s.labels.filter}</span>
+    <button
+      type="button"
+      class="pub-filter-btn px-3 py-1.5 rounded-full border hairline text-xs hover:bg-[var(--accent-soft)] transition-colors data-[active=true]:bg-[var(--accent)] data-[active=true]:text-[var(--accent-contrast)] data-[active=true]:border-transparent"
+      data-filter="all"
+      data-active="true"
+      aria-pressed="true"
+    >
+      {s.labels.all}
+    </button>
+    {
+      types.map((tp) => (
+        <button
+          type="button"
+          class="pub-filter-btn px-3 py-1.5 rounded-full border hairline text-xs hover:bg-[var(--accent-soft)] transition-colors data-[active=true]:bg-[var(--accent)] data-[active=true]:text-[var(--accent-contrast)] data-[active=true]:border-transparent"
+          data-filter={tp}
+          data-active="false"
+          aria-pressed="false"
+        >
+          {s.pubTypes[tp]}
+        </button>
+      ))
+    }
+  </div>
+
+  <div id="publication-list" class="space-y-10">
+    {
+      Array.from(groups.entries()).map(([year, items]) => (
+        <section class="pub-year-group" data-year={year} aria-labelledby={`year-${year}`}>
+          <header
+            class="sticky z-10 -mx-5 md:-mx-8 px-5 md:px-8 py-2 backdrop-blur-md border-b hairline"
+            style="top: var(--site-header-offset); background: color-mix(in oklch, var(--bg) 78%, transparent);"
+          >
+            <h3
+              id={`year-${year}`}
+              class="font-mono text-sm font-medium tabular-nums tracking-wider text-muted"
+            >
+              {year}
+            </h3>
+          </header>
+          <div class="surface px-5 md:px-8 py-2 mt-3">
+            {items.map((pub, i) => (
+              <div
+                data-pub-type={pub.type}
+                class:list={['hairline', i < items.length - 1 && 'border-b']}
+              >
+                <PublicationItem pub={pub} locale={locale} />
+              </div>
+            ))}
+          </div>
+        </section>
+      ))
+    }
+  </div>
+</Section>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.pub-filter-btn');
+  const items = document.querySelectorAll<HTMLElement>('[data-pub-type]');
+  const groups = document.querySelectorAll<HTMLElement>('.pub-year-group');
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const filter = btn.dataset.filter ?? 'all';
+      buttons.forEach((b) => {
+        const active = b === btn;
+        b.dataset.active = String(active);
+        b.setAttribute('aria-pressed', String(active));
+      });
+      items.forEach((item) => {
+        const match = filter === 'all' || item.dataset.pubType === filter;
+        item.style.display = match ? '' : 'none';
+      });
+      // Hide empty year groups, then re-apply borders so the last *visible*
+      // item per group never shows a trailing separator.
+      groups.forEach((g) => {
+        const all = Array.from(g.querySelectorAll<HTMLElement>('[data-pub-type]'));
+        const visible = all.filter((n) => n.style.display !== 'none');
+        g.style.display = visible.length === 0 ? 'none' : '';
+        visible.forEach((n, i) => {
+          n.classList.toggle('border-b', i < visible.length - 1);
+        });
+      });
+    });
+  });
+</script>

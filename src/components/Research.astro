@@ -1,0 +1,38 @@
+---
+import type { Locale } from '~/data/types';
+import { profile } from '~/data';
+import { t } from '~/i18n/ui';
+import Section from './Section.astro';
+
+type Props = { locale: Locale };
+const { locale } = Astro.props;
+const s = t(locale);
+---
+
+<Section id="research" eyebrow="01" title={s.sections.research}>
+  <div class="grid gap-10 md:grid-cols-2">
+    <div>
+      <h3 class="font-serif text-xl mb-4">{s.sections.keywords}</h3>
+      <ul class="flex flex-wrap gap-2">
+        {
+          profile.keywords.map((k) => (
+            <li class="px-3 py-1.5 rounded-full surface text-sm">{k[locale]}</li>
+          ))
+        }
+      </ul>
+    </div>
+    <div>
+      <h3 class="font-serif text-xl mb-4">{s.sections.fields}</h3>
+      <ul class="space-y-2">
+        {
+          profile.fields.map((f) => (
+            <li class="flex items-start gap-3 text-sm">
+              <span class="mt-1.5 inline-block w-1.5 h-1.5 rounded-full bg-[var(--accent)]" aria-hidden="true" />
+              <span>{f[locale]}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</Section>

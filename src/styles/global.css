@@ -1,0 +1,145 @@
+@import "tailwindcss";
+
+@theme {
+  /* Intentionally system-first: avoids the FOUC/CLS cost of webfonts while
+     still rendering well on macOS, Windows, Linux, iOS, Android. */
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Hiragino Sans",
+    "Noto Sans JP", "Yu Gothic UI", sans-serif;
+  --font-serif:
+    ui-serif, "Iowan Old Style", "Apple Garamond", Georgia,
+    "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+
+  /* Brand palette – calm academic teal/ink */
+  --color-brand-50: oklch(0.975 0.018 200);
+  --color-brand-100: oklch(0.945 0.035 200);
+  --color-brand-200: oklch(0.895 0.060 200);
+  --color-brand-300: oklch(0.820 0.090 200);
+  --color-brand-400: oklch(0.730 0.115 200);
+  --color-brand-500: oklch(0.620 0.130 205);
+  --color-brand-600: oklch(0.520 0.130 210);
+  --color-brand-700: oklch(0.430 0.110 215);
+  --color-brand-800: oklch(0.345 0.085 220);
+  --color-brand-900: oklch(0.270 0.060 225);
+  --color-brand-950: oklch(0.195 0.040 230);
+}
+
+@layer base {
+  :root {
+    color-scheme: light dark;
+    --bg: oklch(0.99 0.005 240);
+    --bg-elev: oklch(0.97 0.008 240);
+    --fg: oklch(0.20 0.020 250);
+    --fg-muted: oklch(0.48 0.020 250);
+    --border: oklch(0.90 0.010 250);
+    --accent: var(--color-brand-700);
+    --accent-soft: var(--color-brand-100);
+    --accent-contrast: #ffffff;
+
+    /* Site header height, exposed so the rest of the page can align (sticky
+     *  year headers, scroll-padding, etc.) without baking in a magic number. */
+    --site-header-offset: 4rem;
+  }
+
+  :root[data-theme="dark"] {
+    --bg: oklch(0.16 0.015 250);
+    --bg-elev: oklch(0.22 0.018 250);
+    --fg: oklch(0.95 0.010 250);
+    --fg-muted: oklch(0.72 0.015 250);
+    --border: oklch(0.32 0.020 250);
+    --accent: var(--color-brand-300);
+    --accent-soft: oklch(0.28 0.060 215);
+    --accent-contrast: oklch(0.14 0.012 250);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: oklch(0.16 0.015 250);
+      --bg-elev: oklch(0.22 0.018 250);
+      --fg: oklch(0.95 0.010 250);
+      --fg-muted: oklch(0.72 0.015 250);
+      --border: oklch(0.32 0.020 250);
+      --accent: var(--color-brand-300);
+      --accent-soft: oklch(0.28 0.060 215);
+      --accent-contrast: oklch(0.14 0.012 250);
+    }
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--site-header-offset) + 1rem);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    background: var(--bg);
+    color: var(--fg);
+  }
+
+  body {
+    background:
+      radial-gradient(
+        ellipse 80% 50% at 50% -10%,
+        color-mix(in oklch, var(--accent) 14%, transparent),
+        transparent 60%
+      ),
+      var(--bg);
+    min-height: 100dvh;
+    font-feature-settings: "ss01", "cv11", "palt";
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: color-mix(in oklch, var(--accent) 30%, transparent);
+    color: var(--fg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@utility container-page {
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+  @media (min-width: 768px) {
+    padding-inline: 2rem;
+  }
+}
+
+@utility surface {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+}
+
+@utility text-muted {
+  color: var(--fg-muted);
+}
+
+@utility hairline {
+  border-color: var(--border);
+}
+
+/* Scroll-spy: active nav link styling driven by `aria-current` rather than
+   JS class toggling, so the rule stays declarative. */
+[data-nav-link][aria-current="true"],
+[data-mobile-nav-link][aria-current="true"] {
+  color: var(--fg);
+  background: var(--accent-soft);
+}

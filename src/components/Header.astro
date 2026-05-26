@@ -1,0 +1,204 @@
+---
+import type { Locale } from '~/data/types';
+import { t } from '~/i18n/ui';
+import { profile } from '~/data';
+import ThemeToggle from './ThemeToggle.astro';
+
+type Props = {
+  locale: Locale;
+  /** Suppress section-anchor nav (used on CV / other non-home pages). */
+  hideSectionNav?: boolean;
+  /** Where the language-switch button should go. Defaults to the other locale's home page. */
+  otherLocalePath?: string;
+};
+
+const { locale, hideSectionNav = false, otherLocalePath } = Astro.props;
+const s = t(locale);
+
+const navItems = [
+  { id: 'about', label: s.nav.about },
+  { id: 'research', label: s.nav.research },
+  { id: 'publications', label: s.nav.publications },
+  { id: 'awards', label: s.nav.awards },
+  { id: 'career', label: s.nav.career },
+  { id: 'grants', label: s.nav.grants },
+  { id: 'contact', label: s.nav.contact },
+];
+
+const otherLocale: Locale = locale === 'ja' ? 'en' : 'ja';
+const switchPath = otherLocalePath ?? (otherLocale === 'ja' ? '/' : '/en/');
+const homePath = locale === 'ja' ? '/' : '/en/';
+---
+
+<header
+  class="sticky top-0 z-40 backdrop-blur-md border-b hairline print:hidden"
+  style="background: color-mix(in oklch, var(--bg) 78%, transparent); height: var(--site-header-offset);"
+>
+  <div class="container-page flex h-full items-center gap-4">
+    <a href={homePath} class="font-serif text-lg font-semibold tracking-tight whitespace-nowrap">
+      {profile.name[locale]}
+    </a>
+
+    {
+      !hideSectionNav && (
+        <nav aria-label="Primary" class="ml-auto hidden md:flex items-center gap-1 text-sm">
+          {navItems.map((item) => (
+            <a
+              href={`${homePath}#${item.id}`}
+              class="px-3 py-1.5 rounded-md text-muted hover:text-[var(--fg)] hover:bg-[var(--accent-soft)] transition-colors"
+              data-nav-link
+            >
+              {item.label}
+            </a>
+          ))}
+        </nav>
+      )
+    }
+    {hideSectionNav && <div class="ml-auto" />}
+
+    <div class="md:ml-2 flex items-center gap-1">
+      <a
+        href={switchPath}
+        hreflang={otherLocale}
+        class="px-3 py-1.5 rounded-md border hairline text-sm hover:bg-[var(--accent-soft)] transition-colors"
+        aria-label={`Switch language to ${s.labels.switchLang}`}
+      >
+        {s.labels.switchLang}
+      </a>
+      <ThemeToggle locale={locale} />
+      {
+        !hideSectionNav && (
+          <button
+            type="button"
+            id="mobile-nav-toggle"
+            class="md:hidden inline-flex items-center justify-center w-9 h-9 rounded-md border hairline hover:bg-[var(--accent-soft)] transition-colors"
+            aria-label={locale === 'ja' ? 'メニュー' : 'Menu'}
+            aria-expanded="false"
+            aria-controls="mobile-nav"
+          >
+            <svg
+              class="w-4 h-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              aria-hidden="true"
+            >
+              <path d="M3 6h18M3 12h18M3 18h18" />
+            </svg>
+          </button>
+        )
+      }
+    </div>
+  </div>
+
+  {
+    !hideSectionNav && (
+      <nav
+        id="mobile-nav"
+        aria-label="Mobile"
+        class="md:hidden hidden border-t hairline"
+        style="background: var(--bg);"
+      >
+        <ul class="container-page py-2">
+          {navItems.map((item) => (
+            <li>
+              <a
+                href={`${homePath}#${item.id}`}
+                class="block px-2 py-2.5 text-sm text-muted hover:text-[var(--fg)]"
+                data-mobile-nav-link
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )
+  }
+</header>
+
+<script>
+  const mobBtn = document.getElementById('mobile-nav-toggle');
+  const mobNav = document.getElementById('mobile-nav');
+
+  function closeMobileNav(focusToggle = false) {
+    mobNav?.classList.add('hidden');
+    mobBtn?.setAttribute('aria-expanded', 'false');
+    if (focusToggle) mobBtn?.focus();
+  }
+
+  mobBtn?.addEventListener('click', () => {
+    const open = mobNav?.classList.toggle('hidden') === false;
+    mobBtn.setAttribute('aria-expanded', String(open));
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape' || mobNav?.classList.contains('hidden')) return;
+    closeMobileNav(true);
+  });
+
+  document.querySelectorAll<HTMLAnchorElement>('[data-mobile-nav-link]').forEach((a) => {
+    a.addEventListener('click', () => {
+      // Same-page hash navigation: move focus to the target after close.
+      const url = new URL(a.href, location.href);
+      const samePage = url.pathname === location.pathname && url.hash;
+      const target = samePage ? document.querySelector<HTMLElement>(url.hash) : null;
+      closeMobileNav();
+      if (target) {
+        requestAnimationFrame(() => {
+          if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+          target.focus({ preventScroll: true });
+        });
+      }
+    });
+  });
+
+  // Scroll-spy is only active when section nav is present. If links are absent,
+  // querySelectorAll returns an empty set and the observer is skipped.
+  const links = Array.from(
+    document.querySelectorAll<HTMLAnchorElement>('[data-nav-link], [data-mobile-nav-link]'),
+  );
+  if (links.length > 0) {
+    // Only observe sections that exist on this page (relative-hash links on a
+    // different page won't resolve to a local element).
+    const sections: HTMLElement[] = [];
+    for (const a of links) {
+      const url = new URL(a.href, location.href);
+      if (url.pathname !== location.pathname || !url.hash) continue;
+      const el = document.querySelector<HTMLElement>(url.hash);
+      if (el && !sections.includes(el)) sections.push(el);
+    }
+
+    function setActive(id: string) {
+      for (const a of links) {
+        const url = new URL(a.href, location.href);
+        const isActive = url.pathname === location.pathname && url.hash === `#${id}`;
+        if (isActive) a.setAttribute('aria-current', 'true');
+        else a.removeAttribute('aria-current');
+      }
+    }
+
+    if ('IntersectionObserver' in window && sections.length > 0) {
+      const visible = new Set<HTMLElement>();
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) visible.add(e.target as HTMLElement);
+            else visible.delete(e.target as HTMLElement);
+          }
+          const readingLine = window.innerHeight * 0.42;
+          const active = [...visible].sort(
+            (a, b) =>
+              Math.abs(a.getBoundingClientRect().top - readingLine) -
+              Math.abs(b.getBoundingClientRect().top - readingLine),
+          )[0];
+          if (active) setActive(active.id);
+        },
+        { rootMargin: '-40% 0px -55% 0px', threshold: 0 },
+      );
+      for (const s of sections) observer.observe(s);
+    }
+  }
+</script>
