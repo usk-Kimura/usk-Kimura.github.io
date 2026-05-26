@@ -56,6 +56,18 @@ export const profile: Profile = {
       label: { ja: 'MIL ポートフォリオ', en: 'MIL Portfolio' },
       href: 'https://www-mil.cis.doshisha.ac.jp/portfolio/kimura-yusuke/',
     },
+    {
+      label: { ja: 'X', en: 'X' },
+      href: 'https://x.com/YusukeKimu19088',
+    },
+    {
+      label: { ja: 'Facebook', en: 'Facebook' },
+      href: 'https://www.facebook.com/yuusuke.kimura.581/',
+    },
+    {
+      label: { ja: 'Instagram', en: 'Instagram' },
+      href: 'https://www.instagram.com/usk_kimura_1996/',
+    },
   ],
   keywords: [
     { ja: '自然言語処理', en: 'Natural Language Processing' },
