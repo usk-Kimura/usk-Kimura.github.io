@@ -11,5 +11,5 @@ export const siteConfig = {
 
   /** Google Search Console site-verification token (the value of `content` in
    *  the `<meta name="google-site-verification">` tag). Empty = no tag. */
-  googleSiteVerification: '' as string,
+  googleSiteVerification: '0j6UhSvW5XHy3CjYtVbRWZUrFDLO-AyM7oA-TLk6ny4' as string,
 } as const;
