@@ -45,8 +45,8 @@ export const profile: Profile = {
   },
   openToOpportunities: {
     startFrom: {
-      ja: '2027年度以降',
-      en: 'starting April 2027',
+      ja: '2027年4月着任可能',
+      en: 'Available April 2027',
     },
     detail: {
       ja: '研究職を募集中（アカデミア・産業界とも）',
