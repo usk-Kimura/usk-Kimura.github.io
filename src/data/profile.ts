@@ -20,8 +20,8 @@ export const profile: Profile = {
     en: 'NLP · Multi-task Learning · Large Language Models',
   },
   bio: {
-    ja: '自然言語処理を専門とし、特にマルチタスク学習・文書分類・キーフレーズ抽出に取り組んでいます。近年は大規模言語モデルの効率的なアダプタ学習や、社会的バイアスの緩和に関する研究を行っています。',
-    en: 'I work on natural language processing, with a focus on multi-task learning, text classification, and keyphrase extraction. My recent work explores efficient adapter learning for large language models and social bias mitigation.',
+    ja: '自然言語処理を専門としています。これまでマルチタスク学習・文書分類・キーフレーズ抽出に取り組みました。現在は大規模言語モデルの事後学習に注力しており、効率的なアダプタ学習や社会的バイアスの緩和に関する研究を進めています。',
+    en: 'My research is in natural language processing. Earlier work focused on multi-task learning, text classification, and keyphrase extraction. I am currently focused on post-training of large language models — efficient adapter learning and social bias mitigation.',
   },
   emails: [
     {
