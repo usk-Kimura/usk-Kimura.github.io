@@ -16,8 +16,8 @@ export const profile: Profile = {
     en: 'Ph.D. in Culture and Information Science',
   },
   tagline: {
-    ja: '自然言語処理 / マルチタスク学習 / 大規模言語モデル',
-    en: 'NLP · Multi-task Learning · Large Language Models',
+    ja: '自然言語処理 / 大規模言語モデル / 事後学習',
+    en: 'NLP · Large Language Models · Post-training',
   },
   bio: {
     ja: '自然言語処理を専門としています。これまでマルチタスク学習・文書分類・キーフレーズ抽出に取り組みました。現在は大規模言語モデルの事後学習に注力しており、効率的なアダプタ学習や社会的バイアスの緩和に関する研究を進めています。',
