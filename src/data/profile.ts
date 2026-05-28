@@ -55,6 +55,10 @@ export const profile: Profile = {
   },
   links: [
     {
+      label: { ja: 'Google Scholar', en: 'Google Scholar' },
+      href: 'https://scholar.google.com/citations?user=rIZnNYIAAAAJ',
+    },
+    {
       label: { ja: 'ORCID', en: 'ORCID' },
       href: 'https://orcid.org/0000-0003-2441-9714',
     },
