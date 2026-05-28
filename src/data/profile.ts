@@ -20,8 +20,8 @@ export const profile: Profile = {
     en: 'NLP · Large Language Models · Post-training',
   },
   bio: {
-    ja: '自然言語処理を専門としています。これまでマルチタスク学習・文書分類・キーフレーズ抽出に取り組みました。現在は大規模言語モデルの事後学習に注力しており、特に効果的な On-policy Distillation の研究を進めています。共同研究では、効率的なアダプタ学習や社会的バイアスの緩和にも取り組んでいます。',
-    en: 'My research is in natural language processing. Earlier work focused on multi-task learning, text classification, and keyphrase extraction. I am currently focused on post-training of large language models, in particular effective on-policy distillation. In collaborative work, I also contribute to efficient adapter learning and social bias mitigation.',
+    ja: '大規模言語モデルを、事前学習の後に効率的かつ信頼できる形で適応させる方法を研究しています。現在の主軸は On-policy Distillation（生徒モデルが自ら生成した出力の上で教師から学ぶ手法）です。これまでマルチタスク学習・文書分類・キーフレーズ抽出にも取り組み、共同研究では効率的なアダプタ学習や社会的バイアスの緩和にも関わっています。',
+    en: 'I study how to adapt large language models efficiently and reliably after pretraining. My current focus is on-policy distillation — training a student model from teacher feedback on the student\'s own generated outputs. My earlier work spans multi-task learning, text classification, and keyphrase extraction, and in collaborative projects I also work on efficient adapter learning and social bias mitigation.',
   },
   emails: [
     {

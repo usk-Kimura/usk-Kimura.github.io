@@ -46,7 +46,7 @@ export const ui = {
     pubTypes: {
       journal: 'ジャーナル',
       'international-conference': '国際会議',
-      'domestic-conference': '国内会議',
+      'domestic-conference': '国内会議・研究会',
     },
     flags: {
       'peer-reviewed': '査読あり',
@@ -119,7 +119,7 @@ export const ui = {
     pubTypes: {
       journal: 'Journal',
       'international-conference': 'International Conference',
-      'domestic-conference': 'Domestic Conference',
+      'domestic-conference': 'Domestic / Technical',
     },
     flags: {
       'peer-reviewed': 'Peer-reviewed',

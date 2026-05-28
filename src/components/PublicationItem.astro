@@ -68,11 +68,21 @@ const venueLang: Locale = locale === 'en' && pub.venueEn ? 'en' : CJK.test(pub.v
       {
         pub.flags && pub.flags.length > 0 && (
           <ul class="mt-2 flex flex-wrap gap-1.5">
-            {pub.flags.map((f) => (
-              <li class="text-[10px] uppercase tracking-wider font-mono px-1.5 py-0.5 rounded border hairline text-muted">
-                {s.flags[f]}
-              </li>
-            ))}
+            {pub.flags.map((f) => {
+              const strong = f === 'first-author' || f === 'peer-reviewed';
+              return (
+                <li
+                  class:list={[
+                    'text-[10px] uppercase tracking-wider font-mono px-1.5 py-0.5 rounded border',
+                    strong
+                      ? 'border-[var(--accent)] text-[var(--accent)] font-semibold'
+                      : 'hairline text-muted',
+                  ]}
+                >
+                  {s.flags[f]}
+                </li>
+              );
+            })}
           </ul>
         )
       }

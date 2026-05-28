@@ -12,17 +12,13 @@ const { locale } = Astro.props;
 const s = t(locale);
 
 const recents = buildRecent(locale, 4);
-const primaryEmail = profile.emails.find((e) => e.primary) ?? profile.emails[0];
 const opp = profile.openToOpportunities;
-
-// Academic links only in the hero CTA cluster; socials live in the footer/contact.
-const heroLinks = profile.links.filter((l) => !l.social);
 
 const highlights: { value: string; label: string }[] = [
   { value: String(stats.publications), label: locale === 'ja' ? '論文' : 'Publications' },
-  { value: String(stats.firstAuthor), label: locale === 'ja' ? '筆頭著者' : 'First-author' },
-  { value: String(stats.peerReviewed), label: locale === 'ja' ? '査読付き' : 'Peer-reviewed' },
-  { value: String(stats.hpcAllocations), label: locale === 'ja' ? 'HPC 採択' : 'HPC grants' },
+  { value: String(stats.firstAuthor), label: locale === 'ja' ? '筆頭著者論文' : 'First-author papers' },
+  { value: String(stats.peerReviewed), label: locale === 'ja' ? '査読付き論文' : 'Peer-reviewed papers' },
+  { value: String(stats.hpcAllocations), label: locale === 'ja' ? '計算資源採択' : 'Compute allocations' },
 ];
 ---
 
@@ -71,31 +67,15 @@ const highlights: { value: string; label: string }[] = [
         >
           {profile.name[locale]}
         </h1>
-        <p class="mt-2 text-sm text-muted">{profile.reading[locale]}</p>
+        {locale === 'ja' && <p class="mt-2 text-sm text-muted">{profile.reading.ja}</p>}
 
         <dl class="mt-8 grid gap-x-8 gap-y-2 sm:grid-cols-[auto_1fr] max-w-3xl text-sm">
-          <dt class="text-muted">{s.labels.affiliation}</dt>
-          <dd>{profile.affiliation[locale]}</dd>
           <dt class="text-muted">{s.labels.position}</dt>
           <dd>{profile.position[locale]}</dd>
+          <dt class="text-muted">{s.labels.affiliation}</dt>
+          <dd>{profile.affiliation[locale]}</dd>
           <dt class="text-muted">{s.labels.degree}</dt>
           <dd>{profile.degree[locale]}</dd>
-          <dt class="text-muted">Email</dt>
-          <dd>
-            <a
-              class="underline-offset-4 hover:underline"
-              href={`mailto:${primaryEmail.address}`}>{primaryEmail.address}</a
-            >
-          </dd>
-          <dt class="text-muted">ORCID</dt>
-          <dd>
-            <a
-              class="underline-offset-4 hover:underline font-mono tabular-nums"
-              href={`https://orcid.org/${profile.orcid}`}
-              target="_blank"
-              rel="noreferrer">{profile.orcid}<span class="sr-only">{locale === 'ja' ? '（新しいタブで開きます）' : ' (opens in a new tab)'}</span></a
-            >
-          </dd>
         </dl>
       </div>
 
@@ -195,20 +175,6 @@ const highlights: { value: string; label: string }[] = [
       >
         {s.nav.contact}
       </a>
-      {
-        heroLinks.map((l) => (
-          <a
-            href={l.href}
-            target="_blank"
-            rel="noreferrer"
-            class="inline-flex items-center gap-2 px-4 py-2 rounded-md border hairline text-sm hover:bg-[var(--accent-soft)] transition-colors"
-          >
-            {l.label[locale]}
-            <span aria-hidden="true">↗</span>
-            <span class="sr-only">{locale === 'ja' ? '（新しいタブで開きます）' : '(opens in a new tab)'}</span>
-          </a>
-        ))
-      }
     </div>
   </div>
 </section>

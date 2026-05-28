@@ -11,10 +11,15 @@ const s = t(locale);
 ---
 
 <Section id="research" eyebrow="01" title={s.sections.research}>
-  <div class="grid gap-5 md:grid-cols-3 mb-12">
+  <div class="grid gap-5 md:grid-cols-2 mb-12">
     {
-      researchAgenda.map((item) => (
-        <article class="surface p-6 flex flex-col">
+      researchAgenda.map((item, i) => (
+        <article
+          class:list={[
+            'surface p-6 flex flex-col',
+            i === 0 && 'md:col-span-2 border-l-4 border-l-[var(--accent)]',
+          ]}
+        >
           <span class="self-start text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full border hairline text-[var(--accent)] mb-4">
             {item.tag[locale]}
           </span>

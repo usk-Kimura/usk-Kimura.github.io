@@ -41,9 +41,14 @@ const types = TYPE_ORDER.filter((tp) => sorted.some((p) => p.type === tp));
   {
     selected.length > 0 && (
       <div class="mb-12">
-        <h3 class="text-xs font-mono uppercase tracking-[0.18em] text-[var(--accent)] mb-4">
+        <h3 class="text-xs font-mono uppercase tracking-[0.18em] text-[var(--accent)] mb-2">
           {s.sections.selectedPublications}
         </h3>
+        <p class="text-sm text-muted mb-4 max-w-2xl">
+          {locale === 'ja'
+            ? '代表的な査読付き・筆頭著者論文を抜粋しています。全 ' + publications.length + ' 件は下に掲載しています。'
+            : 'A short list of representative peer-reviewed and first-author work. All ' + publications.length + ' publications are listed below.'}
+        </p>
         <div class="surface px-5 md:px-8 py-2">
           {selected.map((pub, i) => (
             <div class:list={['hairline', i < selected.length - 1 && 'border-b']}>
