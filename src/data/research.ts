@@ -14,8 +14,8 @@ export type ResearchAgendaItem = {
 export const researchAgenda: ResearchAgendaItem[] = [
   {
     title: {
-      ja: 'LLM 事後学習のための On-policy Distillation',
-      en: 'On-policy Distillation for LLM Post-training',
+      ja: 'LLM を効率よく事後適応させる On-policy Distillation',
+      en: 'Efficiently adapting LLMs with on-policy distillation',
     },
     description: {
       ja: '大規模言語モデルの事後学習において、生徒モデルが自ら生成した出力の上で教師から学ぶ On-policy Distillation を研究しています。学習時と推論時の分布のずれを抑えつつ、効率的に能力を転移させることを目指しています。',

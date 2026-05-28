@@ -91,6 +91,7 @@ export const publications: Publication[] = [
     type: 'international-conference',
     flags: ['peer-reviewed'],
     selected: true,
+    selectedReason: { ja: 'IEEE ICDEW 査読付き論文', en: 'Peer-reviewed IEEE ICDEW paper' },
     doi: '10.1109/ICDEW67478.2025.00039',
     abstract: {
       en: "Understanding people's health conditions is essential in modern society, and diet management, which is directly linked to understanding health conditions, is one of the most critical issues. Calculating the nutritional value of meals is essential for diet management, but it is not easy. It requires specialist knowledge of the nutrients contained in each ingredient. If we could teach computers to learn about food, there would be a glimmer of hope for achieving this, but no method has yet been established. In this study, we propose a method for estimating the nutritional value of each recipe by constructing a heterogeneous graph using data from multiple data resources. Our heterogeneous graph (RICGraph) is built based on the relationships between the recipe's ingredients, the nutrients contained in those ingredients, and the compounds that make up those nutrients. Therefore, it can consider the relationships between the recipe and the compounds. By performing the learning process according to that structure, it is possible to understand which compounds affect the nutritional value of which recipes and accurately estimate the nutritional value. We estimate the values of the nutrients in the recipes, including protein, fat, saturated fatty acids, carbohydrates, sodium, and energy, and evaluate the accuracy of the estimates. Comparative experiments with multiple LLMs of different types demonstrate the effectiveness of the proposed method.",
@@ -107,6 +108,10 @@ export const publications: Publication[] = [
     type: 'international-conference',
     flags: ['peer-reviewed', 'first-author'],
     selected: true,
+    selectedReason: {
+      ja: '筆頭著者・EMNLP ワークショップ論文',
+      en: 'First-author paper at an EMNLP workshop',
+    },
     url: 'https://aclanthology.org/2024.customnlp4u-1.6/',
     doi: '10.18653/v1/2024.customnlp4u-1.6',
     abstract: {
@@ -196,6 +201,7 @@ export const publications: Publication[] = [
     type: 'journal',
     flags: ['peer-reviewed', 'first-author'],
     selected: true,
+    selectedReason: { ja: '筆頭著者・査読付き国際ジャーナル', en: 'First-author peer-reviewed journal article' },
     doi: '10.31449/inf.v47i3.4742',
     abstract: {
       en: 'Text classification methods using deep learning, which is trained with a tremendous amount of text, have achieved superior performance than traditional methods. In addition to its success, multi-task learning (MTL for short) has become a promising approach for text classification; for instance, a multi-task learning approach employs the named entity recognition as an auxiliary task for text classification, and it showcases that the auxiliary task helps make the text classification model higher classification performance. The existing MTL-based text classification methods depend on auxiliary tasks using supervised labels. Obtaining such supervision signals requires additional human and financial costs in addition to those for the main text classification task. To reduce these costs, this paper proposes a multi-task learning-based text classification framework reducing the additional costs on supervised label creation by automatically labeling phrases in texts for the auxiliary recognition task. A basic idea to realize the proposed framework is to utilize phrasal expressions consisting of subwords (called subword-phrase) and to deal with the recent situation in which the pre-trained neural language models such as BERT are designed upon subword-based tokenization to avoid out-of-vocabulary words being missed. To the best of our knowledge, there has been no text classification approach on top of subword-phrases, because subwords only sometimes express a coherent set of meanings. The proposed framework is novel in adding subword-phrase recognition as an auxiliary task and utilizing subword-phrases for text classification. It extracts subword-phrases in an unsupervised manner, particularly the statistics approach. In order to construct labels for effective subword-phrase recognition tasks, extracted subword-phrases are classified for document classes so that subword-phrases dedicated to some classes can be distinguishable. The experimental evaluation of the five popular datasets for text classification showcases the effectiveness of the involvement of the subword-phrase recognition as an auxiliary task. It also shows comparative results with the state-of-the-art method, and the comparison of various labeling schemes indicates insights for labeling common subword-phrases among several document classes.',
@@ -254,6 +260,7 @@ export const publications: Publication[] = [
     type: 'international-conference',
     flags: ['peer-reviewed', 'first-author'],
     selected: true,
+    selectedReason: { ja: '筆頭著者・国際会議論文 (SoICT)', en: 'First-author international conference paper (SoICT)' },
     doi: '10.1145/3568562.3568635',
     abstract: {
       en: 'Text classification using deep learning, which is trained with a tremendous amount of text, has achieved superior performance than traditional methods. In addition to its success, multi-task learning has become a promising approach for text classification; for instance, a multi-task learning approach employs named entity recognition as an auxiliary task for text classification. The existing MTL-based text classification methods depend on auxiliary tasks using supervised labels, which require large human and/or financial efforts to create. To reduce these efforts, this paper proposes a multi-task learning-based text classification framework which reduces the additional efforts on supervised label creation. A basic idea to realize this is that to utilize phrasal expressions consisting of subwords (called subword-phrase). To the best of our knowledge, there has been no text classification approach on top of subword-phrases, because subwords do not always express a coherent set of meanings. The proposed framework is new to add subword-phrase recognition as an auxiliary task, and to utilize subword-phrases for text classification. To realize the low-cost auxiliary recognition task, the framework extracts subword-phrases in an unsupervised manner. The experimental evaluation of the five popular datasets for text classification showcases the effectiveness of the involvement of the subword-phrase recognition as an auxiliary task. It also shows comparative results with the state-of-the-art method.',

@@ -89,6 +89,28 @@ const highlights: { value: string; label: string }[] = [
       }
     </div>
 
+    <div class="mt-8 flex flex-wrap gap-2">
+      <a
+        href="#publications"
+        class="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-[var(--accent)] text-[var(--accent-contrast)] text-sm font-medium hover:opacity-90 transition-opacity"
+      >
+        {s.nav.publications}
+        <span aria-hidden="true">→</span>
+      </a>
+      <a
+        href={locale === 'ja' ? '/cv' : '/en/cv'}
+        class="inline-flex items-center gap-2 px-4 py-2 rounded-md border hairline text-sm font-medium hover:bg-[var(--accent-soft)] transition-colors"
+      >
+        {locale === 'ja' ? '履歴書 (CV)' : 'Curriculum Vitae'}
+      </a>
+      <a
+        href="#contact"
+        class="inline-flex items-center gap-2 px-4 py-2 rounded-md border hairline text-sm font-medium hover:bg-[var(--accent-soft)] transition-colors"
+      >
+        {s.nav.contact}
+      </a>
+    </div>
+
     <dl class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-px max-w-2xl rounded-lg overflow-hidden border hairline bg-[var(--border)]">
       {
         highlights.map((h) => (
@@ -96,7 +118,7 @@ const highlights: { value: string; label: string }[] = [
             <dd class="font-serif text-2xl md:text-3xl font-semibold tabular-nums leading-none">
               {h.value}
             </dd>
-            <dt class="mt-1 text-[11px] font-mono uppercase tracking-wider text-muted">
+            <dt class="mt-1 text-xs leading-tight text-muted">
               {h.label}
             </dt>
           </div>
@@ -154,28 +176,6 @@ const highlights: { value: string; label: string }[] = [
         </section>
       )
     }
-
-    <div class="mt-8 flex flex-wrap gap-2">
-      <a
-        href="#publications"
-        class="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-[var(--accent)] text-[var(--accent-contrast)] text-sm font-medium hover:opacity-90 transition-opacity"
-      >
-        {s.nav.publications}
-        <span aria-hidden="true">→</span>
-      </a>
-      <a
-        href={locale === 'ja' ? '/cv' : '/en/cv'}
-        class="inline-flex items-center gap-2 px-4 py-2 rounded-md border hairline text-sm font-medium hover:bg-[var(--accent-soft)] transition-colors"
-      >
-        {locale === 'ja' ? '履歴書 (CV)' : 'Curriculum Vitae'}
-      </a>
-      <a
-        href="#contact"
-        class="inline-flex items-center gap-2 px-4 py-2 rounded-md border hairline text-sm font-medium hover:bg-[var(--accent-soft)] transition-colors"
-      >
-        {s.nav.contact}
-      </a>
-    </div>
   </div>
 </section>
 

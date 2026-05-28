@@ -100,6 +100,8 @@ export type Publication = {
   abstract?: Partial<LocalizedString>;
   /** Surface this paper in the "Selected publications" highlight list. */
   selected?: boolean;
+  /** Short reason this paper is selected (shown only in the Selected list). */
+  selectedReason?: LocalizedString;
 };
 
 /** Distinguishes a money grant from non-monetary support (compute allocation,
