@@ -23,6 +23,9 @@ export type Profile = {
   links: {
     label: LocalizedString;
     href: string;
+    /** Personal/social link (X, Facebook, Instagram). Kept out of the hero's
+     *  primary CTA cluster; still shown in footer/contact + JSON-LD sameAs. */
+    social?: boolean;
   }[];
   keywords: LocalizedString[];
   fields: LocalizedString[];
@@ -95,6 +98,8 @@ export type Publication = {
    *  improve odds of getting picked up. Partial localization is allowed:
    *  only `en` is fine for an English paper. */
   abstract?: Partial<LocalizedString>;
+  /** Surface this paper in the "Selected publications" highlight list. */
+  selected?: boolean;
 };
 
 /** Distinguishes a money grant from non-monetary support (compute allocation,

@@ -2,6 +2,7 @@
 import type { Locale } from '~/data/types';
 import { profile } from '~/data';
 import { buildRecent } from '~/data/recent';
+import { stats } from '~/data/stats';
 import { formatYearMonth, isoYearMonth } from '~/i18n/format';
 import { t } from '~/i18n/ui';
 import Portrait from './Portrait.astro';
@@ -13,6 +14,16 @@ const s = t(locale);
 const recents = buildRecent(locale, 4);
 const primaryEmail = profile.emails.find((e) => e.primary) ?? profile.emails[0];
 const opp = profile.openToOpportunities;
+
+// Academic links only in the hero CTA cluster; socials live in the footer/contact.
+const heroLinks = profile.links.filter((l) => !l.social);
+
+const highlights: { value: string; label: string }[] = [
+  { value: String(stats.publications), label: locale === 'ja' ? '論文' : 'Publications' },
+  { value: String(stats.firstAuthor), label: locale === 'ja' ? '筆頭著者' : 'First-author' },
+  { value: String(stats.peerReviewed), label: locale === 'ja' ? '査読付き' : 'Peer-reviewed' },
+  { value: String(stats.hpcAllocations), label: locale === 'ja' ? 'HPC 採択' : 'HPC grants' },
+];
 ---
 
 <section class="relative overflow-hidden">
@@ -98,6 +109,21 @@ const opp = profile.openToOpportunities;
       }
     </div>
 
+    <dl class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-px max-w-2xl rounded-lg overflow-hidden border hairline bg-[var(--border)]">
+      {
+        highlights.map((h) => (
+          <div class="bg-[var(--bg)] px-4 py-3 text-center sm:text-left">
+            <dd class="font-serif text-2xl md:text-3xl font-semibold tabular-nums leading-none">
+              {h.value}
+            </dd>
+            <dt class="mt-1 text-[11px] font-mono uppercase tracking-wider text-muted">
+              {h.label}
+            </dt>
+          </div>
+        ))
+      }
+    </dl>
+
     {
       recents.length > 0 && (
         <section class="mt-10 max-w-3xl" aria-labelledby="recent-heading">
@@ -170,7 +196,7 @@ const opp = profile.openToOpportunities;
         {s.nav.contact}
       </a>
       {
-        profile.links.map((l) => (
+        heroLinks.map((l) => (
           <a
             href={l.href}
             target="_blank"

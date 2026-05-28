@@ -13,6 +13,8 @@ const sorted = [...publications].sort(
   (a, b) => b.year * 12 + (b.month ?? 0) - (a.year * 12 + (a.month ?? 0)),
 );
 
+const selected = sorted.filter((p) => p.selected);
+
 // Group by year (newest first).
 const groups = sorted.reduce<Map<number, typeof sorted>>((acc, pub) => {
   if (!acc.has(pub.year)) acc.set(pub.year, []);
@@ -36,6 +38,26 @@ const types = TYPE_ORDER.filter((tp) => sorted.some((p) => p.type === tp));
   count={publications.length}
   countLabel={s.labels.total}
 >
+  {
+    selected.length > 0 && (
+      <div class="mb-12">
+        <h3 class="text-xs font-mono uppercase tracking-[0.18em] text-[var(--accent)] mb-4">
+          {s.sections.selectedPublications}
+        </h3>
+        <div class="surface px-5 md:px-8 py-2">
+          {selected.map((pub, i) => (
+            <div class:list={['hairline', i < selected.length - 1 && 'border-b']}>
+              <PublicationItem pub={pub} locale={locale} />
+            </div>
+          ))}
+        </div>
+        <h3 class="mt-12 text-xs font-mono uppercase tracking-[0.18em] text-muted mb-4">
+          {s.sections.allPublications}
+        </h3>
+      </div>
+    )
+  }
+
   <div class="mb-8 flex flex-wrap gap-2 items-center" role="group" aria-label={s.labels.filter}>
     <span class="text-xs text-muted mr-1 font-mono uppercase tracking-wider">{s.labels.filter}</span>
     <button

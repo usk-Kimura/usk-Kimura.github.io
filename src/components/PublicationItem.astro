@@ -2,7 +2,7 @@
 import type { Locale, Publication } from '~/data/types';
 import { t } from '~/i18n/ui';
 import { formatYearMonth, isoYearMonth } from '~/i18n/format';
-import { pubSlug } from '~/data/util';
+import { pubSlug, highlightSelf } from '~/data/util';
 
 type Props = {
   pub: Publication;
@@ -11,7 +11,7 @@ type Props = {
 
 const { pub, locale } = Astro.props;
 const s = t(locale);
-const detailHref = `/p/${pubSlug(pub)}/`;
+const detailHref = locale === 'en' ? `/en/p/${pubSlug(pub)}/` : `/p/${pubSlug(pub)}/`;
 const externalUrl = pub.url ?? (pub.doi ? `https://doi.org/${pub.doi}` : null);
 
 const dateLabel = pub.month
@@ -61,7 +61,7 @@ const venueLang: Locale = locale === 'en' && pub.venueEn ? 'en' : CJK.test(pub.v
           )
         }
       </h3>
-      <p class="mt-1 text-sm text-muted">{pub.authors}</p>
+      <p class="mt-1 text-sm text-muted" set:html={highlightSelf(pub.authors)} />
       <p class="mt-1 text-sm text-muted italic" lang={venueLang}>
         {venueText}{pub.pages ? `, ${pub.pages}` : ''}
       </p>

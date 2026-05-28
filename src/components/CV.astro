@@ -1,6 +1,7 @@
 ---
 import type { Locale } from '~/data/types';
 import { profile, career, education, awards, publications, grants, services } from '~/data';
+import { highlightSelf } from '~/data/util';
 import { t } from '~/i18n/ui';
 import { formatRangeParts, formatYearMonth, isoYearMonth } from '~/i18n/format';
 
@@ -13,26 +14,6 @@ const sortedPubs = [...publications].sort(
 );
 
 const CJK = /[　-ヿ㐀-䶿一-鿿＀-￯]/;
-const SELF_TOKENS = ['木村 優介', '木村優介', 'Yusuke Kimura'];
-
-function escapeHtml(s: string): string {
-  return s
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
-}
-
-// Escape first, then wrap occurrences of the owner's name in <strong>.
-// Source data is static, but escaping keeps us defensible if that ever changes.
-function highlightSelf(authors: string): string {
-  let out = escapeHtml(authors);
-  for (const token of SELF_TOKENS) {
-    out = out.replaceAll(token, `<strong>${token}</strong>`);
-  }
-  return out;
-}
 
 // Drop ORCID from the link list — it's already rendered explicitly above.
 const cvLinks = profile.links.filter((l) => !l.href.startsWith('https://orcid.org/'));

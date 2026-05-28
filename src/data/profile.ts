@@ -49,8 +49,8 @@ export const profile: Profile = {
       en: 'Available April 2027',
     },
     detail: {
-      ja: '研究職を募集中（アカデミア・産業界とも）',
-      en: 'Open to research positions in academia and industry',
+      ja: 'ポスドク・助教・研究員・企業研究職を希望（NLP / LLM、アカデミア・産業界とも）',
+      en: 'Seeking postdoc, faculty-track, or research-scientist roles in NLP / LLMs (academia or industry)',
     },
   },
   links: [
@@ -69,17 +69,23 @@ export const profile: Profile = {
     {
       label: { ja: 'X', en: 'X' },
       href: 'https://x.com/YusukeKimu19088',
+      social: true,
     },
     {
       label: { ja: 'Facebook', en: 'Facebook' },
       href: 'https://www.facebook.com/yuusuke.kimura.581/',
+      social: true,
     },
     {
       label: { ja: 'Instagram', en: 'Instagram' },
       href: 'https://www.instagram.com/usk_kimura_1996/',
+      social: true,
     },
   ],
   keywords: [
+    { ja: '大規模言語モデルの事後学習', en: 'LLM Post-training' },
+    { ja: 'On-policy Distillation', en: 'On-policy Distillation' },
+    { ja: '効率的なアダプタ学習', en: 'Efficient Adapter Learning' },
     { ja: '自然言語処理', en: 'Natural Language Processing' },
     { ja: 'マルチタスク学習', en: 'Multi-task Learning' },
     { ja: '文書分類', en: 'Text Classification' },

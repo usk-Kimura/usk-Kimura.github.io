@@ -15,6 +15,28 @@ export function pubSlug(pub: Publication): string {
   return `${pub.year}-${fnv1a(pub.title).toString(36).slice(0, 7)}`;
 }
 
+const SELF_TOKENS = ['木村 優介', '木村優介', 'Yusuke Kimura'];
+
+function escapeHtml(s: string): string {
+  return s
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+/** Escape an author string, then wrap the site owner's name in <strong> so
+ *  their authorship position is scannable. Returns HTML (use with set:html).
+ *  Source data is static, but escaping keeps this safe if that changes. */
+export function highlightSelf(authors: string): string {
+  let out = escapeHtml(authors);
+  for (const token of SELF_TOKENS) {
+    out = out.replaceAll(token, `<strong>${token}</strong>`);
+  }
+  return out;
+}
+
 /** Split a "First Last, First Last, ..." style author string into entries. */
 export function splitAuthors(authors: string): string[] {
   return authors

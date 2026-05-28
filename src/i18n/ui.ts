@@ -20,6 +20,8 @@ export const ui = {
       keywords: 'キーワード',
       fields: '研究分野',
       publications: '論文',
+      selectedPublications: '主要論文',
+      allPublications: 'すべての論文',
       awards: '受賞',
       career: '経歴',
       education: '学歴',
@@ -69,7 +71,7 @@ export const ui = {
       fellowship: 'フェローシップ',
     },
     recent: {
-      heading: '最新の活動',
+      heading: '最近の活動 & 予定',
     },
     footer: {
       built: 'このサイトは Astro と Tailwind CSS で構築されています。',
@@ -91,6 +93,8 @@ export const ui = {
       keywords: 'Keywords',
       fields: 'Fields',
       publications: 'Publications',
+      selectedPublications: 'Selected publications',
+      allPublications: 'All publications',
       awards: 'Awards',
       career: 'Career',
       education: 'Education',
@@ -140,7 +144,7 @@ export const ui = {
       fellowship: 'Fellowship',
     },
     recent: {
-      heading: 'Recent activity',
+      heading: 'Recent & upcoming',
     },
     footer: {
       built: 'Built with Astro and Tailwind CSS.',
