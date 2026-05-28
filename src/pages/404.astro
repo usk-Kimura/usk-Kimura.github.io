@@ -1,0 +1,30 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+const locale = 'ja' as const;
+---
+
+<BaseLayout locale={locale} title="404" description="ページが見つかりませんでした。">
+  <section class="container-page py-24 md:py-32 text-center">
+    <p class="font-mono text-sm uppercase tracking-[0.22em] text-[var(--accent)]">404</p>
+    <h1 class="mt-4 font-serif text-3xl md:text-5xl font-semibold tracking-tight">
+      ページが見つかりません
+    </h1>
+    <p class="mt-4 text-muted">
+      Page not found. お探しのページは移動または削除された可能性があります。
+    </p>
+    <div class="mt-8 flex flex-wrap gap-2 justify-center">
+      <a
+        href="/"
+        class="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-[var(--accent)] text-[var(--accent-contrast)] text-sm font-medium hover:opacity-90 transition-opacity"
+      >
+        ← トップへ / Home
+      </a>
+      <a
+        href="/#publications"
+        class="inline-flex items-center gap-2 px-4 py-2 rounded-md border hairline text-sm hover:bg-[var(--accent-soft)] transition-colors"
+      >
+        論文 / Publications
+      </a>
+    </div>
+  </section>
+</BaseLayout>

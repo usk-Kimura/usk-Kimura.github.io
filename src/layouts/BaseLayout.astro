@@ -2,6 +2,7 @@
 import '~/styles/global.css';
 import type { Locale } from '~/data/types';
 import { profile } from '~/data';
+import { siteGraph } from '~/data/jsonld';
 import Header from '~/components/Header.astro';
 import Footer from '~/components/Footer.astro';
 import HeadIntegrations from '~/components/HeadIntegrations.astro';
@@ -91,23 +92,11 @@ const otherLocalePath = locale === 'ja' ? alternateEn : alternateJa;
       })();
     </script>
 
-    <!-- JSON-LD Person -->
+    <!-- JSON-LD: Person + WebSite graph -->
     <script
       is:inline
       type="application/ld+json"
-      set:html={JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'Person',
-        name: profile.name.en,
-        alternateName: profile.name.ja,
-        jobTitle: profile.position[locale],
-        affiliation: { '@type': 'Organization', name: profile.affiliation[locale] },
-        url: canonicalUrl,
-        sameAs: profile.links.map((l) => l.href),
-        email: profile.emails.map((e) => `mailto:${e.address}`),
-        image: new URL('/portrait-1280.jpg', Astro.site).toString(),
-        identifier: `https://orcid.org/${profile.orcid}`,
-      })}
+      set:html={JSON.stringify(siteGraph(locale, Astro.site!))}
     />
   </head>
   <body class="font-sans antialiased">

@@ -22,7 +22,20 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      serialize(item) {
+        item.lastmod = new Date().toISOString();
+        // Prioritise main landing pages; publication detail pages lower.
+        const u = item.url;
+        if (/\/(en\/)?p\//.test(u)) item.priority = 0.5;
+        else if (/\/(en\/)?cv\/$/.test(u)) item.priority = 0.8;
+        else if (/^https?:\/\/[^/]+\/(en\/)?$/.test(u)) item.priority = 1.0;
+        else item.priority = 0.6;
+        return item;
+      },
+    }),
+  ],
   i18n: {
     locales: ['ja', 'en'],
     defaultLocale: 'ja',

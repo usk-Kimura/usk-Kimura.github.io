@@ -2,6 +2,7 @@
 import type { Locale, Publication } from '~/data/types';
 import { profile } from '~/data';
 import { bibtexEntry, isPdfUrl, parsePageRange, pubSlug, splitAuthors, highlightSelf } from '~/data/util';
+import { breadcrumbJsonLd } from '~/data/jsonld';
 import { t } from '~/i18n/ui';
 import { formatYearMonth, isoYearMonth } from '~/i18n/format';
 import '~/styles/global.css';
@@ -74,6 +75,8 @@ const pageDesc = abstract ?? `${pub.authors}. ${venueText}, ${dateLabel}.`;
     <meta property="og:description" content={pageDesc} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={new URL('/og-image.png', Astro.site).toString()} />
+    <meta property="article:published_time" content={dateIso} />
+    {authors.map((a) => <meta property="article:author" content={a} />)}
     <meta name="twitter:card" content="summary_large_image" />
 
     {/* Theme bootstrap */}
@@ -108,6 +111,13 @@ const pageDesc = abstract ?? `${pub.authors}. ${venueText}, ${dateLabel}.`;
         url: canonicalUrl,
         inLanguage: titleLang,
       })}
+    />
+
+    {/* JSON-LD BreadcrumbList */}
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(breadcrumbJsonLd(locale, pub.title, canonicalUrl, Astro.site!))}
     />
   </head>
   <body class="font-sans antialiased">
