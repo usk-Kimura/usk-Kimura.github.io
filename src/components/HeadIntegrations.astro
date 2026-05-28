@@ -9,6 +9,12 @@ import { siteConfig } from '~/site.config';
 }
 
 {
+  siteConfig.bingSiteVerification && (
+    <meta name="msvalidate.01" content={siteConfig.bingSiteVerification} />
+  )
+}
+
+{
   siteConfig.cloudflareAnalyticsToken && (
     <script
       is:inline

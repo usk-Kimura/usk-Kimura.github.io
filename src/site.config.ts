@@ -12,4 +12,8 @@ export const siteConfig = {
   /** Google Search Console site-verification token (the value of `content` in
    *  the `<meta name="google-site-verification">` tag). Empty = no tag. */
   googleSiteVerification: '0j6UhSvW5XHy3CjYtVbRWZUrFDLO-AyM7oA-TLk6ny4' as string,
+
+  /** Bing Webmaster Tools verification token (the value of `content` in the
+   *  `<meta name="msvalidate.01">` tag). Empty = no tag. */
+  bingSiteVerification: '75C900A9D1F44A56E2CFD1FA4CFEB49E' as string,
 } as const;
