@@ -66,14 +66,7 @@ const pageDesc = abstract ?? `${pub.authors}. ${venueText}, ${dateLabel}.`;
     {authors.map((a) => <meta name="citation_author" content={a} />)}
     <meta name="citation_publication_date" content={dateScholar} />
     {pub.type === 'journal' && <meta name="citation_journal_title" content={venueText} />}
-    {pub.type === 'technical-report' && (
-      <meta name="citation_technical_report_institution" content={venueText} />
-    )}
-    {
-      pub.type !== 'journal' && pub.type !== 'technical-report' && (
-        <meta name="citation_conference_title" content={venueText} />
-      )
-    }
+    {pub.type !== 'journal' && <meta name="citation_conference_title" content={venueText} />}
     {pageRange && <meta name="citation_firstpage" content={pageRange.first} />}
     {pageRange && <meta name="citation_lastpage" content={pageRange.last} />}
     {pub.doi && <meta name="citation_doi" content={pub.doi} />}

@@ -45,9 +45,6 @@ export const ui = {
       journal: 'ジャーナル',
       'international-conference': '国際会議',
       'domestic-conference': '国内会議',
-      workshop: 'ワークショップ',
-      'technical-report': '研究会・技報',
-      other: 'その他',
     },
     flags: {
       'peer-reviewed': '査読あり',
@@ -119,9 +116,6 @@ export const ui = {
       journal: 'Journal',
       'international-conference': 'International Conference',
       'domestic-conference': 'Domestic Conference',
-      workshop: 'Workshop',
-      'technical-report': 'Technical Report',
-      other: 'Other',
     },
     flags: {
       'peer-reviewed': 'Peer-reviewed',

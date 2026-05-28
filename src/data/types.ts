@@ -66,10 +66,7 @@ export type AwardEntry = {
 export type PublicationType =
   | 'journal'
   | 'international-conference'
-  | 'domestic-conference'
-  | 'workshop'
-  | 'technical-report'
-  | 'other';
+  | 'domestic-conference';
 
 export type PublicationFlag = 'peer-reviewed' | 'first-author' | 'corresponding-author' | 'invited';
 

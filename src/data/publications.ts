@@ -10,7 +10,7 @@ export const publications: Publication[] = [
     year: 2026,
     month: 3,
     pages: '4: 1-6',
-    type: 'technical-report',
+    type: 'domestic-conference',
     flags: ['corresponding-author'],
   },
   {
@@ -20,7 +20,7 @@ export const publications: Publication[] = [
     venueEn: 'IPSJ SIG-NL Technical Report 2026-NL-267(31)',
     year: 2026,
     month: 2,
-    type: 'technical-report',
+    type: 'domestic-conference',
     flags: ['corresponding-author'],
   },
   {
@@ -30,7 +30,7 @@ export const publications: Publication[] = [
     venueEn: '21st Workshop on Web Intelligence and Interaction (WI2)',
     year: 2025,
     month: 11,
-    type: 'workshop',
+    type: 'domestic-conference',
     flags: ['corresponding-author'],
   },
   {
@@ -101,7 +101,7 @@ export const publications: Publication[] = [
     year: 2024,
     month: 11,
     pages: '53-62',
-    type: 'workshop',
+    type: 'international-conference',
     flags: ['peer-reviewed', 'first-author'],
     url: 'https://aclanthology.org/2024.customnlp4u-1.6/',
     abstract: {
@@ -130,7 +130,7 @@ export const publications: Publication[] = [
     year: 2024,
     month: 3,
     pages: '154(1) 1-6',
-    type: 'technical-report',
+    type: 'domestic-conference',
     flags: ['corresponding-author', 'first-author'],
   },
   {
@@ -210,7 +210,7 @@ export const publications: Publication[] = [
     year: 2023,
     month: 3,
     pages: '122(449) 38-43',
-    type: 'technical-report',
+    type: 'domestic-conference',
     flags: ['first-author'],
   },
   {
@@ -221,7 +221,7 @@ export const publications: Publication[] = [
     year: 2023,
     month: 3,
     pages: '150(5) 1-6',
-    type: 'technical-report',
+    type: 'domestic-conference',
   },
   {
     title: 'Ingredient Embeddings Constructed by Biased Random Walk on Ingredient-Compound Graph',
@@ -321,7 +321,7 @@ export const publications: Publication[] = [
     year: 2020,
     month: 8,
     pages: '1-5',
-    type: 'technical-report',
+    type: 'domestic-conference',
     flags: ['first-author'],
   },
   {

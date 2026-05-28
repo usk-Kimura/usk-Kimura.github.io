@@ -76,10 +76,7 @@ const homePath = locale === 'ja' ? '/' : '/en/';
 const TYPE_ORDER = [
   'journal',
   'international-conference',
-  'workshop',
   'domestic-conference',
-  'technical-report',
-  'other',
 ] as const;
 const pubsByType = TYPE_ORDER
   .map((type) => ({ type, items: sortedPubs.filter((p) => p.type === type) }))

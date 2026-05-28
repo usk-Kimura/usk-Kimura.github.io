@@ -44,19 +44,11 @@ function bibtexEscape(s: string): string {
 
 export function bibtexEntry(pub: Publication, venueText: string): string {
   const key = `kimura${pub.year}${pubSlug(pub).split('-')[1]}`;
-  const entryType =
-    pub.type === 'journal'
-      ? '@article'
-      : pub.type === 'international-conference' || pub.type === 'workshop'
-        ? '@inproceedings'
-        : pub.type === 'technical-report'
-          ? '@techreport'
-          : '@misc';
+  const entryType = pub.type === 'journal' ? '@article' : '@inproceedings';
   const fields: [string, string][] = [];
   fields.push(['title', bibtexEscape(pub.title)]);
   fields.push(['author', bibtexEscape(pub.authors).replace(/,\s*/g, ' and ')]);
   if (pub.type === 'journal') fields.push(['journal', bibtexEscape(venueText)]);
-  else if (pub.type === 'technical-report') fields.push(['institution', bibtexEscape(venueText)]);
   else fields.push(['booktitle', bibtexEscape(venueText)]);
   fields.push(['year', String(pub.year)]);
   if (pub.month) fields.push(['month', String(pub.month)]);
