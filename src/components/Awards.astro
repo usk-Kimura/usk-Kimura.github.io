@@ -24,8 +24,30 @@ const s = t(locale);
             </time>
             <p class="text-xs text-muted text-right">{a.organization[locale]}</p>
           </div>
+          {
+            a.kind === 'business-pitch' && (
+              <p class="w-fit rounded-full border border-[var(--accent)] px-2 py-0.5 font-mono text-xs font-semibold tracking-wide text-[var(--accent)]">
+                {locale === 'ja' ? 'ビジネスピッチ' : 'Business pitch'}
+              </p>
+            )
+          }
           <h3 class="font-serif text-lg leading-snug">{a.name[locale]}</h3>
           <p class="text-sm text-muted">{a.work[locale]}</p>
+          {a.context && <p class="text-sm leading-relaxed">{a.context[locale]}</p>}
+          {
+            a.link && (
+              <a
+                href={a.link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex w-fit min-h-10 items-center gap-1 text-sm text-[var(--accent)] hover:underline underline-offset-4"
+              >
+                {a.link.label[locale]}
+                <span aria-hidden="true">↗</span>
+                <span class="sr-only">{locale === 'ja' ? '（新しいタブで開きます）' : '(opens in a new tab)'}</span>
+              </a>
+            )
+          }
           <p class="text-sm text-muted mt-auto pt-2">
             <span class="font-mono text-xs tracking-wide">{s.labels.recipients}</span>: {a.recipients}
           </p>

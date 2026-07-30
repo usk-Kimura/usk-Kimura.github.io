@@ -375,7 +375,7 @@ export const publications: Publication[] = [
     venue: 'Procedia Computer Science',
     year: 2020,
     pages: '176, 420-429',
-    type: 'journal',
+    type: 'international-conference',
     flags: ['peer-reviewed'],
     doi: '10.1016/j.procs.2020.08.043',
     abstract: {
