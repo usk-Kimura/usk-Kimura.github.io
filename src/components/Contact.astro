@@ -10,6 +10,8 @@ const s = t(locale);
 
 const primary = profile.emails.find((e) => e.primary) ?? profile.emails[0];
 const others = profile.emails.filter((e) => e !== primary);
+const academicLinks = profile.links.filter((l) => !l.social);
+const socialLinks = profile.links.filter((l) => l.social);
 ---
 
 <Section
@@ -20,19 +22,19 @@ const others = profile.emails.filter((e) => e !== primary);
     ? '研究に関するお問い合わせや共同研究のご相談は、以下のメールアドレスまたは外部リンクからお気軽にご連絡ください。'
     : 'Feel free to reach out about research, collaborations, or invitations via email or the links below.'}
 >
-  <div class="grid gap-6 md:grid-cols-[1fr_auto] md:items-end">
+  <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
     <div class="surface p-6 md:p-8">
       <p class="text-xs font-mono uppercase tracking-wider text-muted">{primary.label[locale]}</p>
       <div class="mt-2 flex flex-wrap items-center gap-3">
         <a
           href={`mailto:${primary.address}`}
-          class="font-serif text-2xl md:text-3xl break-all hover:underline underline-offset-4 decoration-[var(--accent)]"
+          class="font-serif text-lg sm:text-2xl md:text-3xl [overflow-wrap:anywhere] hover:underline underline-offset-4 decoration-[var(--accent)]"
         >
           {primary.address}
         </a>
         <button
           type="button"
-          class="copy-email-btn text-xs px-3 py-1.5 rounded-md border hairline hover:bg-[var(--accent-soft)] transition-colors"
+          class="copy-email-btn min-h-10 text-xs px-3 py-1.5 rounded-md border hairline hover:bg-[var(--accent-soft)] transition-colors"
           data-email={primary.address}
           data-copy={s.labels.copyEmail}
           data-copied={s.labels.copied}
@@ -51,13 +53,13 @@ const others = profile.emails.filter((e) => e !== primary);
                 </span>
                 <a
                   href={`mailto:${e.address}`}
-                  class="break-all hover:underline underline-offset-4 decoration-[var(--accent)]"
+                  class="[overflow-wrap:anywhere] hover:underline underline-offset-4 decoration-[var(--accent)]"
                 >
                   {e.address}
                 </a>
                 <button
                   type="button"
-                  class="copy-email-btn text-xs px-2 py-1 rounded-md border hairline hover:bg-[var(--accent-soft)] transition-colors"
+                  class="copy-email-btn min-w-10 min-h-10 text-xs px-2 py-1 rounded-md border hairline hover:bg-[var(--accent-soft)] transition-colors"
                   data-email={e.address}
                   data-copy={s.labels.copyEmail}
                   data-copied={s.labels.copied}
@@ -74,24 +76,54 @@ const others = profile.emails.filter((e) => e !== primary);
       <span id="copy-email-status" role="status" aria-live="polite" class="sr-only"></span>
     </div>
 
-    <ul class="flex flex-wrap gap-2 md:flex-col md:items-end">
+    <div class="space-y-5 lg:w-64">
+      <div>
+        <h3 class="mb-2 text-xs font-mono tracking-wide text-muted">
+          {locale === 'ja' ? '研究者プロフィール' : 'Research profiles'}
+        </h3>
+        <ul class="flex flex-wrap gap-2 lg:flex-col">
+          {
+            academicLinks.map((l) => (
+              <li>
+                <a
+                  href={l.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  class="inline-flex min-h-11 w-full items-center justify-between gap-3 px-4 py-2 rounded-md border hairline text-sm hover:bg-[var(--accent-soft)] transition-colors"
+                >
+                  {l.label[locale]}
+                  <span aria-hidden="true">↗</span>
+                  <span class="sr-only">{locale === 'ja' ? '（新しいタブで開きます）' : '(opens in a new tab)'}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
       {
-        profile.links.map((l) => (
-          <li>
-            <a
-              href={l.href}
-              target="_blank"
-              rel="noreferrer"
-              class="inline-flex items-center gap-2 px-4 py-2 rounded-md border hairline text-sm hover:bg-[var(--accent-soft)] transition-colors"
-            >
-              {l.label[locale]}
-              <span aria-hidden="true">↗</span>
-              <span class="sr-only">{locale === 'ja' ? '（新しいタブで開きます）' : '(opens in a new tab)'}</span>
-            </a>
-          </li>
-        ))
+        socialLinks.length > 0 && (
+          <div>
+            <h3 class="mb-2 text-xs font-mono tracking-wide text-muted">SNS</h3>
+            <ul class="flex flex-wrap gap-x-4 gap-y-2 text-sm">
+              {socialLinks.map((l) => (
+                <li>
+                  <a
+                    href={l.href}
+                    target="_blank"
+                    rel="noreferrer me"
+                    class="text-muted hover:text-[var(--fg)] hover:underline underline-offset-4"
+                  >
+                    {l.label[locale]} <span aria-hidden="true">↗</span>
+                    <span class="sr-only">{locale === 'ja' ? '（新しいタブで開きます）' : '(opens in a new tab)'}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
       }
-    </ul>
+    </div>
   </div>
 </Section>
 
@@ -110,7 +142,11 @@ const others = profile.emails.filter((e) => e !== primary);
           if (status) status.textContent = '';
         }, 1500);
       } catch {
-        if (status) status.textContent = original;
+        if (status) {
+          status.textContent = btn.ownerDocument.documentElement.lang === 'ja'
+            ? 'コピーできませんでした。アドレスを選択してコピーしてください。'
+            : 'Could not copy. Select the address and copy it manually.';
+        }
       }
     });
   });

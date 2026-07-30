@@ -1,6 +1,6 @@
 ---
 import type { Locale } from '~/data/types';
-import { profile, career, education, awards, publications, grants, services } from '~/data';
+import { profile, career, education, awards, publications, grants, memberships, services } from '~/data';
 import { highlightSelf } from '~/data/util';
 import { t } from '~/i18n/ui';
 import { formatRangeParts, formatYearMonth, isoYearMonth } from '~/i18n/format';
@@ -16,7 +16,9 @@ const sortedPubs = [...publications].sort(
 const CJK = /[　-ヿ㐀-䶿一-鿿＀-￯]/;
 
 // Drop ORCID from the link list — it's already rendered explicitly above.
-const cvLinks = profile.links.filter((l) => !l.href.startsWith('https://orcid.org/'));
+const cvLinks = profile.links.filter(
+  (l) => !l.social && !l.href.startsWith('https://orcid.org/'),
+);
 
 const headings = locale === 'ja'
   ? {
@@ -28,11 +30,14 @@ const headings = locale === 'ja'
       career: '経歴',
       awards: '受賞',
       publications: '論文',
-      grants: '競争的資金',
+      grants: '研究支援',
       services: '学術貢献活動',
+      memberships: '所属学協会',
+      researcherNumber: '研究者番号',
+      researchmapMemberId: 'researchmap会員ID',
       back: '← トップへ戻る',
       print: '印刷 / PDF として保存',
-      lastUpdated: '最終更新',
+      lastUpdated: 'researchmap 最終更新',
     }
   : {
       title: 'Curriculum Vitae',
@@ -43,14 +48,17 @@ const headings = locale === 'ja'
       career: 'Career',
       awards: 'Awards',
       publications: 'Publications',
-      grants: 'Grants',
+      grants: 'Research Support',
       services: 'Academic Service',
+      memberships: 'Professional Memberships',
+      researcherNumber: 'Researcher Number',
+      researchmapMemberId: 'researchmap Member ID',
       back: '← Back to home',
       print: 'Print / Save as PDF',
-      lastUpdated: 'Last updated',
+      lastUpdated: 'researchmap last updated',
     };
 
-const updated = new Date().toISOString().slice(0, 10);
+const updated = profile.researchmapUpdated;
 const homePath = locale === 'ja' ? '/' : '/en/';
 
 // Group publications by type, with the conventional academic ordering.
@@ -133,6 +141,16 @@ const pubsByType = TYPE_ORDER
     </dd>
     <dt>ORCID</dt>
     <dd><a href={`https://orcid.org/${profile.orcid}`}>{profile.orcid}</a></dd>
+    <dt>{headings.researcherNumber}</dt>
+    <dd>{profile.identifiers.researcherNumber}</dd>
+    <dt>J-GLOBAL ID</dt>
+    <dd>
+      <a href={`https://jglobal.jst.go.jp/detail?JGLOBAL_ID=${profile.identifiers.jGlobalId}`}>
+        {profile.identifiers.jGlobalId}
+      </a>
+    </dd>
+    <dt>{headings.researchmapMemberId}</dt>
+    <dd>{profile.identifiers.researchmapMemberId}</dd>
     {
       cvLinks.map((l) => (
         <Fragment>
@@ -217,8 +235,11 @@ const pubsByType = TYPE_ORDER
               const venueText = locale === 'en' && pub.venueEn ? pub.venueEn : pub.venue;
               const venueLang: Locale =
                 locale === 'en' && pub.venueEn ? 'en' : CJK.test(pub.venue) ? 'ja' : 'en';
+              const publicationDate = pub.month
+                ? `${pub.year}-${pub.month}${pub.day ? `-${pub.day}` : ''}`
+                : String(pub.year);
               const dateLabel = pub.month
-                ? formatYearMonth(`${pub.year}-${pub.month}`, locale)
+                ? formatYearMonth(publicationDate, locale)
                 : String(pub.year);
               return (
                 <li>
@@ -257,6 +278,8 @@ const pubsByType = TYPE_ORDER
                 <strong>{g.title[locale]}</strong>
                 <br />
                 <span class="cv-detail">{g.funder[locale]}</span>
+                {g.number && <span class="cv-pub-flags"> [{g.number}]</span>}
+                {g.role && <span class="cv-pub-flags"> [{g.role[locale]}]</span>}
               </span>
             </li>
           );
@@ -292,6 +315,32 @@ const pubsByType = TYPE_ORDER
     </ol>
   </section>
 
+  <section class="cv-section">
+    <h2>{headings.memberships}</h2>
+    <ol class="cv-list">
+      {
+        memberships.map((membership) => {
+          const parts = formatRangeParts(
+            membership.start,
+            membership.end,
+            locale,
+            s.labels.present,
+          );
+          return (
+            <li>
+              <span class="cv-date tabular-nums">
+                {parts.start} – {parts.end}
+              </span>
+              <span class="cv-body">
+                <strong>{membership.organization[locale]}</strong>
+              </span>
+            </li>
+          );
+        })
+      }
+    </ol>
+  </section>
+
   <footer class="cv-footer">
     <p>{headings.lastUpdated}: <time datetime={updated}>{updated}</time></p>
   </footer>
@@ -315,7 +364,7 @@ const pubsByType = TYPE_ORDER
     border-bottom: 1px solid var(--border);
     background: color-mix(in oklch, var(--bg) 78%, transparent);
     position: sticky;
-    top: 0;
+    top: var(--site-header-offset);
     z-index: 20;
     backdrop-filter: blur(6px);
   }
@@ -480,6 +529,34 @@ const pubsByType = TYPE_ORDER
     border-top: 1px solid var(--cv-border);
     color: var(--cv-muted);
     font-size: 0.75rem;
+  }
+
+  @media (max-width: 639px) {
+    .cv-header {
+      gap: 1rem;
+    }
+    .cv-portrait {
+      width: 80px;
+      height: 80px;
+    }
+    .cv-meta {
+      grid-template-columns: 1fr;
+      gap: 0.15rem;
+    }
+    .cv-meta dt {
+      margin-top: 0.65rem;
+      padding-top: 0;
+    }
+    .cv-meta dt:first-child {
+      margin-top: 0;
+    }
+    .cv-list > li {
+      grid-template-columns: 1fr;
+      gap: 0.15rem;
+    }
+    .cv-date {
+      padding-top: 0;
+    }
   }
 
   /* --- Print --- */

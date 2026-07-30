@@ -8,5 +8,5 @@ export const stats = {
   firstAuthor: publications.filter((p) => p.flags?.includes('first-author')).length,
   peerReviewed: publications.filter((p) => p.flags?.includes('peer-reviewed')).length,
   international: publications.filter((p) => p.type === 'international-conference').length,
-  hpcAllocations: grants.length,
+  hpcAllocations: grants.filter((g) => g.category === 'hpc').length,
 };

@@ -25,6 +25,7 @@ src/
 │   ├── awards.ts
 │   ├── publications.ts
 │   ├── grants.ts
+│   ├── memberships.ts
 │   └── types.ts
 ├── i18n/         UI strings (ja/en) + date formatters
 ├── layouts/      BaseLayout (meta, OG, JSON-LD, theme bootstrap)
@@ -45,11 +46,12 @@ scripts/build-og.mjs  SVG → 1200x630 PNG via sharp, runs as part of `npm run b
 
 All the visible text comes from the typed data layer:
 
-- **Profile / bio / links / keywords** — `src/data/profile.ts`
+- **Profile / bio / links / researcher IDs / researchmap update date** — `src/data/profile.ts`
 - **Career & education** — `src/data/career.ts`
 - **Awards** — `src/data/awards.ts`
 - **Publications** — `src/data/publications.ts` (newest first; `venueEn` is used on `/en/`)
 - **Grants & service** — `src/data/grants.ts`
+- **Professional memberships** — `src/data/memberships.ts`
 - **UI strings** — `src/i18n/ui.ts`
 
 Type errors surface immediately with `npm run check`.

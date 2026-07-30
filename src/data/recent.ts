@@ -15,8 +15,8 @@ export type RecentItem = {
   href?: string;
 };
 
-function toIso(year: number, month?: number): string {
-  return `${year}-${String(month ?? 1).padStart(2, '0')}-01`;
+function toIso(year: number, month?: number, day?: number): string {
+  return `${year}-${String(month ?? 1).padStart(2, '0')}-${String(day ?? 1).padStart(2, '0')}`;
 }
 
 function padDate(date: string): string {
@@ -35,11 +35,11 @@ export function buildRecent(locale: Locale, limit = 4): RecentItem[] {
 
   for (const p of publications) {
     items.push({
-      date: toIso(p.year, p.month),
+      date: toIso(p.year, p.month, p.day),
       kind: 'paper',
       title: p.title,
       detail: locale === 'en' && p.venueEn ? p.venueEn : p.venue,
-      href: `/p/${pubSlug(p)}/`,
+      href: `${locale === 'en' ? '/en' : ''}/p/${pubSlug(p)}/`,
     });
   }
 

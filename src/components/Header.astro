@@ -28,24 +28,26 @@ const navItems = [
 const otherLocale: Locale = locale === 'ja' ? 'en' : 'ja';
 const switchPath = otherLocalePath ?? (otherLocale === 'ja' ? '/' : '/en/');
 const homePath = locale === 'ja' ? '/' : '/en/';
+const primaryNavLabel = locale === 'ja' ? '主要ナビゲーション' : 'Primary navigation';
+const mobileNavLabel = locale === 'ja' ? 'モバイルナビゲーション' : 'Mobile navigation';
 ---
 
 <header
   class="sticky top-0 z-40 backdrop-blur-md border-b hairline print:hidden"
   style="background: color-mix(in oklch, var(--bg) 78%, transparent); height: var(--site-header-offset);"
 >
-  <div class="container-page flex h-full items-center gap-4">
-    <a href={homePath} class="font-serif text-lg font-semibold tracking-tight whitespace-nowrap">
+  <div class="container-page flex h-full items-center gap-2 sm:gap-4">
+    <a href={homePath} class="min-w-0 truncate font-serif text-base sm:text-lg font-semibold tracking-tight whitespace-nowrap">
       {profile.name[locale]}
     </a>
 
     {
       !hideSectionNav && (
-        <nav aria-label="Primary" class="ml-auto hidden md:flex items-center gap-1 text-sm">
+        <nav aria-label={primaryNavLabel} class="ml-auto hidden lg:flex items-center gap-0.5 text-sm">
           {navItems.map((item) => (
             <a
               href={`${homePath}#${item.id}`}
-              class="px-3 py-1.5 rounded-md text-muted hover:text-[var(--fg)] hover:bg-[var(--accent-soft)] transition-colors"
+              class="px-2.5 py-2 rounded-md text-muted hover:text-[var(--fg)] hover:bg-[var(--accent-soft)] transition-colors"
               data-nav-link
             >
               {item.label}
@@ -56,14 +58,15 @@ const homePath = locale === 'ja' ? '/' : '/en/';
     }
     {hideSectionNav && <div class="ml-auto" />}
 
-    <div class="md:ml-2 flex items-center gap-1">
+    <div class="ml-auto lg:ml-2 flex shrink-0 items-center gap-1">
       <a
         href={switchPath}
         hreflang={otherLocale}
-        class="px-3 py-1.5 rounded-md border hairline text-sm hover:bg-[var(--accent-soft)] transition-colors"
-        aria-label={`Switch language to ${s.labels.switchLang}`}
+        class="inline-flex min-h-11 items-center justify-center px-2.5 sm:px-3 rounded-md border hairline text-sm hover:bg-[var(--accent-soft)] transition-colors"
+        aria-label={locale === 'ja' ? `${s.labels.switchLang}に切り替える` : `Switch language to ${s.labels.switchLang}`}
       >
-        {s.labels.switchLang}
+        <span class="sm:hidden">{otherLocale === 'en' ? 'EN' : 'JA'}</span>
+        <span class="hidden sm:inline">{s.labels.switchLang}</span>
       </a>
       <ThemeToggle locale={locale} />
       {
@@ -71,7 +74,7 @@ const homePath = locale === 'ja' ? '/' : '/en/';
           <button
             type="button"
             id="mobile-nav-toggle"
-            class="md:hidden inline-flex items-center justify-center w-9 h-9 rounded-md border hairline hover:bg-[var(--accent-soft)] transition-colors"
+            class="lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-md border hairline hover:bg-[var(--accent-soft)] transition-colors"
             aria-label={locale === 'ja' ? 'メニュー' : 'Menu'}
             aria-expanded="false"
             aria-controls="mobile-nav"
@@ -97,8 +100,8 @@ const homePath = locale === 'ja' ? '/' : '/en/';
     !hideSectionNav && (
       <nav
         id="mobile-nav"
-        aria-label="Mobile"
-        class="md:hidden hidden border-t hairline"
+        aria-label={mobileNavLabel}
+        class="lg:hidden hidden border-t hairline shadow-lg"
         style="background: var(--bg);"
       >
         <ul class="container-page py-2">

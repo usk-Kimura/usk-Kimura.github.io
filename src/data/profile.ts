@@ -1,5 +1,7 @@
 import type { Profile } from './types';
 
+const researchmapUrl = 'https://researchmap.jp/kimura_yusuke';
+
 export const profile: Profile = {
   name: { ja: '木村 優介', en: 'Yusuke Kimura' },
   reading: { ja: 'キムラ ユウスケ', en: 'Kimura Yusuke' },
@@ -8,12 +10,12 @@ export const profile: Profile = {
     en: 'Graduate School of Informatics, Department of Intelligent Systems, Nagoya University',
   },
   position: {
-    ja: '科学技術振興機構 戦略的創造研究推進事業 研究員',
-    en: 'Researcher, JST Strategic Basic Research Programs',
+    ja: '科学技術振興機構 戦略的創造研究推進事業 研究員（CREST雇用）',
+    en: 'Researcher, JST CREST (Strategic Basic Research Programs)',
   },
   degree: {
-    ja: '博士（文化情報学）',
-    en: 'Ph.D. in Culture and Information Science',
+    ja: '博士（文化情報学）（2026年3月、同志社大学）',
+    en: 'Ph.D. in Culture and Information Science (Doshisha University, Mar. 2026)',
   },
   tagline: {
     ja: '自然言語処理 / 大規模言語モデル / 事後学習',
@@ -35,7 +37,13 @@ export const profile: Profile = {
     },
   ],
   orcid: '0000-0003-2441-9714',
-  researchmap: 'https://researchmap.jp/yusuke-kimura',
+  researchmap: researchmapUrl,
+  identifiers: {
+    researcherNumber: '91041002',
+    jGlobalId: '202101017410101550',
+    researchmapMemberId: 'R000022171',
+  },
+  researchmapUpdated: '2026-07-26',
   portrait: {
     src: '/portrait-640.jpg',
     alt: {
@@ -64,11 +72,11 @@ export const profile: Profile = {
     },
     {
       label: { ja: 'researchmap', en: 'researchmap' },
-      href: 'https://researchmap.jp/yusuke-kimura',
+      href: researchmapUrl,
     },
     {
       label: { ja: 'MIL ポートフォリオ', en: 'MIL Portfolio' },
-      href: 'https://www-mil.cis.doshisha.ac.jp/portfolio/kimura-yusuke/',
+      href: 'https://www.milcis.doshisha.ac.jp/portfolio/kimura-yusuke/',
     },
     {
       label: { ja: 'X', en: 'X' },
@@ -98,6 +106,6 @@ export const profile: Profile = {
   fields: [
     { ja: '情報通信 / 知能情報学', en: 'Intelligent Informatics' },
     { ja: '情報通信 / データベース', en: 'Databases' },
-    { ja: '情報通信 / ウェブ情報学・サービス情報学', en: 'Web & Service Informatics' },
+    { ja: '情報通信 / ウェブ情報学、サービス情報学', en: 'Web & Service Informatics' },
   ],
 };
