@@ -20,11 +20,19 @@ export type Profile = {
   emails: [EmailEntry, ...EmailEntry[]];
   orcid: string;
   researchmap: string;
+  /** Public researcher identifiers confirmed against researchmap. */
+  identifiers: {
+    researcherNumber: string;
+    jGlobalId: string;
+    researchmapMemberId: string;
+  };
+  /** `rm:modified` date (YYYY-MM-DD) reported by the public researchmap API. */
+  researchmapUpdated: string;
   links: {
     label: LocalizedString;
     href: string;
     /** Personal/social link (X, Facebook, Instagram). Kept out of the hero's
-     *  primary CTA cluster; still shown in footer/contact + JSON-LD sameAs. */
+     *  primary CTA cluster and footer; still shown in contact + JSON-LD sameAs. */
     social?: boolean;
   }[];
   keywords: LocalizedString[];
@@ -88,6 +96,7 @@ export type Publication = {
   venueEn?: string;
   year: number;
   month?: number;
+  day?: number;
   pages?: string;
   type: PublicationType;
   flags?: PublicationFlag[];
@@ -112,6 +121,7 @@ export type GrantCategory = 'funding' | 'hpc' | 'fellowship';
 export type GrantEntry = {
   title: LocalizedString;
   funder: LocalizedString;
+  number?: string;
   start: string;
   end: string;
   role?: LocalizedString;
@@ -122,6 +132,12 @@ export type ServiceEntry = {
   title: LocalizedString;
   kind: LocalizedString;
   organization?: LocalizedString;
+  start: string;
+  end?: string;
+};
+
+export type MembershipEntry = {
+  organization: LocalizedString;
   start: string;
   end?: string;
 };

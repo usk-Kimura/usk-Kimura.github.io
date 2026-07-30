@@ -14,13 +14,11 @@ const s = t(locale);
 const detailHref = locale === 'en' ? `/en/p/${pubSlug(pub)}/` : `/p/${pubSlug(pub)}/`;
 const externalUrl = pub.url ?? (pub.doi ? `https://doi.org/${pub.doi}` : null);
 
-const dateLabel = pub.month
-  ? formatYearMonth(`${pub.year}-${pub.month}`, locale)
+const publicationDate = pub.month
+  ? `${pub.year}-${pub.month}${pub.day ? `-${pub.day}` : ''}`
   : `${pub.year}`;
-
-const dateAttr = pub.month
-  ? isoYearMonth(`${pub.year}-${pub.month}`)
-  : String(pub.year);
+const dateLabel = pub.month ? formatYearMonth(publicationDate, locale) : `${pub.year}`;
+const dateAttr = pub.month ? isoYearMonth(publicationDate) : String(pub.year);
 
 // Heuristic: if the title contains any CJK code point, mark it as Japanese,
 // otherwise English. Authors of explicit `titleLang` take precedence.
@@ -31,11 +29,11 @@ const venueText = locale === 'en' && pub.venueEn ? pub.venueEn : pub.venue;
 const venueLang: Locale = locale === 'en' && pub.venueEn ? 'en' : CJK.test(pub.venue) ? 'ja' : 'en';
 ---
 
-<article class="py-5">
+<article class="py-5 md:py-6">
   <div class="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4">
     <div class="md:w-32 shrink-0">
       <time class="text-xs font-mono text-muted tabular-nums" datetime={dateAttr}>{dateLabel}</time>
-      <p class="mt-1 text-[10px] uppercase tracking-wider text-[var(--accent)] font-mono">
+      <p class="mt-1 text-xs tracking-wide text-[var(--accent)] font-mono">
         {s.pubTypes[pub.type]}
       </p>
     </div>
@@ -53,10 +51,11 @@ const venueLang: Locale = locale === 'en' && pub.venueEn ? 'en' : CJK.test(pub.v
               href={externalUrl}
               target="_blank"
               rel="noopener noreferrer external"
-              class="ml-1 inline-flex items-center text-muted hover:text-[var(--fg)]"
+              class="ml-2 inline-flex items-center gap-1 rounded border hairline px-1.5 py-0.5 align-middle text-xs font-normal text-muted hover:bg-[var(--accent-soft)] hover:text-[var(--fg)]"
               aria-label={pub.doi ? `DOI${locale === 'ja' ? '（新しいタブで開きます）' : ' (opens in a new tab)'}` : (locale === 'ja' ? '外部リンク（新しいタブで開きます）' : 'External link (opens in a new tab)')}
             >
-              <span aria-hidden="true" class="text-xs">↗</span>
+              <span>{pub.doi ? 'DOI' : locale === 'ja' ? '外部リンク' : 'External'}</span>
+              <span aria-hidden="true">↗</span>
             </a>
           )
         }
@@ -73,7 +72,7 @@ const venueLang: Locale = locale === 'en' && pub.venueEn ? 'en' : CJK.test(pub.v
               return (
                 <li
                   class:list={[
-                    'text-[10px] uppercase tracking-wider font-mono px-1.5 py-0.5 rounded border',
+                    'text-xs tracking-wide font-mono px-2 py-0.5 rounded border',
                     strong
                       ? 'border-[var(--accent)] text-[var(--accent)] font-semibold'
                       : 'hairline text-muted',

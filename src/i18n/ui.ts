@@ -6,13 +6,13 @@ export const locales: Locale[] = ['ja', 'en'];
 export const ui = {
   ja: {
     nav: {
-      about: 'About',
-      research: 'Research',
-      publications: 'Publications',
-      awards: 'Awards',
-      career: 'Career',
-      grants: 'Support',
-      contact: 'Contact',
+      about: '概要',
+      research: '研究',
+      publications: '論文',
+      awards: '受賞',
+      career: '経歴',
+      grants: '研究支援',
+      contact: '連絡先',
     },
     sections: {
       about: '研究者として',
@@ -25,8 +25,10 @@ export const ui = {
       awards: '受賞',
       career: '経歴',
       education: '学歴',
-      grants: '研究支援',
+      grants: '研究支援・学術活動',
+      supportPrograms: '研究支援',
       services: '学術貢献活動',
+      memberships: '所属学協会',
       contact: 'お問い合わせ',
     },
     labels: {
@@ -42,6 +44,10 @@ export const ui = {
       position: '職位',
       degree: '学位',
       recipients: '受賞者',
+      researchmapUpdated: 'researchmap 最終更新',
+      searchPublications: '論文を検索',
+      searchPlaceholder: 'タイトル・著者・掲載先で検索',
+      olderPublications: '過去の論文',
     },
     pubTypes: {
       journal: 'ジャーナル',
@@ -84,7 +90,7 @@ export const ui = {
       publications: 'Publications',
       awards: 'Awards',
       career: 'Career',
-      grants: 'Grants',
+      grants: 'Research Support',
       contact: 'Contact',
     },
     sections: {
@@ -99,7 +105,9 @@ export const ui = {
       career: 'Career',
       education: 'Education',
       grants: 'Research Support',
+      supportPrograms: 'Support Programs',
       services: 'Academic Service',
+      memberships: 'Professional Memberships',
       contact: 'Contact',
     },
     labels: {
@@ -115,6 +123,10 @@ export const ui = {
       position: 'Position',
       degree: 'Degree',
       recipients: 'Recipients',
+      researchmapUpdated: 'researchmap last updated',
+      searchPublications: 'Search publications',
+      searchPlaceholder: 'Search title, author, or venue',
+      olderPublications: 'Earlier publications',
     },
     pubTypes: {
       journal: 'Journal',

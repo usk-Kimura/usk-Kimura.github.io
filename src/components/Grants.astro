@@ -1,6 +1,6 @@
 ---
 import type { Locale } from '~/data/types';
-import { grants, services } from '~/data';
+import { grants, memberships, services } from '~/data';
 import { t } from '~/i18n/ui';
 import { formatRangeParts, isoYearMonth } from '~/i18n/format';
 import Section from './Section.astro';
@@ -13,7 +13,7 @@ const s = t(locale);
 <Section id="grants" eyebrow="05" title={s.sections.grants}>
   <div class="grid gap-8 md:grid-cols-2">
     <div>
-      <h3 class="font-serif text-xl mb-4">{s.sections.grants}</h3>
+      <h3 class="font-serif text-xl mb-4">{s.sections.supportPrograms}</h3>
       <ol class="space-y-4">
         {
           grants.map((g) => {
@@ -26,12 +26,18 @@ const s = t(locale);
                     {' – '}
                     <time datetime={isoYearMonth(g.end)}>{parts.end}</time>
                   </p>
-                  <span class="text-[10px] uppercase tracking-wider font-mono px-1.5 py-0.5 rounded border hairline text-muted">
+                  <span class="text-xs tracking-wide font-mono px-2 py-0.5 rounded border hairline text-muted">
                     {s.grantCategories[g.category]}
                   </span>
                 </div>
                 <h4 class="mt-2 font-medium leading-snug">{g.title[locale]}</h4>
                 <p class="mt-1 text-sm text-muted">{g.funder[locale]}</p>
+                {g.number && (
+                  <p class="mt-1 text-xs text-muted">
+                    {locale === 'ja' ? '課題番号' : 'Project no.'}: {g.number}
+                  </p>
+                )}
+                {g.role && <p class="mt-2 text-xs font-medium text-[var(--accent)]">{g.role[locale]}</p>}
               </li>
             );
           })
@@ -57,7 +63,7 @@ const s = t(locale);
                       <span>{parts.end}</span>
                     )}
                   </p>
-                  <span class="text-[10px] uppercase tracking-wider font-mono px-1.5 py-0.5 rounded border hairline text-muted">
+                  <span class="text-xs tracking-wide font-mono px-2 py-0.5 rounded border hairline text-muted">
                     {sv.kind[locale]}
                   </span>
                 </div>
@@ -68,6 +74,40 @@ const s = t(locale);
           })
         }
       </ol>
+
+      {
+        memberships.length > 0 && (
+          <div class="mt-8">
+            <h3 class="font-serif text-xl mb-4">{s.sections.memberships}</h3>
+            <ol class="space-y-4">
+              {memberships.map((membership) => {
+                const parts = formatRangeParts(
+                  membership.start,
+                  membership.end,
+                  locale,
+                  s.labels.present,
+                );
+                return (
+                  <li class="surface p-5">
+                    <p class="text-xs font-mono text-muted tabular-nums">
+                      <time datetime={isoYearMonth(membership.start)}>{parts.start}</time>
+                      {' – '}
+                      {membership.end ? (
+                        <time datetime={isoYearMonth(membership.end)}>{parts.end}</time>
+                      ) : (
+                        <span>{parts.end}</span>
+                      )}
+                    </p>
+                    <h4 class="mt-2 font-medium leading-snug">
+                      {membership.organization[locale]}
+                    </h4>
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
+        )
+      }
     </div>
   </div>
 </Section>

@@ -1,21 +1,33 @@
 import type { Locale } from '~/data/types';
 
 const enMonth = new Intl.DateTimeFormat('en', { month: 'short', year: 'numeric' });
+const enDate = new Intl.DateTimeFormat('en', {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+});
 
 /** Format a `YYYY-MM` (or `YYYY-MM-DD`) string. Timezone-safe: never goes through Date parsing. */
 export function formatYearMonth(date: string, locale: Locale): string {
-  const [yStr, mStr] = date.split('-');
+  const [yStr, mStr, dStr] = date.split('-');
   const y = Number(yStr);
   const m = Number(mStr ?? '1');
-  if (locale === 'ja') return `${y}年${m}月`;
+  const d = dStr ? Number(dStr) : undefined;
+  if (locale === 'ja') return d ? `${y}年${m}月${d}日` : `${y}年${m}月`;
+  if (d) return enDate.format(new Date(y, m - 1, d));
   return enMonth.format(new Date(y, m - 1, 1));
 }
 
 function fmtShort(d: string, locale: Locale): string {
-  const [yStr, mStr] = d.split('-');
+  const [yStr, mStr, dStr] = d.split('-');
   const y = Number(yStr);
   const m = Number(mStr);
-  if (locale === 'ja') return `${y}.${String(m).padStart(2, '0')}`;
+  const day = dStr ? Number(dStr) : undefined;
+  if (locale === 'ja') {
+    const yearMonth = `${y}.${String(m).padStart(2, '0')}`;
+    return day ? `${yearMonth}.${String(day).padStart(2, '0')}` : yearMonth;
+  }
+  if (day) return enDate.format(new Date(y, m - 1, day));
   return enMonth.format(new Date(y, m - 1, 1));
 }
 
@@ -34,8 +46,9 @@ export function formatRangeParts(
   };
 }
 
-/** A `<time datetime="">` value for a YYYY-MM input (good enough for HTML5 month). */
+/** A normalized `<time datetime="">` value for a YYYY-MM or YYYY-MM-DD input. */
 export function isoYearMonth(date: string): string {
-  const [y, m] = date.split('-');
-  return `${y}-${(m ?? '01').padStart(2, '0')}`;
+  const [y, m, d] = date.split('-');
+  const yearMonth = `${y}-${(m ?? '01').padStart(2, '0')}`;
+  return d ? `${yearMonth}-${d.padStart(2, '0')}` : yearMonth;
 }

@@ -21,7 +21,19 @@ export function siteGraph(locale: Locale, site: URL | string) {
     sameAs: profile.links.map((l) => l.href),
     email: profile.emails.map((e) => `mailto:${e.address}`),
     image: new URL('/portrait-1280.jpg', site).toString(),
-    identifier: `https://orcid.org/${profile.orcid}`,
+    identifier: [
+      { '@type': 'PropertyValue', propertyID: 'ORCID', value: profile.orcid },
+      {
+        '@type': 'PropertyValue',
+        propertyID: 'e-Rad Researcher Number',
+        value: profile.identifiers.researcherNumber,
+      },
+      {
+        '@type': 'PropertyValue',
+        propertyID: 'J-GLOBAL ID',
+        value: profile.identifiers.jGlobalId,
+      },
+    ],
     url: new URL('/', site).toString(),
   };
 

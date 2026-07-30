@@ -11,7 +11,7 @@ const s = t(locale);
 ---
 
 <Section id="research" eyebrow="01" title={s.sections.research}>
-  <div class="grid gap-5 md:grid-cols-2 mb-12">
+  <div class="grid gap-5 md:grid-cols-2 mb-10">
     {
       researchAgenda.map((item, i) => (
         <article
@@ -20,11 +20,11 @@ const s = t(locale);
             i === 0 && 'md:col-span-2 border-l-4 border-l-[var(--accent)]',
           ]}
         >
-          <span class="self-start text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full border hairline text-[var(--accent)] mb-4">
+          <span class="self-start text-xs font-mono tracking-wide px-2.5 py-1 rounded-full border hairline text-[var(--accent)] mb-4">
             {item.tag[locale]}
           </span>
           <h3 class="font-serif text-lg leading-snug mb-2">{item.title[locale]}</h3>
-          <p class="text-sm text-muted leading-relaxed">{item.description[locale]}</p>
+          <p class="text-[0.9375rem] text-muted leading-[1.8]">{item.description[locale]}</p>
         </article>
       ))
     }

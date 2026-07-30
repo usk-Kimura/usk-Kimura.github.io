@@ -8,8 +8,8 @@ export const career: CareerEntry[] = [
       en: 'Graduate School of Informatics, Nagoya University',
     },
     role: {
-      ja: '科学技術振興機構 戦略的創造研究推進事業 研究員',
-      en: 'Researcher, JST Strategic Basic Research Programs',
+      ja: '科学技術振興機構 戦略的創造研究推進事業 研究員（CREST雇用）',
+      en: 'Researcher, JST CREST (Strategic Basic Research Programs)',
     },
   },
   {
@@ -47,8 +47,8 @@ export const career: CareerEntry[] = [
     end: '2023-03',
     organization: { ja: '同志社大学大学院', en: 'Doshisha University Graduate School' },
     role: {
-      ja: '博士後期課程 若手研究者育成フェローシップ',
-      en: 'Doctoral Fellowship for Young Researchers',
+      ja: '博士後期課程 若手研究者育成フェローシップ制度（フェローシップ支給対象学生）',
+      en: 'Recipient, Doctoral Fellowship for Young Researchers',
     },
   },
   {

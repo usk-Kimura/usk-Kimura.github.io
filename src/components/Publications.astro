@@ -4,6 +4,7 @@ import { publications } from '~/data';
 import { t } from '~/i18n/ui';
 import Section from './Section.astro';
 import PublicationItem from './PublicationItem.astro';
+import PublicationYearGroup from './PublicationYearGroup.astro';
 
 type Props = { locale: Locale };
 const { locale } = Astro.props;
@@ -29,6 +30,12 @@ const TYPE_ORDER: PublicationType[] = [
   'domestic-conference',
 ];
 const types = TYPE_ORDER.filter((tp) => sorted.some((p) => p.type === tp));
+const groupEntries = Array.from(groups.entries());
+const latestYear = groupEntries[0]?.[0] ?? new Date().getFullYear();
+const recentYearCutoff = latestYear - 2;
+const recentGroups = groupEntries.filter(([year]) => year >= recentYearCutoff);
+const olderGroups = groupEntries.filter(([year]) => year < recentYearCutoff);
+const olderCount = olderGroups.reduce((sum, [, items]) => sum + items.length, 0);
 ---
 
 <Section
@@ -46,14 +53,14 @@ const types = TYPE_ORDER.filter((tp) => sorted.some((p) => p.type === tp));
         </h3>
         <p class="text-sm text-muted mb-4 max-w-2xl">
           {locale === 'ja'
-            ? `代表的な研究を抜粋しています。全 ${publications.length} 件は下に掲載しています。`
-            : `A few representative papers. All ${publications.length} publications are listed below.`}
+            ? `代表的な研究を抜粋しています。全 ${publications.length} 件は下から検索・絞り込みできます。`
+            : `A few representative papers. Search or filter all ${publications.length} publications below.`}
         </p>
         <div class="surface px-5 md:px-8 py-2">
           {selected.map((pub, i) => (
             <div class:list={['hairline', i < selected.length - 1 && 'border-b']}>
               {pub.selectedReason && (
-                <p class="pt-4 -mb-2 text-[11px] font-mono uppercase tracking-wider text-[var(--accent)]">
+                <p class="pt-4 -mb-2 text-xs font-mono tracking-wide text-[var(--accent)]">
                   {pub.selectedReason[locale]}
                 </p>
               )}
@@ -68,90 +75,177 @@ const types = TYPE_ORDER.filter((tp) => sorted.some((p) => p.type === tp));
     )
   }
 
-  <div class="mb-8 flex flex-wrap gap-2 items-center" role="group" aria-label={s.labels.filter}>
-    <span class="text-xs text-muted mr-1 font-mono uppercase tracking-wider">{s.labels.filter}</span>
-    <button
-      type="button"
-      class="pub-filter-btn px-3 py-1.5 rounded-full border hairline text-xs hover:bg-[var(--accent-soft)] transition-colors data-[active=true]:bg-[var(--accent)] data-[active=true]:text-[var(--accent-contrast)] data-[active=true]:border-transparent"
-      data-filter="all"
-      data-active="true"
-      aria-pressed="true"
+  <div class="mb-8 surface p-4 md:p-5">
+    <div class="grid gap-4 lg:grid-cols-[minmax(16rem,1fr)_auto] lg:items-end">
+      <label class="block">
+        <span class="mb-1.5 block text-xs font-mono tracking-wide text-muted">
+          {s.labels.searchPublications}
+        </span>
+        <span class="relative block">
+          <svg
+            aria-hidden="true"
+            class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="11" cy="11" r="7" />
+            <path d="m20 20-3.5-3.5" />
+          </svg>
+          <input
+            id="publication-search"
+            type="search"
+            placeholder={s.labels.searchPlaceholder}
+            autocomplete="off"
+            aria-controls="publication-list"
+            class="min-h-11 w-full rounded-md border hairline bg-[var(--bg)] py-2 pl-10 pr-3 text-base sm:text-sm placeholder:text-muted focus:border-[var(--accent)]"
+          />
+        </span>
+      </label>
+
+      <div>
+        <span class="mb-1.5 block text-xs font-mono tracking-wide text-muted">{s.labels.filter}</span>
+        <div class="flex flex-wrap gap-2" role="group" aria-label={s.labels.filter}>
+          <button
+            type="button"
+            class="pub-filter-btn min-h-10 px-3 py-1.5 rounded-full border hairline text-sm hover:bg-[var(--accent-soft)] transition-colors data-[active=true]:bg-[var(--accent)] data-[active=true]:text-[var(--accent-contrast)] data-[active=true]:border-transparent"
+            data-filter="all"
+            data-active="true"
+            aria-pressed="true"
+            aria-controls="publication-list"
+          >
+            {s.labels.all}
+          </button>
+          {
+            types.map((tp) => (
+              <button
+                type="button"
+                class="pub-filter-btn min-h-10 px-3 py-1.5 rounded-full border hairline text-sm hover:bg-[var(--accent-soft)] transition-colors data-[active=true]:bg-[var(--accent)] data-[active=true]:text-[var(--accent-contrast)] data-[active=true]:border-transparent"
+                data-filter={tp}
+                data-active="false"
+                aria-pressed="false"
+                aria-controls="publication-list"
+              >
+                {s.pubTypes[tp]}
+              </button>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+
+    <p
+      id="publication-count"
+      class="mt-3 text-sm text-muted"
+      data-locale={locale}
+      aria-live="polite"
     >
-      {s.labels.all}
-    </button>
-    {
-      types.map((tp) => (
-        <button
-          type="button"
-          class="pub-filter-btn px-3 py-1.5 rounded-full border hairline text-xs hover:bg-[var(--accent-soft)] transition-colors data-[active=true]:bg-[var(--accent)] data-[active=true]:text-[var(--accent-contrast)] data-[active=true]:border-transparent"
-          data-filter={tp}
-          data-active="false"
-          aria-pressed="false"
-        >
-          {s.pubTypes[tp]}
-        </button>
-      ))
-    }
+      {locale === 'ja'
+        ? `全 ${publications.length} 件の論文`
+        : `${publications.length} publications`}
+    </p>
   </div>
 
-  <div id="publication-list" class="space-y-10">
+  <div id="publication-list" class="space-y-9">
     {
-      Array.from(groups.entries()).map(([year, items]) => (
-        <section class="pub-year-group" data-year={year} aria-labelledby={`year-${year}`}>
-          <header
-            class="sticky z-10 -mx-5 md:-mx-8 px-5 md:px-8 py-2 backdrop-blur-md border-b hairline"
-            style="top: var(--site-header-offset); background: color-mix(in oklch, var(--bg) 78%, transparent);"
-          >
-            <h3
-              id={`year-${year}`}
-              class="font-mono text-sm font-medium tabular-nums tracking-wider text-muted"
-            >
-              {year}
-            </h3>
-          </header>
-          <div class="surface px-5 md:px-8 py-2 mt-3">
-            {items.map((pub, i) => (
-              <div
-                data-pub-type={pub.type}
-                class:list={['hairline', i < items.length - 1 && 'border-b']}
-              >
-                <PublicationItem pub={pub} locale={locale} />
-              </div>
-            ))}
-          </div>
-        </section>
+      recentGroups.map(([year, items]) => (
+        <PublicationYearGroup year={year} items={items} locale={locale} />
       ))
     }
+
+    {
+      olderGroups.length > 0 && (
+        <details id="older-publications" class="group" data-older-publications>
+          <summary class="surface flex min-h-12 cursor-pointer list-none items-center justify-between gap-4 px-4 py-3 text-sm font-medium hover:bg-[var(--accent-soft)] transition-colors [&::-webkit-details-marker]:hidden">
+            <span>
+              {s.labels.olderPublications}
+              <span id="older-publication-count" class="ml-1 font-normal text-muted">
+                ({olderCount})
+              </span>
+            </span>
+            <span class="text-[var(--accent)] transition-transform group-open:rotate-180" aria-hidden="true">↓</span>
+          </summary>
+          <div class="mt-9 space-y-9">
+            {olderGroups.map(([year, items]) => (
+              <PublicationYearGroup year={year} items={items} locale={locale} />
+            ))}
+          </div>
+        </details>
+      )
+    }
+
+    <p id="publication-empty" class="surface hidden p-6 text-center text-muted">
+      {locale === 'ja'
+        ? '条件に一致する論文はありません。'
+        : 'No publications match these filters.'}
+    </p>
   </div>
 </Section>
 
 <script>
   const buttons = document.querySelectorAll<HTMLButtonElement>('.pub-filter-btn');
-  const items = document.querySelectorAll<HTMLElement>('[data-pub-type]');
-  const groups = document.querySelectorAll<HTMLElement>('.pub-year-group');
+  const items = Array.from(document.querySelectorAll<HTMLElement>('[data-pub-item]'));
+  const groups = document.querySelectorAll<HTMLElement>('[data-pub-year-group]');
+  const search = document.getElementById('publication-search') as HTMLInputElement | null;
+  const count = document.getElementById('publication-count');
+  const empty = document.getElementById('publication-empty');
+  const older = document.getElementById('older-publications') as HTMLDetailsElement | null;
+  const olderCount = document.getElementById('older-publication-count');
+  let activeFilter = 'all';
+
+  function normalize(value: string) {
+    return value.normalize('NFKC').toLocaleLowerCase();
+  }
+
+  function applyFilters() {
+    const query = normalize(search?.value.trim() ?? '');
+    let visibleCount = 0;
+
+    items.forEach((item) => {
+      const typeMatch = activeFilter === 'all' || item.dataset.pubType === activeFilter;
+      const textMatch = query.length === 0 || normalize(item.dataset.pubSearch ?? '').includes(query);
+      const match = typeMatch && textMatch;
+      item.hidden = !match;
+      if (match) visibleCount += 1;
+    });
+
+    groups.forEach((group) => {
+      const groupItems = Array.from(group.querySelectorAll<HTMLElement>('[data-pub-item]'));
+      const visible = groupItems.filter((item) => !item.hidden);
+      group.hidden = visible.length === 0;
+      visible.forEach((item, index) => {
+        item.classList.toggle('border-b', index < visible.length - 1);
+      });
+    });
+
+    if (older) {
+      const olderMatches = older.querySelectorAll<HTMLElement>('[data-pub-item]:not([hidden])').length;
+      if (olderCount) olderCount.textContent = `(${olderMatches})`;
+      older.hidden = olderMatches === 0;
+      if ((query.length > 0 || activeFilter !== 'all') && olderMatches > 0) older.open = true;
+    }
+
+    if (count) {
+      count.textContent = count.dataset.locale === 'ja'
+        ? `全 ${items.length} 件中 ${visibleCount} 件の論文が一致`
+        : `${visibleCount} of ${items.length} publications match`;
+    }
+    empty?.classList.toggle('hidden', visibleCount !== 0);
+  }
 
   buttons.forEach((btn) => {
     btn.addEventListener('click', () => {
-      const filter = btn.dataset.filter ?? 'all';
+      activeFilter = btn.dataset.filter ?? 'all';
       buttons.forEach((b) => {
         const active = b === btn;
         b.dataset.active = String(active);
         b.setAttribute('aria-pressed', String(active));
       });
-      items.forEach((item) => {
-        const match = filter === 'all' || item.dataset.pubType === filter;
-        item.style.display = match ? '' : 'none';
-      });
-      // Hide empty year groups, then re-apply borders so the last *visible*
-      // item per group never shows a trailing separator.
-      groups.forEach((g) => {
-        const all = Array.from(g.querySelectorAll<HTMLElement>('[data-pub-type]'));
-        const visible = all.filter((n) => n.style.display !== 'none');
-        g.style.display = visible.length === 0 ? 'none' : '';
-        visible.forEach((n, i) => {
-          n.classList.toggle('border-b', i < visible.length - 1);
-        });
-      });
+      applyFilters();
     });
   });
+
+  search?.addEventListener('input', applyFilters);
+  search?.addEventListener('search', applyFilters);
 </script>
