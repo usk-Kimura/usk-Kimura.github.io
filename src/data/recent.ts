@@ -13,6 +13,11 @@ export type RecentItem = {
   /** Already localized to the requested locale. */
   title: string;
   detail?: string;
+  event?: {
+    label: string;
+    name: string;
+    venue: string;
+  };
   href?: string;
 };
 
@@ -73,6 +78,13 @@ export function buildRecent(locale: Locale, limit = 4): RecentItem[] {
       kind: item.kind,
       title: item.title[locale],
       detail: item.detail?.[locale],
+      event: item.event
+        ? {
+            label: item.event.label[locale],
+            name: item.event.name[locale],
+            venue: item.event.venue[locale],
+          }
+        : undefined,
       href: item.href,
     });
   }
@@ -92,6 +104,13 @@ export function buildUpcoming(locale: Locale): RecentItem[] {
       kind: item.kind,
       title: item.title[locale],
       detail: item.detail?.[locale],
+      event: item.event
+        ? {
+            label: item.event.label[locale],
+            name: item.event.name[locale],
+            venue: item.event.venue[locale],
+          }
+        : undefined,
       href: item.href,
     }))
     .sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));

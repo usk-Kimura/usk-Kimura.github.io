@@ -58,7 +58,7 @@ const pitch = pitchAwards[0];
                       <p class="font-semibold leading-snug">{award.name[locale]}</p>
                       <p class="mt-1 text-xs text-muted">{award.organization[locale]}</p>
                     </div>
-                    <time class="shrink-0 font-mono text-xs text-muted" datetime={isoYearMonth(award.date)}>
+                    <time class="shrink-0 whitespace-nowrap font-mono text-xs text-muted" datetime={isoYearMonth(award.date)}>
                       {formatYearMonth(award.date, locale)}
                     </time>
                   </div>
@@ -82,11 +82,11 @@ const pitch = pitchAwards[0];
       {
         academicAwards.map((award) => (
           <li class="surface flex flex-col gap-2 p-5 md:p-6">
-            <div class="flex items-baseline justify-between gap-3">
-              <time class="font-mono text-xs text-muted tabular-nums" datetime={isoYearMonth(award.date)}>
+            <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-3">
+              <time class="shrink-0 whitespace-nowrap font-mono text-xs text-muted tabular-nums" datetime={isoYearMonth(award.date)}>
                 {formatYearMonth(award.date, locale)}
               </time>
-              <p class="text-right text-xs text-muted">{award.organization[locale]}</p>
+              <p class="min-w-0 text-left text-xs text-muted sm:text-right">{award.organization[locale]}</p>
             </div>
             <h4 class="font-serif text-lg leading-snug">{award.name[locale]}</h4>
             <p class="text-sm text-muted">{award.work[locale]}</p>

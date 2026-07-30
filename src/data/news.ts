@@ -21,6 +21,12 @@ export type NewsItem = {
   title: LocalizedString;
   /** Optional one-line detail rendered under the title. */
   detail?: LocalizedString;
+  /** Structured event details used by the upcoming-presentation display. */
+  event?: {
+    label: LocalizedString;
+    name: LocalizedString;
+    venue: LocalizedString;
+  };
   /** Optional URL the title links to. */
   href?: string;
 };
@@ -68,12 +74,20 @@ export const news: NewsItem[] = [
     endDate: '2026-09-16',
     kind: 'presentation',
     title: {
-      ja: '「異なる語彙を持つLLM間のOPD」を発表予定',
-      en: 'Upcoming presentation: “On-Policy Distillation (OPD) Between LLMs with Different Vocabularies”',
+      ja: '「異なる語彙を持つLLM間のOPDに関する研究」を発表予定',
+      en: 'Presenting research on OPD between LLMs with different vocabularies',
     },
     detail: {
       ja: '情報処理学会 第269回自然言語処理研究発表会｜帯広＋オンライン',
       en: 'IPSJ SIG-NL 269th Meeting · Obihiro + online',
+    },
+    event: {
+      label: { ja: 'NL研 269', en: 'SIG-NL 269' },
+      name: {
+        ja: '情報処理学会 第269回自然言語処理研究発表会',
+        en: 'IPSJ SIG-NL 269th Meeting',
+      },
+      venue: { ja: '帯広＋オンライン', en: 'Obihiro + online' },
     },
     href: 'https://www.ipsj.or.jp/kenkyukai/event/nl269.html',
   },
@@ -82,12 +96,20 @@ export const news: NewsItem[] = [
     endDate: '2026-08-18',
     kind: 'presentation',
     title: {
-      ja: '「異なる語彙を持つLLM間のOPD」を発表予定',
-      en: 'Upcoming presentation: “On-Policy Distillation (OPD) Between LLMs with Different Vocabularies”',
+      ja: '「異なる語彙を持つLLM間のOPDに関する研究」を発表予定',
+      en: 'Presenting research on OPD between LLMs with different vocabularies',
     },
     detail: {
       ja: '第21回言語処理若手シンポジウム（YANS2026）｜仙台国際センター',
       en: 'The 21st YANS Symposium (YANS 2026) · Sendai International Center',
+    },
+    event: {
+      label: { ja: 'YANS 2026', en: 'YANS 2026' },
+      name: {
+        ja: '第21回言語処理若手シンポジウム',
+        en: 'The 21st YANS Symposium',
+      },
+      venue: { ja: '仙台国際センター', en: 'Sendai International Center' },
     },
     href: 'https://yans.anlp.jp/entry/yans2026',
   },
