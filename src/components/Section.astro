@@ -11,14 +11,15 @@ type Props = {
 const { id, eyebrow, title, description, count, countLabel, class: extra = '' } = Astro.props;
 ---
 
-<section id={id} class={`border-t hairline py-14 md:py-16 lg:py-20 ${extra}`}>
+<section id={id} class={`section-block border-t hairline py-14 md:py-16 lg:py-20 ${extra}`}>
   <div class="container-page">
-    <header class="mb-8 md:mb-10 max-w-3xl">
+    <header class="section-heading mb-8 md:mb-10 max-w-3xl">
       {
         eyebrow && (
-          <p aria-hidden="true" class="text-xs font-mono uppercase tracking-[0.18em] text-[var(--accent)] mb-2">
-            {eyebrow}
-          </p>
+          <div aria-hidden="true" class="mb-3 flex items-center gap-3 text-[var(--accent)]">
+            <span class="h-0.5 w-8 rounded-full bg-current" />
+            <span class="font-mono text-xs font-semibold tracking-[0.18em]">{eyebrow}</span>
+          </div>
         )
       }
       <h2 class="font-serif text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight leading-tight text-balance">

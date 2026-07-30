@@ -57,6 +57,7 @@ export function breadcrumbJsonLd(
   site: URL | string,
 ) {
   const home = new URL(locale === 'ja' ? '/' : '/en/', site).toString();
+  const publicationIndex = new URL(locale === 'ja' ? '/publications/' : '/en/publications/', site).toString();
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -66,7 +67,7 @@ export function breadcrumbJsonLd(
         '@type': 'ListItem',
         position: 2,
         name: locale === 'ja' ? '論文' : 'Publications',
-        item: `${home}#publications`,
+        item: publicationIndex,
       },
       { '@type': 'ListItem', position: 3, name: pubTitle, item: pubUrl },
     ],

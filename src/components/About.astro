@@ -9,7 +9,7 @@ const { locale } = Astro.props;
 const s = t(locale);
 ---
 
-<Section id="about" eyebrow="00" title={s.sections.about} class="!py-12 md:!py-14">
+<Section id="about" eyebrow={locale === 'ja' ? 'プロフィール' : 'PROFILE'} title={s.sections.about} class="!py-12 md:!py-14">
   <p class="max-w-4xl text-base md:text-lg leading-[1.9] text-[var(--fg)]/90">
     {profile.bio[locale]}
   </p>

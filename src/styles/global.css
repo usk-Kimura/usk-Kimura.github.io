@@ -30,14 +30,20 @@
 @layer base {
   :root {
     color-scheme: light dark;
-    --bg: oklch(0.99 0.005 240);
-    --bg-elev: oklch(0.97 0.008 240);
-    --fg: oklch(0.20 0.020 250);
-    --fg-muted: oklch(0.43 0.020 250);
-    --border: oklch(0.88 0.012 250);
-    --accent: var(--color-brand-700);
-    --accent-soft: var(--color-brand-100);
+    --bg: #f7f9fc;
+    --bg-elev: #ffffff;
+    --section-alt: #eef3f8;
+    --fg: #172033;
+    --fg-muted: #526176;
+    --border: #d7dee8;
+    --accent: #0f6670;
+    --accent-strong: #094c55;
+    --accent-soft: #e4f3f4;
     --accent-contrast: #ffffff;
+    --highlight: #a85f0b;
+    --highlight-soft: #fff1dc;
+    --highlight-border: #e8c58f;
+    --shadow: rgb(23 32 51 / 0.08);
 
     /* Site header height, exposed so the rest of the page can align (sticky
      *  year headers, scroll-padding, etc.) without baking in a magic number. */
@@ -46,14 +52,20 @@
 
   :root[data-theme="dark"] {
     color-scheme: dark;
-    --bg: oklch(0.16 0.015 250);
-    --bg-elev: oklch(0.22 0.018 250);
-    --fg: oklch(0.95 0.010 250);
-    --fg-muted: oklch(0.76 0.015 250);
-    --border: oklch(0.32 0.020 250);
-    --accent: var(--color-brand-300);
-    --accent-soft: oklch(0.28 0.060 215);
-    --accent-contrast: oklch(0.14 0.012 250);
+    --bg: #0f1724;
+    --bg-elev: #182334;
+    --section-alt: #131d2c;
+    --fg: #f4f7fb;
+    --fg-muted: #b4c0d0;
+    --border: #334155;
+    --accent: #65c7cc;
+    --accent-strong: #8bd7da;
+    --accent-soft: #173c43;
+    --accent-contrast: #0a1a1d;
+    --highlight: #f1b35d;
+    --highlight-soft: #3d2b18;
+    --highlight-border: #72502a;
+    --shadow: rgb(0 0 0 / 0.3);
   }
 
   :root[data-theme="light"] {
@@ -62,14 +74,20 @@
 
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --bg: oklch(0.16 0.015 250);
-      --bg-elev: oklch(0.22 0.018 250);
-      --fg: oklch(0.95 0.010 250);
-      --fg-muted: oklch(0.76 0.015 250);
-      --border: oklch(0.32 0.020 250);
-      --accent: var(--color-brand-300);
-      --accent-soft: oklch(0.28 0.060 215);
-      --accent-contrast: oklch(0.14 0.012 250);
+      --bg: #0f1724;
+      --bg-elev: #182334;
+      --section-alt: #131d2c;
+      --fg: #f4f7fb;
+      --fg-muted: #b4c0d0;
+      --border: #334155;
+      --accent: #65c7cc;
+      --accent-strong: #8bd7da;
+      --accent-soft: #173c43;
+      --accent-contrast: #0a1a1d;
+      --highlight: #f1b35d;
+      --highlight-soft: #3d2b18;
+      --highlight-border: #72502a;
+      --shadow: rgb(0 0 0 / 0.3);
     }
   }
 
@@ -83,13 +101,7 @@
   }
 
   body {
-    background:
-      radial-gradient(
-        ellipse 80% 50% at 50% -10%,
-        color-mix(in oklch, var(--accent) 14%, transparent),
-        transparent 60%
-      ),
-      var(--bg);
+    background: var(--bg);
     min-height: 100dvh;
     line-height: 1.65;
     font-feature-settings: "ss01", "cv11", "palt";
@@ -132,8 +144,15 @@
 @utility surface {
   background: var(--bg-elev);
   border: 1px solid var(--border);
-  border-radius: 0.875rem;
-  box-shadow: 0 1px 2px color-mix(in oklch, var(--fg) 5%, transparent);
+  border-radius: 1rem;
+  box-shadow: 0 1px 2px var(--shadow), 0 10px 30px -24px var(--shadow);
+}
+
+@utility surface-warm {
+  background: var(--highlight-soft);
+  border: 1px solid var(--highlight-border);
+  border-radius: 1rem;
+  box-shadow: 0 1px 2px var(--shadow), 0 10px 30px -24px var(--shadow);
 }
 
 @utility text-muted {
@@ -146,8 +165,48 @@
 
 /* Scroll-spy: active nav link styling driven by `aria-current` rather than
    JS class toggling, so the rule stays declarative. */
-[data-nav-link][aria-current="true"],
+[data-nav-link][aria-current="true"] {
+  color: var(--accent-strong);
+  font-weight: 600;
+  box-shadow: inset 0 -2px 0 var(--accent);
+}
+
 [data-mobile-nav-link][aria-current="true"] {
-  color: var(--fg);
+  color: var(--accent-strong);
   background: var(--accent-soft);
+  font-weight: 600;
+}
+
+main > .section-block:nth-of-type(even) {
+  background: var(--section-alt);
+}
+
+.section-block {
+  position: relative;
+}
+
+.hero-orb {
+  animation: hero-drift 16s ease-in-out infinite alternate;
+}
+
+.event-row[data-next-event="true"] .event-link {
+  background: var(--highlight-soft);
+  box-shadow: inset 3px 0 0 var(--highlight);
+}
+
+#back-to-top[data-visible="true"] {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+@keyframes hero-drift {
+  from { transform: translate3d(-1.5%, -1%, 0) scale(1); }
+  to { transform: translate3d(1.5%, 1%, 0) scale(1.04); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-orb {
+    animation: none;
+  }
 }

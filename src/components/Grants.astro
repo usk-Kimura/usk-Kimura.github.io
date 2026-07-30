@@ -10,7 +10,7 @@ const { locale } = Astro.props;
 const s = t(locale);
 ---
 
-<Section id="grants" eyebrow="05" title={s.sections.grants}>
+<Section id="grants" eyebrow={locale === 'ja' ? '研究活動' : 'RESEARCH ACTIVITY'} title={s.sections.grants}>
   <div class="grid gap-8 md:grid-cols-2">
     <div>
       <h3 class="font-serif text-xl mb-4">{s.sections.supportPrograms}</h3>

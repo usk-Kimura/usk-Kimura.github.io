@@ -33,13 +33,14 @@ const mobileNavLabel = locale === 'ja' ? 'モバイルナビゲーション' : '
 ---
 
 <header
-  class="sticky top-0 z-40 backdrop-blur-md border-b hairline print:hidden"
-  style="background: color-mix(in oklch, var(--bg) 78%, transparent); height: var(--site-header-offset);"
+  class="site-header sticky top-0 z-40 border-b hairline backdrop-blur-md print:hidden"
+  style="background: color-mix(in oklch, var(--bg-elev) 90%, transparent); height: var(--site-header-offset);"
 >
   <div class="container-page flex h-full items-center gap-2 sm:gap-4">
     <a href={homePath} class="min-w-0 truncate font-serif text-base sm:text-lg font-semibold tracking-tight whitespace-nowrap">
       {profile.name[locale]}
     </a>
+    <span class="hidden xl:inline text-xs font-medium text-muted">NLP · LLM · Post-training</span>
 
     {
       !hideSectionNav && (
@@ -104,7 +105,7 @@ const mobileNavLabel = locale === 'ja' ? 'モバイルナビゲーション' : '
         class="lg:hidden hidden border-t hairline shadow-lg"
         style="background: var(--bg);"
       >
-        <ul class="container-page py-2">
+        <ul class="container-page grid grid-cols-2 gap-1 py-2">
           {navItems.map((item) => (
             <li>
               <a
@@ -120,11 +121,36 @@ const mobileNavLabel = locale === 'ja' ? 'モバイルナビゲーション' : '
       </nav>
     )
   }
+
+  <div class="absolute inset-x-0 bottom-0 h-0.5 overflow-hidden" aria-hidden="true">
+    <span
+      id="page-scroll-progress"
+      class="block h-full origin-left scale-x-0 bg-gradient-to-r from-[var(--accent)] to-[var(--highlight)] will-change-transform"
+    />
+  </div>
 </header>
 
 <script>
   const mobBtn = document.getElementById('mobile-nav-toggle');
   const mobNav = document.getElementById('mobile-nav');
+  const pageProgress = document.getElementById('page-scroll-progress');
+
+  let progressFrame = 0;
+  function updateProgress() {
+    progressFrame = 0;
+    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
+    if (pageProgress) pageProgress.style.transform = `scaleX(${progress})`;
+  }
+
+  function requestProgressUpdate() {
+    if (progressFrame) return;
+    progressFrame = requestAnimationFrame(updateProgress);
+  }
+
+  addEventListener('scroll', requestProgressUpdate, { passive: true });
+  addEventListener('resize', requestProgressUpdate);
+  updateProgress();
 
   function closeMobileNav(focusToggle = false) {
     mobNav?.classList.add('hidden');

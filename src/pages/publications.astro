@@ -1,0 +1,17 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import Publications from '~/components/Publications.astro';
+
+const locale = 'ja' as const;
+---
+
+<BaseLayout
+  locale={locale}
+  title="論文"
+  description="木村優介の論文一覧。タイトル・著者・掲載先・種別で検索できます。"
+  slim
+  alternateJa="/publications/"
+  alternateEn="/en/publications/"
+>
+  <Publications locale={locale} />
+</BaseLayout>

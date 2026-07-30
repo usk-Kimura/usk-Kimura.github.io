@@ -12,7 +12,7 @@ const s = t(locale);
 const sectionTitle = locale === 'ja' ? '経歴 & 学歴' : 'Career & Education';
 ---
 
-<Section id="career" eyebrow="04" title={sectionTitle}>
+<Section id="career" eyebrow={locale === 'ja' ? '経歴' : 'BACKGROUND'} title={sectionTitle}>
   <div class="grid gap-12 md:grid-cols-2">
     <div>
       <h3 class="font-serif text-xl mb-6">{s.sections.career}</h3>

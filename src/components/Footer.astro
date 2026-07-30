@@ -58,3 +58,34 @@ const footerLinks = profile.links.filter((l) =>
     </div>
   </div>
 </footer>
+
+<button
+  id="back-to-top"
+  type="button"
+  data-visible="false"
+  class="fixed bottom-5 right-5 z-30 inline-flex h-11 w-11 translate-y-2 items-center justify-center rounded-full bg-[var(--accent)] text-lg font-semibold text-[var(--accent-contrast)] opacity-0 shadow-lg pointer-events-none transition-[opacity,transform,background-color] hover:bg-[var(--accent-strong)] print:hidden"
+  aria-label={locale === 'ja' ? 'ページ上部へ戻る' : 'Back to top'}
+  title={locale === 'ja' ? 'ページ上部へ戻る' : 'Back to top'}
+>
+  <span aria-hidden="true">↑</span>
+</button>
+
+<script>
+  const backToTop = document.getElementById('back-to-top');
+  let topButtonFrame = 0;
+
+  function updateTopButton() {
+    topButtonFrame = 0;
+    if (backToTop) backToTop.dataset.visible = String(window.scrollY > window.innerHeight * 0.75);
+  }
+
+  addEventListener('scroll', () => {
+    if (topButtonFrame) return;
+    topButtonFrame = requestAnimationFrame(updateTopButton);
+  }, { passive: true });
+  updateTopButton();
+
+  backToTop?.addEventListener('click', () => {
+    scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
