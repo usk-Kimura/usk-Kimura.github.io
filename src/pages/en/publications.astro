@@ -1,0 +1,17 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import Publications from '~/components/Publications.astro';
+
+const locale = 'en' as const;
+---
+
+<BaseLayout
+  locale={locale}
+  title="Publications"
+  description="Publications by Yusuke Kimura, searchable by title, author, venue, and publication type."
+  slim
+  alternateJa="/publications/"
+  alternateEn="/en/publications/"
+>
+  <Publications locale={locale} />
+</BaseLayout>

@@ -3,7 +3,6 @@ import type { Locale, PublicationType } from '~/data/types';
 import { publications } from '~/data';
 import { t } from '~/i18n/ui';
 import Section from './Section.astro';
-import PublicationItem from './PublicationItem.astro';
 import PublicationYearGroup from './PublicationYearGroup.astro';
 
 type Props = { locale: Locale };
@@ -13,8 +12,6 @@ const s = t(locale);
 const sorted = [...publications].sort(
   (a, b) => b.year * 12 + (b.month ?? 0) - (a.year * 12 + (a.month ?? 0)),
 );
-
-const selected = sorted.filter((p) => p.selected);
 
 // Group by year (newest first).
 const groups = sorted.reduce<Map<number, typeof sorted>>((acc, pub) => {
@@ -40,41 +37,14 @@ const olderCount = olderGroups.reduce((sum, [, items]) => sum + items.length, 0)
 
 <Section
   id="publications"
-  eyebrow="02"
+  eyebrow="PUBLICATIONS"
   title={s.sections.publications}
   count={publications.length}
   countLabel={s.labels.total}
+  description={locale === 'ja'
+    ? 'タイトル・著者・掲載先を入力するか、発表種別を選んで絞り込めます。'
+    : 'Search by title, author, or venue, or narrow the list by publication type.'}
 >
-  {
-    selected.length > 0 && (
-      <div class="mb-12">
-        <h3 class="text-xs font-mono uppercase tracking-[0.18em] text-[var(--accent)] mb-2">
-          {s.sections.selectedPublications}
-        </h3>
-        <p class="text-sm text-muted mb-4 max-w-2xl">
-          {locale === 'ja'
-            ? `代表的な研究を抜粋しています。全 ${publications.length} 件は下から検索・絞り込みできます。`
-            : `A few representative papers. Search or filter all ${publications.length} publications below.`}
-        </p>
-        <div class="surface px-5 md:px-8 py-2">
-          {selected.map((pub, i) => (
-            <div class:list={['hairline', i < selected.length - 1 && 'border-b']}>
-              {pub.selectedReason && (
-                <p class="pt-4 -mb-2 text-xs font-mono tracking-wide text-[var(--accent)]">
-                  {pub.selectedReason[locale]}
-                </p>
-              )}
-              <PublicationItem pub={pub} locale={locale} />
-            </div>
-          ))}
-        </div>
-        <h3 class="mt-12 text-xs font-mono uppercase tracking-[0.18em] text-muted mb-4">
-          {s.sections.allPublications}
-        </h3>
-      </div>
-    )
-  }
-
   <div class="mb-8 surface p-4 md:p-5">
     <div class="grid gap-4 lg:grid-cols-[minmax(16rem,1fr)_auto] lg:items-end">
       <label class="block">
@@ -99,7 +69,7 @@ const olderCount = olderGroups.reduce((sum, [, items]) => sum + items.length, 0)
             placeholder={s.labels.searchPlaceholder}
             autocomplete="off"
             aria-controls="publication-list"
-            class="min-h-11 w-full rounded-md border hairline bg-[var(--bg)] py-2 pl-10 pr-3 text-base sm:text-sm placeholder:text-muted focus:border-[var(--accent)]"
+            class="min-h-11 w-full rounded-md border hairline bg-[var(--bg-elev)] py-2 pl-10 pr-3 text-base sm:text-sm placeholder:text-muted focus:border-[var(--accent)]"
           />
         </span>
       </label>
@@ -198,7 +168,7 @@ const olderCount = olderGroups.reduce((sum, [, items]) => sum + items.length, 0)
     return value.normalize('NFKC').toLocaleLowerCase();
   }
 
-  function applyFilters() {
+  function applyFilters(updateUrl = false) {
     const query = normalize(search?.value.trim() ?? '');
     let visibleCount = 0;
 
@@ -232,6 +202,16 @@ const olderCount = olderGroups.reduce((sum, [, items]) => sum + items.length, 0)
         : `${visibleCount} of ${items.length} publications match`;
     }
     empty?.classList.toggle('hidden', visibleCount !== 0);
+
+    if (updateUrl) {
+      const params = new URLSearchParams(location.search);
+      if (query) params.set('q', search?.value.trim() ?? '');
+      else params.delete('q');
+      if (activeFilter !== 'all') params.set('type', activeFilter);
+      else params.delete('type');
+      const next = `${location.pathname}${params.size > 0 ? `?${params}` : ''}${location.hash}`;
+      history.replaceState(null, '', next);
+    }
   }
 
   buttons.forEach((btn) => {
@@ -242,10 +222,27 @@ const olderCount = olderGroups.reduce((sum, [, items]) => sum + items.length, 0)
         b.dataset.active = String(active);
         b.setAttribute('aria-pressed', String(active));
       });
-      applyFilters();
+      applyFilters(true);
     });
   });
 
-  search?.addEventListener('input', applyFilters);
-  search?.addEventListener('search', applyFilters);
+  search?.addEventListener('input', () => applyFilters(true));
+  search?.addEventListener('search', () => applyFilters(true));
+
+  const initialParams = new URLSearchParams(location.search);
+  const initialQuery = initialParams.get('q');
+  const initialFilter = initialParams.get('type');
+  if (search && initialQuery) search.value = initialQuery;
+  if (initialFilter) {
+    const initialButton = Array.from(buttons).find((button) => button.dataset.filter === initialFilter);
+    if (initialButton) {
+      activeFilter = initialFilter;
+      buttons.forEach((button) => {
+        const active = button === initialButton;
+        button.dataset.active = String(active);
+        button.setAttribute('aria-pressed', String(active));
+      });
+    }
+  }
+  if (initialQuery || initialFilter) applyFilters();
 </script>

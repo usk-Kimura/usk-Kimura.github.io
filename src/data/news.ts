@@ -15,6 +15,8 @@ export type NewsKind =
 export type NewsItem = {
   /** YYYY-MM or YYYY-MM-DD. Used for sorting; finer dates win ties. */
   date: string;
+  /** Optional final day for a multi-day event. */
+  endDate?: string;
   kind: NewsKind;
   title: LocalizedString;
   /** Optional one-line detail rendered under the title. */
@@ -63,27 +65,29 @@ export type NewsItem = {
 export const news: NewsItem[] = [
   {
     date: '2026-09-14',
+    endDate: '2026-09-16',
     kind: 'presentation',
     title: {
       ja: '「異なる語彙を持つLLM間のOPD」を発表予定',
       en: 'Upcoming presentation: “On-Policy Distillation (OPD) Between LLMs with Different Vocabularies”',
     },
     detail: {
-      ja: '情報処理学会 第269回自然言語処理研究発表会｜2026年9月14–16日・帯広＋オンライン',
-      en: 'IPSJ SIG-NL 269th Meeting · Sep. 14–16, 2026 · Obihiro + online',
+      ja: '情報処理学会 第269回自然言語処理研究発表会｜帯広＋オンライン',
+      en: 'IPSJ SIG-NL 269th Meeting · Obihiro + online',
     },
     href: 'https://www.ipsj.or.jp/kenkyukai/event/nl269.html',
   },
   {
     date: '2026-08-17',
+    endDate: '2026-08-18',
     kind: 'presentation',
     title: {
       ja: '「異なる語彙を持つLLM間のOPD」を発表予定',
       en: 'Upcoming presentation: “On-Policy Distillation (OPD) Between LLMs with Different Vocabularies”',
     },
     detail: {
-      ja: '第21回言語処理若手シンポジウム（YANS2026）｜2026年8月17–18日・仙台国際センター',
-      en: 'The 21st YANS Symposium (YANS 2026) · Aug. 17–18, 2026 · Sendai International Center',
+      ja: '第21回言語処理若手シンポジウム（YANS2026）｜仙台国際センター',
+      en: 'The 21st YANS Symposium (YANS 2026) · Sendai International Center',
     },
     href: 'https://yans.anlp.jp/entry/yans2026',
   },

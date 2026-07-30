@@ -8,6 +8,7 @@ import { pubSlug } from './util';
 export type RecentItem = {
   /** Normalized to YYYY-MM-DD (or YYYY-MM-01 if only month is known). */
   date: string;
+  endDate?: string;
   kind: NewsKind;
   /** Already localized to the requested locale. */
   title: string;
@@ -68,6 +69,7 @@ export function buildRecent(locale: Locale, limit = 4): RecentItem[] {
   for (const item of news) {
     items.push({
       date: padDate(item.date),
+      endDate: item.endDate ? padDate(item.endDate) : undefined,
       kind: item.kind,
       title: item.title[locale],
       detail: item.detail?.[locale],
@@ -77,4 +79,20 @@ export function buildRecent(locale: Locale, limit = 4): RecentItem[] {
 
   items.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
   return items.slice(0, limit);
+}
+
+/** Upcoming presentation notices, ordered by the soonest start date. The
+ * browser adds live countdown labels and hides entries once their event ends. */
+export function buildUpcoming(locale: Locale): RecentItem[] {
+  return news
+    .filter((item) => item.kind === 'presentation')
+    .map((item) => ({
+      date: padDate(item.date),
+      endDate: item.endDate ? padDate(item.endDate) : undefined,
+      kind: item.kind,
+      title: item.title[locale],
+      detail: item.detail?.[locale],
+      href: item.href,
+    }))
+    .sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
 }
