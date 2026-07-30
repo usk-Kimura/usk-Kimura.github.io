@@ -214,8 +214,23 @@ const pubsByType = TYPE_ORDER
             </time>
             <span class="cv-body">
               <strong>{a.name[locale]}</strong>, {a.organization[locale]}
+              {a.kind === 'business-pitch' && (
+                <span class="cv-pub-flags"> [{locale === 'ja' ? 'ビジネスピッチ' : 'Business pitch'}]</span>
+              )}
               <br />
               <span class="cv-detail">{a.work[locale]}</span>
+              {a.context && (
+                <>
+                  <br />
+                  <span class="cv-detail">{a.context[locale]}</span>
+                </>
+              )}
+              {a.link && (
+                <>
+                  <br />
+                  <a class="cv-detail" href={a.link.href}>{a.link.label[locale]}</a>
+                </>
+              )}
             </span>
           </li>
         ))

@@ -6,6 +6,7 @@ export type NewsKind =
   | 'grant'
   | 'hpc'
   | 'fellowship'
+  | 'presentation'
   | 'talk'
   | 'media'
   | 'position'
@@ -59,4 +60,31 @@ export type NewsItem = {
  *   href: 'https://example.com/article',
  * },
  */
-export const news: NewsItem[] = [];
+export const news: NewsItem[] = [
+  {
+    date: '2026-09-14',
+    kind: 'presentation',
+    title: {
+      ja: '「異なる語彙を持つLLM間のOPD」を発表予定',
+      en: 'Upcoming presentation: “On-Policy Distillation (OPD) Between LLMs with Different Vocabularies”',
+    },
+    detail: {
+      ja: '情報処理学会 第269回自然言語処理研究発表会｜2026年9月14–16日・帯広＋オンライン',
+      en: 'IPSJ SIG-NL 269th Meeting · Sep. 14–16, 2026 · Obihiro + online',
+    },
+    href: 'https://www.ipsj.or.jp/kenkyukai/event/nl269.html',
+  },
+  {
+    date: '2026-08-17',
+    kind: 'presentation',
+    title: {
+      ja: '「異なる語彙を持つLLM間のOPD」を発表予定',
+      en: 'Upcoming presentation: “On-Policy Distillation (OPD) Between LLMs with Different Vocabularies”',
+    },
+    detail: {
+      ja: '第21回言語処理若手シンポジウム（YANS2026）｜2026年8月17–18日・仙台国際センター',
+      en: 'The 21st YANS Symposium (YANS 2026) · Aug. 17–18, 2026 · Sendai International Center',
+    },
+    href: 'https://yans.anlp.jp/entry/yans2026',
+  },
+];

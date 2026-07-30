@@ -71,6 +71,14 @@ export type AwardEntry = {
   name: LocalizedString;
   organization: LocalizedString;
   work: LocalizedString;
+  /** Distinguishes non-academic recognition such as a startup/business pitch. */
+  kind?: 'business-pitch';
+  /** Context explaining what was evaluated, when the work title alone is ambiguous. */
+  context?: LocalizedString;
+  link?: {
+    label: LocalizedString;
+    href: string;
+  };
   recipients: string;
 };
 

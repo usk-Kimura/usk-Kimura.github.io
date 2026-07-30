@@ -7,7 +7,16 @@ export const awards: AwardEntry[] = [
     organization: { ja: '株式会社マネーフォワード', en: 'Money Forward, Inc.' },
     work: {
       ja: '療育事業 DX 促進に向けたAI協調型療育支援システムの構築',
-      en: 'AI-Collaborative Therapeutic Support System for DX in Developmental Care',
+      en: 'AI-Collaborative Developmental Support System to Drive DX in Developmental Care Services',
+    },
+    kind: 'business-pitch',
+    context: {
+      ja: 'CognitiBaseとしてミライノピッチ2025（学生の部）で発表した、療育現場へのAI導入を提案するビジネスプラン',
+      en: 'CognitiBase business plan pitched in the Student Division of Miraino Pitch 2025, proposing how AI can be introduced into developmental care',
+    },
+    link: {
+      label: { ja: 'CognitiBase 事業サイト', en: 'CognitiBase venture site' },
+      href: 'https://www.cognitibase.com/',
     },
     recipients: '木村優介, 楠和馬',
   },
@@ -17,7 +26,16 @@ export const awards: AwardEntry[] = [
     organization: { ja: '近畿総合通信局', en: 'Kinki Bureau of Telecommunications' },
     work: {
       ja: '療育事業 DX 促進に向けたAI協調型療育支援システムの構築',
-      en: 'AI-Collaborative Therapeutic Support System for DX in Developmental Care',
+      en: 'AI-Collaborative Developmental Support System to Drive DX in Developmental Care Services',
+    },
+    kind: 'business-pitch',
+    context: {
+      ja: 'CognitiBaseとしてミライノピッチ2025（学生の部）で発表した、療育現場へのAI導入を提案するビジネスプラン',
+      en: 'CognitiBase business plan pitched in the Student Division of Miraino Pitch 2025, proposing how AI can be introduced into developmental care',
+    },
+    link: {
+      label: { ja: 'CognitiBase 事業サイト', en: 'CognitiBase venture site' },
+      href: 'https://www.cognitibase.com/',
     },
     recipients: '木村優介, 楠和馬',
   },
