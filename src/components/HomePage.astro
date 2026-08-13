@@ -1,0 +1,26 @@
+---
+import type { Locale } from '~/data/types';
+import Intro from './Intro.astro';
+import About from './About.astro';
+import Activity from './Activity.astro';
+import Research from './Research.astro';
+import FeaturedPublications from './FeaturedPublications.astro';
+import Awards from './Awards.astro';
+import Career from './Career.astro';
+import Grants from './Grants.astro';
+import Contact from './Contact.astro';
+
+/** The home page body, shared by every locale's route. */
+type Props = { locale: Locale };
+const { locale } = Astro.props;
+---
+
+<Intro locale={locale} />
+<About locale={locale} />
+<Activity locale={locale} />
+<Research locale={locale} />
+<FeaturedPublications locale={locale} />
+<Awards locale={locale} />
+<Career locale={locale} />
+<Grants locale={locale} />
+<Contact locale={locale} />

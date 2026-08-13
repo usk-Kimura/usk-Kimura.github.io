@@ -1,0 +1,20 @@
+---
+import type { GetStaticPaths } from 'astro';
+import type { Locale } from '~/data/types';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import HomePage from '~/components/HomePage.astro';
+import { prefixedLocales } from '~/i18n/locale';
+
+/** Every locale except the default one, which is served from `/`. */
+export const getStaticPaths = (() =>
+  prefixedLocales.map((locale) => ({
+    params: { locale },
+    props: { locale },
+  }))) satisfies GetStaticPaths;
+
+const { locale } = Astro.props as { locale: Locale };
+---
+
+<BaseLayout locale={locale} path="/">
+  <HomePage locale={locale} />
+</BaseLayout>

@@ -1,0 +1,52 @@
+---
+import type { Locale } from '~/data/types';
+import { isMachineTranslated, localeMeta } from '~/i18n/locale';
+import { t } from '~/i18n/ui';
+
+/**
+ * Disclosure banner for the machine-translated locales.
+ *
+ * Renders nothing for `ja` / `en`, which are author-written. It sits directly
+ * under the header — above the content it applies to — and links back to both
+ * source-language versions of the same page.
+ */
+type Props = {
+  locale: Locale;
+  paths: Record<Locale, string>;
+};
+
+const { locale, paths } = Astro.props;
+const s = t(locale);
+---
+
+{/* Deliberately NOT `no-print`: a printed or PDF-exported page must still
+    carry the disclosure that its text is machine-translated. */}
+{
+  isMachineTranslated(locale) && (
+    <aside class="border-b hairline" style="background: var(--bg-soft);">
+      <div class="container-page flex items-start gap-2.5 py-2.5">
+        <svg
+          class="mt-0.5 h-4 w-4 shrink-0 text-muted"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          aria-hidden="true"
+        >
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 11v5.5M12 7.75v.75" stroke-linecap="round" />
+        </svg>
+        <p class="text-xs leading-relaxed text-muted">
+          {s.translation.notice}{' '}{s.translation.noticeLink}{' '}
+          <a href={paths.ja} hreflang="ja" lang="ja" class="link">
+            {localeMeta.ja.label}
+          </a>
+          <span aria-hidden="true"> · </span>
+          <a href={paths.en} hreflang="en" lang="en" class="link">
+            {localeMeta.en.label}
+          </a>
+        </p>
+      </div>
+    </aside>
+  )
+}

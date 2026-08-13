@@ -1,0 +1,125 @@
+---
+import type { Locale } from '~/data/types';
+import { profile } from '~/data';
+import { t } from '~/i18n/ui';
+import { L, localizePath } from '~/i18n/locale';
+import Portrait from './Portrait.astro';
+
+type Props = { locale: Locale };
+const { locale } = Astro.props;
+const s = t(locale);
+
+const opp = profile.openToOpportunities;
+const name = L(profile.name, locale);
+const reading = L(profile.reading, locale);
+// Some locales transliterate the name identically to its reading; don't print
+// the same line twice.
+const showReading = reading !== name;
+const primaryEmail = profile.emails.find((e) => e.primary) ?? profile.emails[0];
+const profileLinks = profile.links.filter((l) => !l.social);
+
+const meta = [
+  { term: s.labels.position, value: L(profile.position, locale) },
+  { term: s.labels.affiliation, value: L(profile.affiliation, locale) },
+  { term: s.labels.degree, value: L(profile.degree, locale) },
+];
+
+// In-page contents. Cheaper than a persistent nav bar and just as useful on a
+// page this length.
+// Labels mirror the section headings exactly, so a reader can match a link to
+// the place it lands.
+const contents = [
+  { id: 'about', label: s.sections.about },
+  { id: 'activity', label: s.sections.activity },
+  { id: 'research', label: s.sections.research },
+  { id: 'publications', label: s.sections.selectedPublications },
+  { id: 'awards', label: s.sections.awards },
+  { id: 'career', label: `${s.sections.career} / ${s.sections.education}` },
+  { id: 'grants', label: s.sections.grants },
+  { id: 'contact', label: s.sections.contact },
+];
+---
+
+<section class="container-page pt-9 pb-10 md:pt-12">
+  <div class="flex items-start gap-4 sm:gap-6">
+    {
+      profile.portrait && (
+        <Portrait
+          locale={locale}
+          class="avatar h-[4.5rem] w-[4.5rem] shrink-0 sm:h-24 sm:w-24"
+          sizes="96px"
+        />
+      )
+    }
+    <div class="min-w-0 flex-1">
+      <h1 class="text-[1.75rem] font-bold leading-tight tracking-tight sm:text-4xl">{name}</h1>
+      {showReading && <p class="mt-1 text-sm text-muted">{reading}</p>}
+      <p class="mt-2.5 text-[0.9375rem] leading-relaxed text-muted">
+        {L(profile.tagline, locale)}
+      </p>
+    </div>
+  </div>
+
+  <dl class="divided mt-7 text-sm">
+    {
+      meta.map((row) => (
+        <div class="grid gap-x-4 py-2.5 sm:grid-cols-[5rem_minmax(0,1fr)]">
+          <dt class="text-muted">{row.term}</dt>
+          <dd>{row.value}</dd>
+        </div>
+      ))
+    }
+  </dl>
+
+  {
+    opp && (
+      <p
+        class="mt-6 border-l-2 pl-3.5 text-sm leading-relaxed"
+        style="border-color: var(--accent);"
+      >
+        <a href="#contact" class="font-medium text-[var(--accent-strong)]">
+          {s.opportunities.heading}
+        </a>
+        <span class="text-muted">
+          <span aria-hidden="true"> — </span>
+          {L(opp.startFrom, locale)}
+          <span aria-hidden="true"> · </span>
+          {L(opp.detail, locale)}
+        </span>
+      </p>
+    )
+  }
+
+  <ul class="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+    <li>
+      <a href={`mailto:${primaryEmail.address}`} class="link">{s.labels.email}</a>
+    </li>
+    {
+      profileLinks.map((l) => (
+        <li>
+          <a href={l.href} target="_blank" rel="noopener noreferrer" class="link">
+            {L(l.label, locale)}
+            <span class="sr-only">{s.labels.newTab}</span>
+          </a>
+        </li>
+      ))
+    }
+    <li>
+      <a href={localizePath('/cv/', locale)} class="link">{s.nav.cv}</a>
+    </li>
+  </ul>
+
+  <nav aria-label={s.labels.contents} class="mt-8 border-t hairline pt-4">
+    <ul class="flex flex-wrap gap-x-4 gap-y-1.5 text-sm">
+      {
+        contents.map((item) => (
+          <li>
+            <a href={`#${item.id}`} class="link-quiet">
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</section>

@@ -1,9 +1,19 @@
 ---
-import type { Locale } from '~/data/types';
-import { profile, career, education, awards, publications, grants, memberships, services } from '~/data';
+import type { Locale, SourceLocale } from '~/data/types';
+import {
+  profile,
+  career,
+  education,
+  awards,
+  publications,
+  grants,
+  memberships,
+  services,
+} from '~/data';
 import { highlightSelf } from '~/data/util';
 import { t } from '~/i18n/ui';
-import { formatRangeParts, formatYearMonth, isoYearMonth } from '~/i18n/format';
+import { L, localizePath } from '~/i18n/locale';
+import { formatAmountJpy, formatRangeParts, formatYearMonth, isoYearMonth } from '~/i18n/format';
 
 type Props = { locale: Locale };
 const { locale } = Astro.props;
@@ -15,106 +25,52 @@ const sortedPubs = [...publications].sort(
 
 const CJK = /[　-ヿ㐀-䶿一-鿿＀-￯]/;
 
-// Drop ORCID from the link list — it's already rendered explicitly above.
+// ORCID is rendered explicitly in the header block, so drop it from the links.
 const cvLinks = profile.links.filter(
   (l) => !l.social && !l.href.startsWith('https://orcid.org/'),
 );
 
-const headings = locale === 'ja'
-  ? {
-      title: '履歴書 (Curriculum Vitae)',
-      contact: '連絡先',
-      affiliation: '所属',
-      degree: '学位',
-      education: '学歴',
-      career: '経歴',
-      awards: '受賞',
-      publications: '論文',
-      grants: '研究支援',
-      services: '学術貢献活動',
-      memberships: '所属学協会',
-      researcherNumber: '研究者番号',
-      researchmapMemberId: 'researchmap会員ID',
-      back: '← トップへ戻る',
-      print: '印刷 / PDF として保存',
-      lastUpdated: 'researchmap 最終更新',
-    }
-  : {
-      title: 'Curriculum Vitae',
-      contact: 'Contact',
-      affiliation: 'Affiliation',
-      degree: 'Degree',
-      education: 'Education',
-      career: 'Career',
-      awards: 'Awards',
-      publications: 'Publications',
-      grants: 'Research Support',
-      services: 'Academic Service',
-      memberships: 'Professional Memberships',
-      researcherNumber: 'Researcher Number',
-      researchmapMemberId: 'researchmap Member ID',
-      back: '← Back to home',
-      print: 'Print / Save as PDF',
-      lastUpdated: 'researchmap last updated',
-    };
+const TYPE_ORDER = ['journal', 'international-conference', 'domestic-conference'] as const;
+const pubsByType = TYPE_ORDER.map((type) => ({
+  type,
+  items: sortedPubs.filter((p) => p.type === type),
+})).filter((g) => g.items.length > 0);
 
-const updated = profile.researchmapUpdated;
-const homePath = locale === 'ja' ? '/' : '/en/';
+function range(start: string, end?: string) {
+  return formatRangeParts(start, end, locale, s.labels.present);
+}
 
-// Group publications by type, with the conventional academic ordering.
-const TYPE_ORDER = [
-  'journal',
-  'international-conference',
-  'domestic-conference',
-] as const;
-const pubsByType = TYPE_ORDER
-  .map((type) => ({ type, items: sortedPubs.filter((p) => p.type === type) }))
-  .filter((g) => g.items.length > 0);
+const name = L(profile.name, locale);
+const reading = L(profile.reading, locale);
 ---
 
-<div class="cv-toolbar print:hidden">
-  <div class="container-page py-4 flex flex-wrap gap-2 items-center">
-    <a
-      href={homePath}
-      class="text-sm text-muted hover:text-[var(--fg)] underline-offset-4 hover:underline"
-    >
-      {headings.back}
+<div class="cv-toolbar no-print">
+  <div class="container-wide flex flex-wrap items-center gap-2 py-3">
+    <a href={localizePath('/', locale)} class="link-quiet text-sm">
+      <span aria-hidden="true">←</span>
+      {s.actions.backHome}
     </a>
-    <button
-      type="button"
-      id="cv-print-btn"
-      class="ml-auto text-sm px-3 py-1.5 rounded-md border hairline hover:bg-[var(--accent-soft)] transition-colors"
-    >
-      🖨 {headings.print}
+    <button type="button" id="cv-print" class="btn ml-auto h-8 min-h-8 text-xs">
+      {s.labels.print}
     </button>
   </div>
 </div>
 
-<article class="cv container-page py-8 print:py-0">
+<article class="cv container-wide py-8 print:py-0">
   <header class="cv-header">
-    <div class="flex-1">
-      <h1 class="cv-name font-serif">{profile.name[locale]}</h1>
-      <p class="cv-reading">{profile.reading[locale]}</p>
-      <p class="cv-tagline">{profile.tagline[locale]}</p>
+    <div class="min-w-0 flex-1">
+      <h1 class="cv-name">{name}</h1>
+      {reading !== name && <p class="cv-reading">{reading}</p>}
+      <p class="cv-tagline">{L(profile.tagline, locale)}</p>
     </div>
     {
       profile.portrait && (
-        <picture class="cv-portrait print:block">
-          <source
-            type="image/avif"
-            srcset="/portrait-480.avif 480w, /portrait-640.avif 640w"
-            sizes="120px"
-          />
-          <source
-            type="image/webp"
-            srcset="/portrait-480.webp 480w, /portrait-640.webp 640w"
-            sizes="120px"
-          />
+        <picture class="cv-portrait">
+          <source type="image/avif" srcset="/portrait-480.avif 480w" sizes="120px" />
+          <source type="image/webp" srcset="/portrait-480.webp 480w" sizes="120px" />
           <img
-            src="/portrait-640.jpg"
-            srcset="/portrait-480.jpg 480w, /portrait-640.jpg 640w"
-            sizes="120px"
-            alt={profile.portrait.alt[locale]}
+            src="/portrait-480.jpg"
+            alt={L(profile.portrait.alt, locale)}
             width="120"
             height="120"
             loading="eager"
@@ -125,23 +81,25 @@ const pubsByType = TYPE_ORDER
   </header>
 
   <dl class="cv-meta">
-    <dt>{headings.affiliation}</dt>
-    <dd>{profile.affiliation[locale]} — {profile.position[locale]}</dd>
-    <dt>{headings.degree}</dt>
-    <dd>{profile.degree[locale]}</dd>
-    <dt>{headings.contact}</dt>
+    <dt>{s.labels.affiliation}</dt>
+    <dd>{L(profile.affiliation, locale)} — {L(profile.position, locale)}</dd>
+    <dt>{s.labels.degree}</dt>
+    <dd>{L(profile.degree, locale)}</dd>
+    <dt>{s.labels.email}</dt>
     <dd>
-      {profile.emails.map((e, i) => (
-        <span>
-          {i > 0 && ' / '}
-          <a href={`mailto:${e.address}`}>{e.address}</a>
-          <span class="cv-meta-note"> ({e.label[locale]})</span>
-        </span>
-      ))}
+      {
+        profile.emails.map((e, i) => (
+          <span>
+            {i > 0 && ' / '}
+            <a href={`mailto:${e.address}`}>{e.address}</a>
+            <span class="cv-note"> ({L(e.label, locale)})</span>
+          </span>
+        ))
+      }
     </dd>
     <dt>ORCID</dt>
     <dd><a href={`https://orcid.org/${profile.orcid}`}>{profile.orcid}</a></dd>
-    <dt>{headings.researcherNumber}</dt>
+    <dt>{s.cv.researcherNumber}</dt>
     <dd>{profile.identifiers.researcherNumber}</dd>
     <dt>J-GLOBAL ID</dt>
     <dd>
@@ -149,31 +107,33 @@ const pubsByType = TYPE_ORDER
         {profile.identifiers.jGlobalId}
       </a>
     </dd>
-    <dt>{headings.researchmapMemberId}</dt>
+    <dt>{s.cv.researchmapMemberId}</dt>
     <dd>{profile.identifiers.researchmapMemberId}</dd>
     {
       cvLinks.map((l) => (
         <Fragment>
-          <dt>{l.label[locale]}</dt>
-          <dd><a href={l.href}>{l.href}</a></dd>
+          <dt>{L(l.label, locale)}</dt>
+          <dd>
+            <a href={l.href}>{l.href}</a>
+          </dd>
         </Fragment>
       ))
     }
   </dl>
 
   <section class="cv-section">
-    <h2>{headings.education}</h2>
+    <h2>{s.sections.education}</h2>
     <ol class="cv-list">
       {
         education.map((e) => {
-          const parts = formatRangeParts(e.start, e.end, locale, s.labels.present);
+          const parts = range(e.start, e.end);
           return (
             <li>
-              <span class="cv-date tabular-nums">
+              <span class="cv-date">
                 {parts.start} – {parts.end}
               </span>
-              <span class="cv-body">
-                <strong>{e.program[locale]}</strong>, {e.school[locale]}
+              <span>
+                <strong>{L(e.program, locale)}</strong>, {L(e.school, locale)}
               </span>
             </li>
           );
@@ -183,18 +143,18 @@ const pubsByType = TYPE_ORDER
   </section>
 
   <section class="cv-section">
-    <h2>{headings.career}</h2>
+    <h2>{s.sections.career}</h2>
     <ol class="cv-list">
       {
         career.map((c) => {
-          const parts = formatRangeParts(c.start, c.end, locale, s.labels.present);
+          const parts = range(c.start, c.end);
           return (
             <li>
-              <span class="cv-date tabular-nums">
+              <span class="cv-date">
                 {parts.start} – {parts.end}
               </span>
-              <span class="cv-body">
-                <strong>{c.role[locale]}</strong>, {c.organization[locale]}
+              <span>
+                <strong>{L(c.role, locale)}</strong>, {L(c.organization, locale)}
               </span>
             </li>
           );
@@ -204,32 +164,23 @@ const pubsByType = TYPE_ORDER
   </section>
 
   <section class="cv-section">
-    <h2>{headings.awards}</h2>
+    <h2>{s.sections.awards}</h2>
     <ol class="cv-list">
       {
         awards.map((a) => (
           <li>
-            <time class="cv-date tabular-nums" datetime={isoYearMonth(a.date)}>
+            <time class="cv-date" datetime={isoYearMonth(a.date)}>
               {formatYearMonth(a.date, locale)}
             </time>
-            <span class="cv-body">
-              <strong>{a.name[locale]}</strong>, {a.organization[locale]}
-              {a.kind === 'business-pitch' && (
-                <span class="cv-pub-flags"> [{locale === 'ja' ? 'ビジネスピッチ' : 'Business pitch'}]</span>
-              )}
+            <span>
+              <strong>{L(a.name, locale)}</strong>, {L(a.organization, locale)}
               <br />
-              <span class="cv-detail">{a.work[locale]}</span>
+              <span class="cv-note">{L(a.work, locale)}</span>
               {a.context && (
-                <>
+                <Fragment>
                   <br />
-                  <span class="cv-detail">{a.context[locale]}</span>
-                </>
-              )}
-              {a.link && (
-                <>
-                  <br />
-                  <a class="cv-detail" href={a.link.href}>{a.link.label[locale]}</a>
-                </>
+                  <span class="cv-note">{L(a.context, locale)}</span>
+                </Fragment>
               )}
             </span>
           </li>
@@ -239,17 +190,24 @@ const pubsByType = TYPE_ORDER
   </section>
 
   <section class="cv-section">
-    <h2>{headings.publications} <span class="cv-count">({sortedPubs.length})</span></h2>
+    <h2>
+      {s.sections.publications} <span class="cv-note">({sortedPubs.length})</span>
+    </h2>
     {
       pubsByType.map((group) => (
         <div class="cv-pub-group">
           <h3>{s.pubTypes[group.type]}</h3>
           <ol class="cv-pubs">
             {group.items.map((pub) => {
-              const titleLang: Locale = pub.titleLang ?? (CJK.test(pub.title) ? 'ja' : 'en');
-              const venueText = locale === 'en' && pub.venueEn ? pub.venueEn : pub.venue;
-              const venueLang: Locale =
-                locale === 'en' && pub.venueEn ? 'en' : CJK.test(pub.venue) ? 'ja' : 'en';
+              const titleLang: SourceLocale =
+                pub.titleLang ?? (CJK.test(pub.title) ? 'ja' : 'en');
+              const useVenueEn = locale !== 'ja' && Boolean(pub.venueEn);
+              const venueText = useVenueEn ? pub.venueEn! : pub.venue;
+              const venueLang: SourceLocale = useVenueEn
+                ? 'en'
+                : CJK.test(pub.venue)
+                  ? 'ja'
+                  : 'en';
               const publicationDate = pub.month
                 ? `${pub.year}-${pub.month}${pub.day ? `-${pub.day}` : ''}`
                 : String(pub.year);
@@ -258,14 +216,16 @@ const pubsByType = TYPE_ORDER
                 : String(pub.year);
               return (
                 <li>
-                  <span class="cv-pub-authors" set:html={highlightSelf(pub.authors)} />
+                  <span set:html={highlightSelf(pub.authors)} />
                   {'. '}
-                  <span class="cv-pub-title" lang={titleLang}>{pub.title}</span>
+                  <span class="cv-pub-title" lang={titleLang}>
+                    {pub.title}
+                  </span>
                   {'. '}
-                  <em class="cv-pub-venue" lang={venueLang}>{venueText}</em>
+                  <em lang={venueLang}>{venueText}</em>
                   {pub.pages ? `, ${pub.pages}` : ''}, {dateLabel}.
                   {pub.flags && pub.flags.length > 0 && (
-                    <span class="cv-pub-flags">
+                    <span class="cv-note">
                       {pub.flags.map((f) => ` [${s.flags[f]}]`).join('')}
                     </span>
                   )}
@@ -279,22 +239,26 @@ const pubsByType = TYPE_ORDER
   </section>
 
   <section class="cv-section">
-    <h2>{headings.grants}</h2>
+    <h2>{s.sections.grants}</h2>
     <ol class="cv-list">
       {
         grants.map((g) => {
-          const parts = formatRangeParts(g.start, g.end, locale, s.labels.present);
+          const parts = range(g.start, g.end);
+          const facts = [
+            g.number ? `${s.labels.projectNumber} ${g.number}` : null,
+            g.amountJpy ? `${s.labels.amount} ${formatAmountJpy(g.amountJpy, locale)}` : null,
+            g.role ? L(g.role, locale) : null,
+          ].filter(Boolean) as string[];
           return (
             <li>
-              <span class="cv-date tabular-nums">
+              <span class="cv-date">
                 {parts.start} – {parts.end}
               </span>
-              <span class="cv-body">
-                <strong>{g.title[locale]}</strong>
+              <span>
+                <strong>{L(g.title, locale)}</strong>
                 <br />
-                <span class="cv-detail">{g.funder[locale]}</span>
-                {g.number && <span class="cv-pub-flags"> [{g.number}]</span>}
-                {g.role && <span class="cv-pub-flags"> [{g.role[locale]}]</span>}
+                <span class="cv-note">{L(g.funder, locale)}</span>
+                {facts.length > 0 && <span class="cv-note"> [{facts.join(' / ')}]</span>}
               </span>
             </li>
           );
@@ -304,22 +268,22 @@ const pubsByType = TYPE_ORDER
   </section>
 
   <section class="cv-section">
-    <h2>{headings.services}</h2>
+    <h2>{s.sections.services}</h2>
     <ol class="cv-list">
       {
         services.map((sv) => {
-          const parts = formatRangeParts(sv.start, sv.end, locale, s.labels.present);
+          const parts = range(sv.start, sv.end);
           return (
             <li>
-              <span class="cv-date tabular-nums">
+              <span class="cv-date">
                 {parts.start} – {parts.end}
               </span>
-              <span class="cv-body">
-                <strong>{sv.title[locale]}</strong>
+              <span>
+                <strong>{L(sv.title, locale)}</strong>
                 {sv.organization && (
                   <Fragment>
                     <br />
-                    <span class="cv-detail">{sv.organization[locale]}</span>
+                    <span class="cv-note">{L(sv.organization, locale)}</span>
                   </Fragment>
                 )}
               </span>
@@ -331,23 +295,18 @@ const pubsByType = TYPE_ORDER
   </section>
 
   <section class="cv-section">
-    <h2>{headings.memberships}</h2>
+    <h2>{s.sections.memberships}</h2>
     <ol class="cv-list">
       {
-        memberships.map((membership) => {
-          const parts = formatRangeParts(
-            membership.start,
-            membership.end,
-            locale,
-            s.labels.present,
-          );
+        memberships.map((m) => {
+          const parts = range(m.start, m.end);
           return (
             <li>
-              <span class="cv-date tabular-nums">
+              <span class="cv-date">
                 {parts.start} – {parts.end}
               </span>
-              <span class="cv-body">
-                <strong>{membership.organization[locale]}</strong>
+              <span>
+                <strong>{L(m.organization, locale)}</strong>
               </span>
             </li>
           );
@@ -357,31 +316,29 @@ const pubsByType = TYPE_ORDER
   </section>
 
   <footer class="cv-footer">
-    <p>{headings.lastUpdated}: <time datetime={updated}>{updated}</time></p>
+    <p>
+      {s.labels.researchmapUpdated}:
+      <time datetime={profile.researchmapUpdated}>{profile.researchmapUpdated}</time>
+    </p>
   </footer>
 </article>
 
 <script>
-  document.getElementById('cv-print-btn')?.addEventListener('click', () => window.print());
+  document.getElementById('cv-print')?.addEventListener('click', () => window.print());
 </script>
 
 <style>
   .cv {
-    --cv-fg: var(--fg);
-    --cv-muted: var(--fg-muted);
-    --cv-accent: var(--accent);
-    --cv-border: var(--border);
-    max-width: 56rem;
-    line-height: 1.55;
+    line-height: 1.6;
   }
 
   .cv-toolbar {
-    border-bottom: 1px solid var(--border);
-    background: color-mix(in oklch, var(--bg) 78%, transparent);
     position: sticky;
-    top: var(--site-header-offset);
+    top: var(--header-h);
     z-index: 20;
-    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--border);
+    background: color-mix(in oklch, var(--bg) 90%, transparent);
+    backdrop-filter: blur(8px);
   }
 
   .cv-header {
@@ -389,106 +346,95 @@ const pubsByType = TYPE_ORDER
     align-items: flex-start;
     gap: 1.5rem;
     padding-bottom: 1.25rem;
-    border-bottom: 2px solid var(--cv-border);
+    border-bottom: 1px solid var(--border);
   }
 
   .cv-name {
-    font-size: clamp(1.875rem, 3.5vw, 2.5rem);
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    line-height: 1.1;
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    line-height: 1.15;
   }
-
   .cv-reading {
-    margin-top: 0.25rem;
+    margin-top: 0.2rem;
     font-size: 0.875rem;
-    color: var(--cv-muted);
+    color: var(--fg-muted);
   }
-
   .cv-tagline {
     margin-top: 0.5rem;
     font-size: 0.9375rem;
-    color: var(--cv-muted);
+    color: var(--fg-muted);
   }
 
   .cv-portrait {
     flex-shrink: 0;
     width: 96px;
     height: 96px;
-    border-radius: 9999px;
     overflow: hidden;
-    border: 1px solid var(--cv-border);
+    border-radius: 9999px;
+    border: 1px solid var(--border);
   }
   .cv-portrait img {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
   }
 
   .cv-meta {
     margin-top: 1.25rem;
     display: grid;
-    grid-template-columns: 7rem 1fr;
-    gap: 0.25rem 1rem;
+    grid-template-columns: 8rem 1fr;
+    gap: 0.2rem 1rem;
     font-size: 0.875rem;
   }
   .cv-meta dt {
-    color: var(--cv-muted);
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding-top: 0.15rem;
+    color: var(--fg-muted);
+    padding-top: 0.1rem;
   }
   .cv-meta dd {
     overflow-wrap: anywhere;
   }
-  .cv-meta dd a {
-    color: inherit;
+  .cv-meta a {
     text-decoration: underline;
     text-underline-offset: 0.2em;
-    text-decoration-color: var(--cv-accent);
+    text-decoration-color: var(--border-strong);
   }
-  .cv-meta-note {
-    color: var(--cv-muted);
-    font-size: 0.75rem;
+
+  .cv-note {
+    color: var(--fg-muted);
+    font-size: 0.8125rem;
   }
 
   .cv-section {
     margin-top: 2rem;
   }
-  .cv-section > h2,
-  .cv-pub-group > h3 {
-    break-after: avoid-page;
-    page-break-after: avoid;
-  }
   .cv-section > h2 {
-    font-family: var(--font-serif);
-    font-size: 1.25rem;
+    font-size: 1.0625rem;
     font-weight: 600;
     padding-bottom: 0.3rem;
-    margin-bottom: 0.75rem;
-    border-bottom: 1px solid var(--cv-border);
+    margin-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+    break-after: avoid-page;
+  }
+  .cv-pub-group > h3 {
+    margin: 1rem 0 0.4rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--fg-muted);
+    break-after: avoid-page;
+  }
+
+  .cv-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
   }
   .cv-list > li,
   .cv-pubs > li,
   .cv-pub-group {
     break-inside: avoid-page;
-    page-break-inside: avoid;
-  }
-  .cv-count {
-    color: var(--cv-muted);
-    font-size: 0.875rem;
-    font-weight: 400;
-  }
-
-  .cv-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
   }
   .cv-list > li {
     display: grid;
@@ -497,52 +443,31 @@ const pubsByType = TYPE_ORDER
     font-size: 0.9rem;
   }
   .cv-date {
-    color: var(--cv-muted);
-    font-family: var(--font-mono);
+    color: var(--fg-muted);
     font-size: 0.8125rem;
-    padding-top: 0.05rem;
-  }
-  .cv-detail {
-    color: var(--cv-muted);
+    font-variant-numeric: tabular-nums;
   }
 
-  .cv-pub-group {
-    margin-top: 0.75rem;
-  }
-  .cv-pub-group h3 {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--cv-accent);
-    font-family: var(--font-mono);
-    margin: 1rem 0 0.5rem;
-  }
   .cv-pubs {
     list-style: decimal;
-    padding-left: 1.5rem;
-    margin: 0;
+    padding-left: 1.4rem;
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
   }
   .cv-pubs > li {
     font-size: 0.875rem;
-    line-height: 1.55;
+    line-height: 1.6;
   }
   .cv-pub-title {
     font-weight: 500;
   }
-  .cv-pub-flags {
-    color: var(--cv-muted);
-    font-size: 0.75rem;
-    font-family: var(--font-mono);
-  }
 
   .cv-footer {
-    margin-top: 3rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--cv-border);
-    color: var(--cv-muted);
+    margin-top: 2.5rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--border);
+    color: var(--fg-muted);
     font-size: 0.75rem;
   }
 
@@ -551,67 +476,78 @@ const pubsByType = TYPE_ORDER
       gap: 1rem;
     }
     .cv-portrait {
-      width: 80px;
-      height: 80px;
+      width: 76px;
+      height: 76px;
     }
-    .cv-meta {
+    .cv-meta,
+    .cv-list > li {
       grid-template-columns: 1fr;
       gap: 0.15rem;
     }
     .cv-meta dt {
-      margin-top: 0.65rem;
+      margin-top: 0.6rem;
       padding-top: 0;
     }
     .cv-meta dt:first-child {
       margin-top: 0;
     }
-    .cv-list > li {
-      grid-template-columns: 1fr;
-      gap: 0.15rem;
-    }
-    .cv-date {
-      padding-top: 0;
-    }
   }
 
-  /* --- Print --- */
   @media print {
     @page {
       size: A4;
       margin: 16mm 14mm;
     }
-
     :root {
       --bg: #ffffff;
-      --bg-elev: #ffffff;
       --fg: #111111;
       --fg-muted: #555555;
       --border: #cccccc;
-      --accent: #1f4f5c;
+      --border-strong: #999999;
     }
-
     body {
       background: #ffffff !important;
     }
-
     .cv {
       max-width: none;
       padding: 0 !important;
       font-size: 10pt;
       line-height: 1.45;
     }
-    .cv-name { font-size: 22pt; }
-    .cv-tagline { font-size: 11pt; }
-    .cv-meta { font-size: 9pt; grid-template-columns: 5.5rem 1fr; }
-    .cv-section > h2 { font-size: 13pt; margin-top: 1.2rem; }
-    .cv-list { gap: 0.3rem; }
-    .cv-list > li { font-size: 9.5pt; grid-template-columns: 7rem 1fr; }
-    .cv-pubs > li { font-size: 9pt; }
-    .cv-pub-group h3 { font-size: 8pt; }
-    .cv-date { font-size: 9pt; }
-
-    a { color: inherit; text-decoration: none; }
-
-    .cv-portrait { width: 72px; height: 72px; }
+    .cv-name {
+      font-size: 21pt;
+    }
+    .cv-tagline {
+      font-size: 10.5pt;
+    }
+    .cv-meta {
+      font-size: 9pt;
+      grid-template-columns: 6rem 1fr;
+    }
+    .cv-section > h2 {
+      font-size: 12.5pt;
+      margin-top: 1.1rem;
+    }
+    .cv-list {
+      gap: 0.3rem;
+    }
+    .cv-list > li {
+      font-size: 9.5pt;
+      grid-template-columns: 7rem 1fr;
+    }
+    .cv-pubs > li {
+      font-size: 9pt;
+    }
+    .cv-date {
+      font-size: 9pt;
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .cv-portrait {
+      width: 72px;
+      height: 72px;
+    }
   }
 </style>

@@ -1,0 +1,20 @@
+---
+import type { GetStaticPaths } from 'astro';
+import type { Locale } from '~/data/types';
+import { publications } from '~/data';
+import { pubSlug } from '~/data/util';
+import { prefixedLocales } from '~/i18n/locale';
+import PublicationDetail from '~/components/PublicationDetail.astro';
+
+export const getStaticPaths = (() =>
+  prefixedLocales.flatMap((locale) =>
+    publications.map((pub) => ({
+      params: { locale, slug: pubSlug(pub) },
+      props: { locale, pub },
+    })),
+  )) satisfies GetStaticPaths;
+
+const { locale, pub } = Astro.props as { locale: Locale; pub: (typeof publications)[number] };
+---
+
+<PublicationDetail pub={pub} locale={locale} />

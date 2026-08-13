@@ -3,6 +3,7 @@ import type { Locale } from '~/data/types';
 import { profile } from '~/data';
 import { researchAgenda } from '~/data/research';
 import { t } from '~/i18n/ui';
+import { L } from '~/i18n/locale';
 import Section from './Section.astro';
 
 type Props = { locale: Locale };
@@ -10,49 +11,33 @@ const { locale } = Astro.props;
 const s = t(locale);
 ---
 
-<Section id="research" eyebrow={locale === 'ja' ? '研究テーマ' : 'RESEARCH FOCUS'} title={s.sections.research}>
-  <div class="grid gap-5 md:grid-cols-2 mb-10">
+<Section id="research" title={s.sections.research}>
+  <div class="divided">
     {
-      researchAgenda.map((item, i) => (
-        <article
-          class:list={[
-            'surface p-6 flex flex-col',
-            i === 0 && 'md:col-span-2 border-l-4 border-l-[var(--accent)]',
-          ]}
-        >
-          <span class="self-start text-xs font-mono tracking-wide px-2.5 py-1 rounded-full border hairline text-[var(--accent)] mb-4">
-            {item.tag[locale]}
-          </span>
-          <h3 class="font-serif text-lg leading-snug mb-2">{item.title[locale]}</h3>
-          <p class="text-[0.9375rem] text-muted leading-[1.8]">{item.description[locale]}</p>
+      researchAgenda.map((item) => (
+        <article class="py-5 first:pt-0">
+          <p class="tag">{L(item.tag, locale)}</p>
+          <h3 class="mt-1 leading-snug font-semibold">{L(item.title, locale)}</h3>
+          <p class="mt-1.5 text-[0.9375rem] leading-[1.9] text-muted">
+            {L(item.description, locale)}
+          </p>
         </article>
       ))
     }
   </div>
 
-  <div class="grid gap-10 md:grid-cols-2">
+  <dl class="mt-8 space-y-4 text-sm">
     <div>
-      <h3 class="font-serif text-xl mb-4">{s.sections.keywords}</h3>
-      <ul class="flex flex-wrap gap-2">
-        {
-          profile.keywords.map((k) => (
-            <li class="px-3 py-1.5 rounded-full surface text-sm">{k[locale]}</li>
-          ))
-        }
-      </ul>
+      <dt class="text-muted">{s.sections.keywords}</dt>
+      <dd class="mt-1 leading-relaxed">
+        {profile.keywords.map((k) => L(k, locale)).join(' · ')}
+      </dd>
     </div>
     <div>
-      <h3 class="font-serif text-xl mb-4">{s.sections.fields}</h3>
-      <ul class="space-y-2">
-        {
-          profile.fields.map((f) => (
-            <li class="flex items-start gap-3 text-sm">
-              <span class="mt-1.5 inline-block w-1.5 h-1.5 rounded-full bg-[var(--accent)]" aria-hidden="true" />
-              <span>{f[locale]}</span>
-            </li>
-          ))
-        }
-      </ul>
+      <dt class="text-muted">{s.sections.fields}</dt>
+      <dd class="mt-1 leading-relaxed">
+        {profile.fields.map((f) => L(f, locale)).join(' · ')}
+      </dd>
     </div>
-  </div>
+  </dl>
 </Section>

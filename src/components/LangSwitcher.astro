@@ -1,0 +1,78 @@
+---
+import type { Locale } from '~/data/types';
+import { locales, localeMeta } from '~/i18n/locale';
+import { t } from '~/i18n/ui';
+
+type Props = {
+  locale: Locale;
+  /** This same page in every locale. */
+  paths: Record<Locale, string>;
+};
+
+const { locale, paths } = Astro.props;
+const s = t(locale);
+---
+
+<details class="lang-menu relative" data-lang-menu>
+  {/* No aria-label here: it would replace the accessible name and hide which
+      language is currently active. The sr-only span prefixes it instead. */}
+  <summary
+    class="inline-flex h-9 items-center gap-1.5 rounded-md border hairline px-2.5 text-sm whitespace-nowrap hover:bg-[var(--bg-soft)]"
+    title={s.labels.chooseLanguage}
+  >
+    <span class="sr-only">{s.labels.chooseLanguage}:</span>
+    <svg
+      class="h-4 w-4 shrink-0 text-muted"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.6"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="9" />
+      <path d="M3 12h18M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18" />
+    </svg>
+    <span>{localeMeta[locale].short}</span>
+  </summary>
+
+  {/* No `overflow-hidden`: it would clip the focus ring of the links inside. */}
+  <ul
+    class="absolute right-0 top-full z-50 mt-1 min-w-40 rounded-md border hairline py-1 shadow-lg"
+    style="background: var(--bg);"
+  >
+    {
+      locales.map((l) => (
+        <li>
+          <a
+            href={paths[l]}
+            hreflang={localeMeta[l].lang}
+            lang={localeMeta[l].lang}
+            aria-current={l === locale ? 'true' : undefined}
+            class:list={[
+              'flex items-center justify-between gap-3 px-3 py-2 text-sm hover:bg-[var(--bg-soft)]',
+              l === locale && 'font-semibold text-[var(--accent-strong)]',
+            ]}
+          >
+            {localeMeta[l].label}
+            {l === locale && <span aria-hidden="true">✓</span>}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</details>
+
+<script>
+  const menu = document.querySelector<HTMLDetailsElement>('[data-lang-menu]');
+
+  document.addEventListener('click', (event) => {
+    if (!menu?.open) return;
+    if (!menu.contains(event.target as Node)) menu.open = false;
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape' || !menu?.open) return;
+    menu.open = false;
+    menu.querySelector('summary')?.focus();
+  });
+</script>

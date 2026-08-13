@@ -3,111 +3,136 @@ import '~/styles/global.css';
 import type { Locale } from '~/data/types';
 import { profile } from '~/data';
 import { siteGraph } from '~/data/jsonld';
+import { L, alternatePaths, locales, localeMeta } from '~/i18n/locale';
+import { t } from '~/i18n/ui';
 import Header from '~/components/Header.astro';
 import Footer from '~/components/Footer.astro';
+import TranslationNotice from '~/components/TranslationNotice.astro';
 import HeadIntegrations from '~/components/HeadIntegrations.astro';
 
 type Props = {
   locale: Locale;
   title?: string;
   description?: string;
-  /** Hide section-anchor nav (e.g. on the CV page where #about etc. don't exist). */
-  slim?: boolean;
-  /** Path of the JA-equivalent of this page (for hreflang + language switch). */
-  alternateJa?: string;
-  /** Path of the EN-equivalent of this page (for hreflang + language switch). */
-  alternateEn?: string;
+  /**
+   * Locale-neutral path of this page (`/`, `/cv/`, `/publications/`, …).
+   * Every locale's URL, and therefore every `hreflang`, is derived from it.
+   */
+  path?: string;
+  /** `og:type`. Publication detail pages are articles, everything else is a profile. */
+  ogType?: 'profile' | 'article';
+  /** Use the wider document measure (the CV is a document, not a reading page). */
+  wide?: boolean;
+  /** Suppress indexing, canonical, and hreflang — for the 404 page, which has
+   *  no canonical URL of its own and is served for every unmatched path. */
+  noindex?: boolean;
 };
 
 const {
   locale,
   title,
   description,
-  slim = false,
-  alternateJa = '/',
-  alternateEn = '/en/',
+  path = '/',
+  ogType = 'profile',
+  wide = false,
+  noindex = false,
 } = Astro.props;
+const s = t(locale);
+const meta = localeMeta[locale];
+const paths = alternatePaths(path);
 
-const pageTitle = title
-  ? `${title} — ${profile.name[locale]}`
-  : `${profile.name[locale]} | ${profile.tagline[locale]}`;
-
-const pageDesc = description ?? profile.bio[locale];
+const name = L(profile.name, locale);
+const pageTitle = title ? `${title} — ${name}` : `${name} | ${L(profile.tagline, locale)}`;
+const pageDesc = description ?? L(profile.bio, locale);
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
 const ogImageUrl = new URL('/og-image.png', Astro.site).toString();
-const altJaUrl = new URL(alternateJa, Astro.site).toString();
-const altEnUrl = new URL(alternateEn, Astro.site).toString();
-const otherLocalePath = locale === 'ja' ? alternateEn : alternateJa;
+const ogImageAlt = `${name} — ${L(profile.tagline, locale)}`;
 ---
 
 <!doctype html>
-<html lang={locale === 'ja' ? 'ja' : 'en'}>
+<html lang={meta.lang} id="top">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
     <title>{pageTitle}</title>
     <meta name="description" content={pageDesc} />
-    <link rel="canonical" href={canonicalUrl} />
+    {noindex ? <meta name="robots" content="noindex, follow" /> : <link rel="canonical" href={canonicalUrl} />}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <meta name="theme-color" content="#0f6670" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0f1724" media="(prefers-color-scheme: dark)" />
+    {/* Static fallbacks; ThemeToggle rewrites these when the theme is switched. */}
+    <meta id="theme-color-light" name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta id="theme-color-dark" name="theme-color" content="#15171b" media="(prefers-color-scheme: dark)" />
 
     <HeadIntegrations />
 
-    <!-- Language alternates -->
-    <link rel="alternate" hreflang="ja" href={altJaUrl} />
-    <link rel="alternate" hreflang="en" href={altEnUrl} />
-    <link rel="alternate" hreflang="x-default" href={altJaUrl} />
+    {/* Language alternates — Japanese is the authored default. */}
+    {
+      !noindex &&
+        locales.map((l) => (
+          <link
+            rel="alternate"
+            hreflang={localeMeta[l].lang}
+            href={new URL(paths[l], Astro.site).toString()}
+          />
+        ))
+    }
+    {
+      !noindex && (
+        <link rel="alternate" hreflang="x-default" href={new URL(paths.ja, Astro.site).toString()} />
+      )
+    }
 
-    <!-- Open Graph -->
-    <meta property="og:type" content="profile" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDesc} />
     <meta property="og:url" content={canonicalUrl} />
-    <meta property="og:locale" content={locale === 'ja' ? 'ja_JP' : 'en_US'} />
+    <meta property="og:locale" content={meta.ogLocale} />
     <meta property="og:image" content={ogImageUrl} />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={`${profile.name.en} — researcher portfolio`} />
+    <meta property="og:image:alt" content={ogImageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={pageDesc} />
     <meta name="twitter:image" content={ogImageUrl} />
-    <meta name="twitter:image:alt" content={`${profile.name.en} — researcher portfolio`} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
 
-    <!-- Theme bootstrap: read pref before paint to avoid flash -->
+    {/* Read the stored theme before first paint so there is no flash, and mark
+        the document as scripted so JS-only controls can reveal themselves. */}
     <script is:inline>
       (() => {
+        document.documentElement.classList.add('js');
         try {
           const saved = localStorage.getItem('theme');
-          if (saved === 'light' || saved === 'dark') {
-            document.documentElement.dataset.theme = saved;
-          }
+          if (saved === 'light' || saved === 'dark') document.documentElement.dataset.theme = saved;
         } catch {
           /* ignore */
         }
       })();
     </script>
 
-    <!-- JSON-LD: Person + WebSite graph -->
     <script
       is:inline
       type="application/ld+json"
       set:html={JSON.stringify(siteGraph(locale, Astro.site!))}
     />
+
+    {/* Page-specific head content (citation meta tags, extra JSON-LD, …). */}
+    <slot name="head" />
   </head>
-  <body class="font-sans antialiased">
+  <body>
     <a
       href="#main"
-      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2 focus:bg-[var(--bg-elev)] focus:text-[var(--fg)] focus:border focus:hairline focus:rounded-md"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-md focus:border focus:hairline focus:px-4 focus:py-2"
+      style="background: var(--bg);"
     >
-      {locale === 'ja' ? 'メインコンテンツへ' : 'Skip to main content'}
+      {s.labels.skipToContent}
     </a>
 
-    <Header locale={locale} hideSectionNav={slim} otherLocalePath={otherLocalePath} />
+    <Header locale={locale} paths={paths} wide={wide} />
+    <TranslationNotice locale={locale} paths={paths} />
 
     <main id="main">
       <slot />

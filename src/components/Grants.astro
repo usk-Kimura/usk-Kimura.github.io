@@ -2,112 +2,126 @@
 import type { Locale } from '~/data/types';
 import { grants, memberships, services } from '~/data';
 import { t } from '~/i18n/ui';
-import { formatRangeParts, isoYearMonth } from '~/i18n/format';
+import { L } from '~/i18n/locale';
+import { formatAmountJpy, formatRangeParts, isoYearMonth } from '~/i18n/format';
 import Section from './Section.astro';
 
 type Props = { locale: Locale };
 const { locale } = Astro.props;
 const s = t(locale);
+
+/** `2026.04 – 2027.03`, with each half in its own `<time>`. */
+function range(start: string, end?: string) {
+  return formatRangeParts(start, end, locale, s.labels.present);
+}
 ---
 
-<Section id="grants" eyebrow={locale === 'ja' ? '研究活動' : 'RESEARCH ACTIVITY'} title={s.sections.grants}>
-  <div class="grid gap-8 md:grid-cols-2">
-    <div>
-      <h3 class="font-serif text-xl mb-4">{s.sections.supportPrograms}</h3>
-      <ol class="space-y-4">
-        {
-          grants.map((g) => {
-            const parts = formatRangeParts(g.start, g.end, locale, s.labels.present);
-            return (
-              <li class="surface p-5">
-                <div class="flex items-baseline justify-between gap-3">
-                  <p class="text-xs font-mono text-muted tabular-nums">
-                    <time datetime={isoYearMonth(g.start)}>{parts.start}</time>
-                    {' – '}
-                    <time datetime={isoYearMonth(g.end)}>{parts.end}</time>
-                  </p>
-                  <span class="text-xs tracking-wide font-mono px-2 py-0.5 rounded border hairline text-muted">
-                    {s.grantCategories[g.category]}
-                  </span>
-                </div>
-                <h4 class="mt-2 font-medium leading-snug">{g.title[locale]}</h4>
-                <p class="mt-1 text-sm text-muted">{g.funder[locale]}</p>
-                {g.number && (
-                  <p class="mt-1 text-xs text-muted">
-                    {locale === 'ja' ? '課題番号' : 'Project no.'}: {g.number}
-                  </p>
+<Section id="grants" title={s.sections.grants}>
+  <ol class="divided">
+    {
+      grants.map((grant) => {
+        const parts = range(grant.start, grant.end);
+        const facts = [
+          grant.number ? `${s.labels.projectNumber} ${grant.number}` : null,
+          grant.amountJpy ? `${s.labels.amount} ${formatAmountJpy(grant.amountJpy, locale)}` : null,
+          grant.role ? L(grant.role, locale) : null,
+        ].filter(Boolean) as string[];
+
+        return (
+          <li class="entry">
+            <p class="entry-date">
+              <time datetime={isoYearMonth(grant.start)}>{parts.start}</time>
+              <span aria-hidden="true"> – </span>
+              <time datetime={isoYearMonth(grant.end)}>{parts.end}</time>
+              <span class="block">{s.grantCategories[grant.category]}</span>
+            </p>
+            <div class="min-w-0">
+              <h3 class="leading-snug font-medium">
+                {grant.url ? (
+                  <a href={grant.url} target="_blank" rel="noopener noreferrer" class="link">
+                    {L(grant.title, locale)}
+                    <span aria-hidden="true"> ↗</span>
+                    <span class="sr-only">{s.labels.newTab}</span>
+                  </a>
+                ) : (
+                  L(grant.title, locale)
                 )}
-                {g.role && <p class="mt-2 text-xs font-medium text-[var(--accent)]">{g.role[locale]}</p>}
-              </li>
-            );
-          })
-        }
-      </ol>
-    </div>
+              </h3>
+              <p class="mt-0.5 text-sm text-muted">{L(grant.funder, locale)}</p>
+              {facts.length > 0 && (
+                <ul class="flagset mt-1.5">
+                  {facts.map((fact) => (
+                    <li>{fact}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </li>
+        );
+      })
+    }
+  </ol>
 
-    <div>
-      <h3 class="font-serif text-xl mb-4">{s.sections.services}</h3>
-      <ol class="space-y-4">
-        {
-          services.map((sv) => {
-            const parts = formatRangeParts(sv.start, sv.end, locale, s.labels.present);
-            return (
-              <li class="surface p-5">
-                <div class="flex items-baseline justify-between gap-3">
-                  <p class="text-xs font-mono text-muted tabular-nums">
-                    <time datetime={isoYearMonth(sv.start)}>{parts.start}</time>
-                    {' – '}
-                    {sv.end ? (
-                      <time datetime={isoYearMonth(sv.end)}>{parts.end}</time>
-                    ) : (
-                      <span>{parts.end}</span>
-                    )}
-                  </p>
-                  <span class="text-xs tracking-wide font-mono px-2 py-0.5 rounded border hairline text-muted">
-                    {sv.kind[locale]}
-                  </span>
-                </div>
-                <h4 class="mt-2 font-medium leading-snug">{sv.title[locale]}</h4>
-                {sv.organization && <p class="mt-1 text-sm text-muted">{sv.organization[locale]}</p>}
-              </li>
-            );
-          })
-        }
-      </ol>
-
+  <div class="mt-9">
+    <h3 class="text-sm font-semibold text-muted">{s.sections.services}</h3>
+    <ol class="divided mt-1">
       {
-        memberships.length > 0 && (
-          <div class="mt-8">
-            <h3 class="font-serif text-xl mb-4">{s.sections.memberships}</h3>
-            <ol class="space-y-4">
-              {memberships.map((membership) => {
-                const parts = formatRangeParts(
-                  membership.start,
-                  membership.end,
-                  locale,
-                  s.labels.present,
-                );
-                return (
-                  <li class="surface p-5">
-                    <p class="text-xs font-mono text-muted tabular-nums">
-                      <time datetime={isoYearMonth(membership.start)}>{parts.start}</time>
-                      {' – '}
-                      {membership.end ? (
-                        <time datetime={isoYearMonth(membership.end)}>{parts.end}</time>
-                      ) : (
-                        <span>{parts.end}</span>
-                      )}
-                    </p>
-                    <h4 class="mt-2 font-medium leading-snug">
-                      {membership.organization[locale]}
-                    </h4>
-                  </li>
-                );
-              })}
-            </ol>
-          </div>
-        )
+        services.map((service) => {
+          const parts = range(service.start, service.end);
+          return (
+            <li class="entry">
+              <p class="entry-date">
+                <time datetime={isoYearMonth(service.start)}>{parts.start}</time>
+                <span aria-hidden="true"> – </span>
+                {service.end ? (
+                  <time datetime={isoYearMonth(service.end)}>{parts.end}</time>
+                ) : (
+                  <span>{parts.end}</span>
+                )}
+              </p>
+              <div class="min-w-0">
+                <p class="leading-snug font-medium">{L(service.title, locale)}</p>
+                <p class="mt-0.5 text-sm text-muted">
+                  {L(service.kind, locale)}
+                  {service.organization && (
+                    <>
+                      <span aria-hidden="true"> · </span>
+                      {L(service.organization, locale)}
+                    </>
+                  )}
+                </p>
+              </div>
+            </li>
+          );
+        })
       }
-    </div>
+    </ol>
   </div>
+
+  {
+    memberships.length > 0 && (
+      <div class="mt-9">
+        <h3 class="text-sm font-semibold text-muted">{s.sections.memberships}</h3>
+        <ol class="divided mt-1">
+          {memberships.map((membership) => {
+            const parts = range(membership.start, membership.end);
+            return (
+              <li class="entry">
+                <p class="entry-date">
+                  <time datetime={isoYearMonth(membership.start)}>{parts.start}</time>
+                  <span aria-hidden="true"> – </span>
+                  {membership.end ? (
+                    <time datetime={isoYearMonth(membership.end)}>{parts.end}</time>
+                  ) : (
+                    <span>{parts.end}</span>
+                  )}
+                </p>
+                <p class="leading-snug font-medium">{L(membership.organization, locale)}</p>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+    )
+  }
 </Section>

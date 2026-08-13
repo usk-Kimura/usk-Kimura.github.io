@@ -1,11 +1,19 @@
 ---
+import type { GetStaticPaths } from 'astro';
+import type { Locale } from '~/data/types';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import CV from '~/components/CV.astro';
 import { profile } from '~/data';
-import { L } from '~/i18n/locale';
+import { L, prefixedLocales } from '~/i18n/locale';
 import { t, fmt } from '~/i18n/ui';
 
-const locale = 'ja' as const;
+export const getStaticPaths = (() =>
+  prefixedLocales.map((locale) => ({
+    params: { locale },
+    props: { locale },
+  }))) satisfies GetStaticPaths;
+
+const { locale } = Astro.props as { locale: Locale };
 const s = t(locale);
 ---
 
