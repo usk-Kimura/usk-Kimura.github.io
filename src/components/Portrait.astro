@@ -1,6 +1,7 @@
 ---
 import type { Locale } from '~/data/types';
 import { profile } from '~/data';
+import { L } from '~/i18n/locale';
 
 type Props = {
   locale: Locale;
@@ -11,7 +12,7 @@ type Props = {
 const { locale, class: extra = '', sizes = '(min-width: 768px) 192px, 144px' } = Astro.props;
 
 if (!profile.portrait) return null;
-const alt = profile.portrait.alt[locale];
+const alt = L(profile.portrait.alt, locale);
 ---
 
 <picture class={extra}>

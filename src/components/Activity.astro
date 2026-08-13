@@ -1,0 +1,77 @@
+---
+import type { Locale } from '~/data/types';
+import { buildActivity } from '~/data/recent';
+import { t } from '~/i18n/ui';
+import { formatEventRange } from '~/i18n/format';
+import Section from './Section.astro';
+
+type Props = { locale: Locale };
+const { locale } = Astro.props;
+const s = t(locale);
+
+const items = buildActivity(locale, 6);
+
+// Build-time "is this still ahead of us?" check. The inline script below
+// re-evaluates it in the browser, so the badge stays correct on a site that
+// hasn't been rebuilt in a while.
+const today = new Date().toISOString().slice(0, 10);
+---
+
+{
+  items.length > 0 && (
+    <Section id="activity" title={s.sections.activity}>
+      <ol class="divided">
+        {items.map((item) => {
+          const until = item.endDate ?? item.date;
+          const upcoming = until >= today;
+          return (
+            <li class="entry" data-activity-item data-until={until}>
+              <p class="entry-date">
+                <time datetime={item.date}>
+                  {formatEventRange(item.display, item.endDate, locale)}
+                </time>
+              </p>
+              <div class="min-w-0">
+                <p class="tag">
+                  {s.newsKinds[item.kind]}
+                  <span data-upcoming-badge hidden={!upcoming}>
+                    <span aria-hidden="true"> · </span>
+                    <span class="tag-accent">{s.labels.upcoming}</span>
+                  </span>
+                </p>
+                <p class="mt-0.5 leading-snug font-medium">
+                  {item.href ? (
+                    <a
+                      href={item.href}
+                      class="link"
+                      target={item.external ? '_blank' : undefined}
+                      rel={item.external ? 'noopener noreferrer' : undefined}
+                    >
+                      {item.title}
+                      {item.external && <span class="sr-only">{s.labels.newTab}</span>}
+                    </a>
+                  ) : (
+                    item.title
+                  )}
+                </p>
+                {item.detail && <p class="mt-1 text-sm text-muted">{item.detail}</p>}
+              </div>
+            </li>
+          );
+        })}
+      </ol>
+    </Section>
+  )
+}
+
+<script>
+  // Drop the "upcoming" badge once the event has actually finished (JST).
+  const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Tokyo' });
+
+  for (const row of document.querySelectorAll<HTMLElement>('[data-activity-item]')) {
+    const badge = row.querySelector<HTMLElement>('[data-upcoming-badge]');
+    if (!badge) continue;
+    const until = row.dataset.until;
+    badge.hidden = !until || until < today;
+  }
+</script>

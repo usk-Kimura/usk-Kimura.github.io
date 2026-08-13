@@ -27,17 +27,18 @@ export default defineConfig({
       serialize(item) {
         item.lastmod = new Date().toISOString();
         // Prioritise main landing pages; publication detail pages lower.
+        // Locale prefixes: none (ja), /en/, /zh/, /ko/.
         const u = item.url;
-        if (/\/(en\/)?p\//.test(u)) item.priority = 0.5;
-        else if (/\/(en\/)?cv\/$/.test(u)) item.priority = 0.8;
-        else if (/^https?:\/\/[^/]+\/(en\/)?$/.test(u)) item.priority = 1.0;
+        if (/\/p\//.test(u)) item.priority = 0.5;
+        else if (/\/cv\/?$/.test(u)) item.priority = 0.8;
+        else if (/^https?:\/\/[^/]+\/((en|zh|ko)\/)?$/.test(u)) item.priority = 1.0;
         else item.priority = 0.6;
         return item;
       },
     }),
   ],
   i18n: {
-    locales: ['ja', 'en'],
+    locales: ['ja', 'en', 'zh', 'ko'],
     defaultLocale: 'ja',
     routing: {
       prefixDefaultLocale: false,

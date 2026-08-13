@@ -1,6 +1,6 @@
 # Yusuke Kimura — Researcher Portfolio
 
-A bilingual (日本語 / English) academic portfolio built with [Astro 6](https://astro.build), [Tailwind CSS v4](https://tailwindcss.com), and TypeScript. Deployed via GitHub Pages.
+A multilingual (日本語 / English / 简体中文 / 한국어) academic portfolio built with [Astro 6](https://astro.build), [Tailwind CSS v4](https://tailwindcss.com), and TypeScript. Deployed via GitHub Pages.
 
 ## Quick start
 
@@ -18,20 +18,28 @@ Node 22+ is required (see `engines` in `package.json`).
 
 ```
 src/
-├── components/   Astro components (Hero, Publications, Timeline, …)
+├── components/   Astro components (Intro, Activity, Publications, Career, …)
+│                 HomePage.astro composes the home page for every locale
 ├── data/         Typed research data — edit these files to update the site
 │   ├── profile.ts
 │   ├── career.ts
 │   ├── awards.ts
 │   ├── publications.ts
 │   ├── grants.ts
+│   ├── news.ts        manual activity items (talks, announcements)
+│   ├── recent.ts      merges news + publications + awards + grants into one feed
 │   ├── memberships.ts
 │   └── types.ts
-├── i18n/         UI strings (ja/en) + date formatters
-├── layouts/      BaseLayout (meta, OG, JSON-LD, theme bootstrap)
+├── i18n/
+│   ├── locale.ts   locale metadata, the L() fallback reader, URL helpers
+│   ├── ui.ts       UI strings (ja + en, and the shape all locales must satisfy)
+│   ├── ui.zh.ts    UI strings (简体中文)
+│   ├── ui.ko.ts    UI strings (한국어)
+│   └── format.ts   per-locale date / amount formatting
+├── layouts/      BaseLayout (meta, OG, hreflang, JSON-LD, theme bootstrap)
 ├── pages/
-│   ├── index.astro    /        (Japanese, default)
-│   └── en/index.astro /en/     (English)
+│   ├── index.astro, cv.astro, publications.astro, p/[slug].astro   → / (Japanese)
+│   └── [locale]/…                                                  → /en/, /zh/, /ko/
 └── styles/global.css
 
 public/
@@ -42,6 +50,30 @@ public/
 scripts/build-og.mjs  SVG → 1200x630 PNG via sharp, runs as part of `npm run build`
 ```
 
+## Languages
+
+Japanese is the authored default and lives at the root. English, Simplified Chinese, and Korean live
+under `/en/`, `/zh/`, and `/ko/`.
+
+- `ja` and `en` are **written by hand** and are the authoritative text.
+- `zh` and `ko` are **machine translations** of that source. Every page in those locales renders a
+  visible notice saying so (`TranslationNotice.astro`) and links back to the Japanese and English
+  versions.
+
+Because of that split, `LocalizedString` requires `ja` and `en` but makes `zh` and `ko` optional:
+
+```ts
+type LocalizedString = { ja: string; en: string; zh?: string; ko?: string };
+```
+
+Components never index a localized object directly — they read it through `L(value, locale)` from
+`~/i18n/locale`, which falls back to English. So you can add a new award or grant in Japanese and
+English today and translate it later; the Chinese and Korean pages show English for that one entry
+instead of breaking.
+
+UI chrome is the exception: `src/i18n/ui.ts` defines the shape from the `ja` bundle and every other
+bundle is typed against it, so a missing UI key is a build error, not a blank on the page.
+
 ## Updating content
 
 All the visible text comes from the typed data layer:
@@ -49,10 +81,14 @@ All the visible text comes from the typed data layer:
 - **Profile / bio / links / researcher IDs / researchmap update date** — `src/data/profile.ts`
 - **Career & education** — `src/data/career.ts`
 - **Awards** — `src/data/awards.ts`
-- **Publications** — `src/data/publications.ts` (newest first; `venueEn` is used on `/en/`)
-- **Grants & service** — `src/data/grants.ts`
+- **Publications** — `src/data/publications.ts` (newest first; `venueEn` is used outside `/`)
+- **Grants, HPC allocations & academic service** — `src/data/grants.ts`
+- **News / talks / announcements** — `src/data/news.ts`
 - **Professional memberships** — `src/data/memberships.ts`
-- **UI strings** — `src/i18n/ui.ts`
+- **UI strings** — `src/i18n/ui.ts`, `ui.zh.ts`, `ui.ko.ts`
+
+A news entry that shares its `href` with a grant's `url` replaces that grant in the activity feed,
+so announcing an award by hand doesn't list it twice.
 
 Type errors surface immediately with `npm run check`.
 
@@ -131,7 +167,8 @@ After that, edit any data file and `git push` — the workflow rebuilds and repu
 - WCAG-AA contrast in both light and dark themes (`--accent` + `--accent-contrast` tokens).
 - `lang` attributes on per-language content (publication titles, venues).
 - `aria-current`, `aria-pressed`, `aria-live="polite"`, focus-visible outlines, skip-link, reduced-motion media query.
-- `hreflang` alternates for ja / en / x-default.
+- `hreflang` alternates for ja / en / zh-Hans / ko / x-default, derived from one locale-neutral
+  `path` prop so every page points at its own equivalent rather than at the home page.
 - JSON-LD `Person` schema, OG/Twitter cards with PNG, sitemap, canonical URLs.
 
 ## License

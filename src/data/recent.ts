@@ -4,114 +4,104 @@ import { awards } from './awards';
 import { grants } from './grants';
 import { news, type NewsKind } from './news';
 import { pubSlug } from './util';
+import { L, localizePath } from '~/i18n/locale';
 
-export type RecentItem = {
-  /** Normalized to YYYY-MM-DD (or YYYY-MM-01 if only month is known). */
+export type ActivityItem = {
+  /** Normalized to YYYY-MM-DD (YYYY-MM-01 when only the month is known).
+   *  Used for sorting and for the `datetime` attribute. */
   date: string;
+  /** Source date at its original granularity, so a month-only entry is not
+   *  rendered as if the exact day were known. */
+  display: string;
+  /** Final day of a multi-day event, if any. */
   endDate?: string;
   kind: NewsKind;
   /** Already localized to the requested locale. */
   title: string;
   detail?: string;
-  event?: {
-    label: string;
-    name: string;
-    venue: string;
-  };
   href?: string;
+  /** True when `href` points off-site. */
+  external?: boolean;
 };
 
 function toIso(year: number, month?: number, day?: number): string {
   return `${year}-${String(month ?? 1).padStart(2, '0')}-${String(day ?? 1).padStart(2, '0')}`;
 }
 
+/** Accept `YYYY-MM` or `YYYY-MM-DD`; normalize to `YYYY-MM-DD` for sorting. */
 function padDate(date: string): string {
-  // Accept YYYY-MM or YYYY-MM-DD; normalize to YYYY-MM-DD for sort comparison.
-  const parts = date.split('-');
-  const y = parts[0];
-  const m = (parts[1] ?? '01').padStart(2, '0');
-  const d = (parts[2] ?? '01').padStart(2, '0');
-  return `${y}-${m}-${d}`;
+  const [y, m = '01', d = '01'] = date.split('-');
+  return `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
 }
 
-/** Merge publications + awards + grants + manual `news.ts` and return the
- *  most recent N items, sorted newest first. */
-export function buildRecent(locale: Locale, limit = 4): RecentItem[] {
-  const items: RecentItem[] = [];
+/**
+ * One merged feed of everything that happened (or is about to): manual news
+ * entries, publications, awards, and funding. Newest first.
+ *
+ * Future-dated entries sort to the top, which is deliberate — an upcoming talk
+ * is the most interesting thing on the page.
+ */
+export function buildActivity(locale: Locale, limit = 6): ActivityItem[] {
+  const items: ActivityItem[] = [];
 
   for (const p of publications) {
+    const display = p.month
+      ? `${p.year}-${p.month}${p.day ? `-${p.day}` : ''}`
+      : String(p.year);
     items.push({
       date: toIso(p.year, p.month, p.day),
+      display,
       kind: 'paper',
       title: p.title,
-      detail: locale === 'en' && p.venueEn ? p.venueEn : p.venue,
-      href: `${locale === 'en' ? '/en' : ''}/p/${pubSlug(p)}/`,
+      detail: locale === 'ja' ? p.venue : (p.venueEn ?? p.venue),
+      href: localizePath(`/p/${pubSlug(p)}/`, locale),
     });
   }
 
   for (const a of awards) {
     items.push({
       date: padDate(a.date),
+      display: a.date,
       kind: 'award',
-      title: a.name[locale],
-      detail: a.organization[locale],
+      title: L(a.name, locale),
+      detail: L(a.organization, locale),
     });
   }
 
+  // A hand-written news entry about an award is a better headline than the
+  // award record itself, so let it win rather than showing both.
+  const announced = new Set(news.map((n) => n.href).filter(Boolean));
+
   for (const g of grants) {
-    // Map the grant category to a more specific news kind so HPC allocations
-    // aren't shown as "助成金/Grant" in the Recent feed.
+    if (g.url && announced.has(g.url)) continue;
+    // Map the grant category onto a news kind so a compute allocation isn't
+    // announced as a "Grant".
     const kind: NewsKind =
       g.category === 'hpc' ? 'hpc' : g.category === 'fellowship' ? 'fellowship' : 'grant';
     items.push({
       date: padDate(g.start),
+      display: g.start,
       kind,
-      title: g.title[locale],
-      detail: g.funder[locale],
+      title: L(g.title, locale),
+      detail: L(g.funder, locale),
+      href: g.url,
+      external: Boolean(g.url),
     });
   }
 
   for (const item of news) {
     items.push({
       date: padDate(item.date),
+      display: item.date,
       endDate: item.endDate ? padDate(item.endDate) : undefined,
       kind: item.kind,
-      title: item.title[locale],
-      detail: item.detail?.[locale],
-      event: item.event
-        ? {
-            label: item.event.label[locale],
-            name: item.event.name[locale],
-            venue: item.event.venue[locale],
-          }
-        : undefined,
+      title: L(item.title, locale),
+      detail: item.detail ? L(item.detail, locale) : undefined,
       href: item.href,
+      external: Boolean(item.href),
     });
   }
 
   items.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
   return items.slice(0, limit);
-}
-
-/** Upcoming presentation notices, ordered by the soonest start date. The
- * browser adds live countdown labels and hides entries once their event ends. */
-export function buildUpcoming(locale: Locale): RecentItem[] {
-  return news
-    .filter((item) => item.kind === 'presentation')
-    .map((item) => ({
-      date: padDate(item.date),
-      endDate: item.endDate ? padDate(item.endDate) : undefined,
-      kind: item.kind,
-      title: item.title[locale],
-      detail: item.detail?.[locale],
-      event: item.event
-        ? {
-            label: item.event.label[locale],
-            name: item.event.name[locale],
-            venue: item.event.venue[locale],
-          }
-        : undefined,
-      href: item.href,
-    }))
-    .sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
 }

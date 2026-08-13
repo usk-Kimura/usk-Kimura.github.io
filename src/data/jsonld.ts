@@ -1,6 +1,8 @@
 import type { Locale } from './types';
 import { profile } from './profile';
 import { awards } from './awards';
+import { L, localeMeta, localizePath } from '~/i18n/locale';
+import { t } from '~/i18n/ui';
 
 const WORKS_FOR = 'Nagoya University';
 const ALUMNI_OF = 'Doshisha University';
@@ -12,8 +14,8 @@ export function siteGraph(locale: Locale, site: URL | string) {
     '@id': `${new URL('/', site).toString()}#person`,
     name: profile.name.en,
     alternateName: profile.name.ja,
-    jobTitle: profile.position[locale],
-    description: profile.bio[locale],
+    jobTitle: L(profile.position, locale),
+    description: L(profile.bio, locale),
     worksFor: { '@type': 'Organization', name: WORKS_FOR },
     alumniOf: { '@type': 'CollegeOrUniversity', name: ALUMNI_OF },
     knowsAbout: profile.keywords.map((k) => k.en),
@@ -42,7 +44,7 @@ export function siteGraph(locale: Locale, site: URL | string) {
     '@id': `${new URL('/', site).toString()}#website`,
     url: new URL('/', site).toString(),
     name: `${profile.name.en} — ${profile.tagline.en}`,
-    inLanguage: locale === 'ja' ? 'ja' : 'en',
+    inLanguage: localeMeta[locale].lang,
     author: { '@id': `${new URL('/', site).toString()}#person` },
   };
 
@@ -56,17 +58,17 @@ export function breadcrumbJsonLd(
   pubUrl: string,
   site: URL | string,
 ) {
-  const home = new URL(locale === 'ja' ? '/' : '/en/', site).toString();
-  const publicationIndex = new URL(locale === 'ja' ? '/publications/' : '/en/publications/', site).toString();
+  const home = new URL(localizePath('/', locale), site).toString();
+  const publicationIndex = new URL(localizePath('/publications/', locale), site).toString();
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: profile.name[locale], item: home },
+      { '@type': 'ListItem', position: 1, name: L(profile.name, locale), item: home },
       {
         '@type': 'ListItem',
         position: 2,
-        name: locale === 'ja' ? '論文' : 'Publications',
+        name: t(locale).sections.publications,
         item: publicationIndex,
       },
       { '@type': 'ListItem', position: 3, name: pubTitle, item: pubUrl },

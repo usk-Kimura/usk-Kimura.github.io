@@ -1,90 +1,74 @@
 ---
-import type { Locale, Publication } from '~/data/types';
+import type { Locale, Publication, SourceLocale } from '~/data/types';
 import { t } from '~/i18n/ui';
-import { formatYearMonth, isoYearMonth } from '~/i18n/format';
+import { formatYearMonth } from '~/i18n/format';
+import { localizePath } from '~/i18n/locale';
 import { pubSlug, highlightSelf } from '~/data/util';
 
 type Props = {
   pub: Publication;
   locale: Locale;
+  /** Optional line shown above the title (used by the selected-work list). */
+  note?: string;
 };
 
-const { pub, locale } = Astro.props;
+const { pub, locale, note } = Astro.props;
 const s = t(locale);
-const detailHref = locale === 'en' ? `/en/p/${pubSlug(pub)}/` : `/p/${pubSlug(pub)}/`;
+
+const detailHref = localizePath(`/p/${pubSlug(pub)}/`, locale);
 const externalUrl = pub.url ?? (pub.doi ? `https://doi.org/${pub.doi}` : null);
 
 const publicationDate = pub.month
   ? `${pub.year}-${pub.month}${pub.day ? `-${pub.day}` : ''}`
   : `${pub.year}`;
 const dateLabel = pub.month ? formatYearMonth(publicationDate, locale) : `${pub.year}`;
-const dateAttr = pub.month ? isoYearMonth(publicationDate) : String(pub.year);
+const dateAttr = pub.month
+  ? `${pub.year}-${String(pub.month).padStart(2, '0')}${pub.day ? `-${String(pub.day).padStart(2, '0')}` : ''}`
+  : String(pub.year);
 
-// Heuristic: if the title contains any CJK code point, mark it as Japanese,
-// otherwise English. Authors of explicit `titleLang` take precedence.
+// Titles and venues are shown as published, so they need their own `lang` for
+// screen readers and line breaking regardless of the page locale.
 const CJK = /[　-ヿ㐀-䶿一-鿿＀-￯]/;
-const titleLang: Locale = pub.titleLang ?? (CJK.test(pub.title) ? 'ja' : 'en');
-
-const venueText = locale === 'en' && pub.venueEn ? pub.venueEn : pub.venue;
-const venueLang: Locale = locale === 'en' && pub.venueEn ? 'en' : CJK.test(pub.venue) ? 'ja' : 'en';
+const titleLang: SourceLocale = pub.titleLang ?? (CJK.test(pub.title) ? 'ja' : 'en');
+const useVenueEn = locale !== 'ja' && Boolean(pub.venueEn);
+const venueText = useVenueEn ? pub.venueEn! : pub.venue;
+const venueLang: SourceLocale = useVenueEn ? 'en' : CJK.test(pub.venue) ? 'ja' : 'en';
 ---
 
-<article class="py-5 md:py-6">
-  <div class="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4">
-    <div class="md:w-32 shrink-0">
-      <time class="text-xs font-mono text-muted tabular-nums" datetime={dateAttr}>{dateLabel}</time>
-      <p class="mt-1 text-xs tracking-wide text-[var(--accent)] font-mono">
-        {s.pubTypes[pub.type]}
-      </p>
-    </div>
-    <div class="min-w-0 flex-1">
-      <h3 class="text-base md:text-lg font-semibold leading-snug text-balance">
-        <a
-          href={detailHref}
-          class="hover:underline underline-offset-4 decoration-[var(--accent)]"
-        >
-          <span lang={titleLang}>{pub.title}</span>
-        </a>
-      </h3>
-      <p class="mt-1 text-sm text-muted" set:html={highlightSelf(pub.authors)} />
-      <p class="mt-1 text-sm text-muted italic" lang={venueLang}>
-        {venueText}{pub.pages ? `, ${pub.pages}` : ''}
-      </p>
-      {
-        externalUrl && (
-          <a
-            href={externalUrl}
-            target="_blank"
-            rel="noopener noreferrer external"
-            class="mt-2 inline-flex min-h-9 items-center gap-1 rounded-md border hairline px-2.5 py-1 text-xs font-semibold text-[var(--accent-strong)] hover:bg-[var(--accent-soft)]"
-            aria-label={pub.doi ? `DOI${locale === 'ja' ? '（新しいタブで開きます）' : ' (opens in a new tab)'}` : (locale === 'ja' ? '外部リンク（新しいタブで開きます）' : 'External link (opens in a new tab)')}
-          >
-            <span>{pub.doi ? 'DOI' : locale === 'ja' ? '外部リンク' : 'External'}</span>
-            <span aria-hidden="true">↗</span>
-          </a>
-        )
-      }
-      {
-        pub.flags && pub.flags.length > 0 && (
-          <ul class="mt-2 flex flex-wrap gap-1.5">
-            {pub.flags.map((f) => {
-              const strong = f === 'first-author' || f === 'peer-reviewed';
-              return (
-                <li
-                  class:list={[
-                    'text-xs tracking-wide font-mono px-2 py-0.5 rounded border',
-                    strong
-                      ? 'border-[var(--accent)] text-[var(--accent)] font-semibold'
-                      : 'hairline text-muted',
-                  ]}
-                >
-                  {s.flags[f]}
-                </li>
-              );
-            })}
-          </ul>
-        )
-      }
-    </div>
+<article class="entry">
+  <p class="entry-date">
+    <time datetime={dateAttr}>{dateLabel}</time>
+    <span class="block">{s.pubTypes[pub.type]}</span>
+  </p>
+
+  <div class="min-w-0">
+    {note && <p class="tag tag-accent mb-0.5">{note}</p>}
+
+    <h3 class="leading-snug font-medium">
+      <a href={detailHref} class="link" lang={titleLang}>{pub.title}</a>
+    </h3>
+
+    <p class="mt-1 text-sm text-muted" set:html={highlightSelf(pub.authors)} />
+
+    <p class="text-sm text-muted">
+      <em lang={venueLang}>{venueText}</em>{pub.pages ? `, ${pub.pages}` : ''}
+    </p>
+
+    {
+      ((pub.flags && pub.flags.length > 0) || externalUrl) && (
+        <ul class="flagset mt-1.5">
+          {pub.flags?.map((f) => <li>{s.flags[f]}</li>)}
+          {externalUrl && (
+            <li>
+              <a href={externalUrl} target="_blank" rel="noopener noreferrer external" class="link">
+                {pub.doi ? 'DOI' : s.labels.external}
+                <span aria-hidden="true"> ↗</span>
+                <span class="sr-only">{s.labels.newTab}</span>
+              </a>
+            </li>
+          )}
+        </ul>
+      )
+    }
   </div>
 </article>

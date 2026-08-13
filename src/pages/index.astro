@@ -1,24 +1,10 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
-import Hero from '~/components/Hero.astro';
-import About from '~/components/About.astro';
-import Research from '~/components/Research.astro';
-import FeaturedPublications from '~/components/FeaturedPublications.astro';
-import Awards from '~/components/Awards.astro';
-import Timeline from '~/components/Timeline.astro';
-import Grants from '~/components/Grants.astro';
-import Contact from '~/components/Contact.astro';
+import HomePage from '~/components/HomePage.astro';
 
 const locale = 'ja' as const;
 ---
 
-<BaseLayout locale={locale}>
-  <Hero locale={locale} />
-  <About locale={locale} />
-  <Research locale={locale} />
-  <FeaturedPublications locale={locale} />
-  <Awards locale={locale} />
-  <Timeline locale={locale} />
-  <Grants locale={locale} />
-  <Contact locale={locale} />
+<BaseLayout locale={locale} path="/">
+  <HomePage locale={locale} />
 </BaseLayout>

@@ -5,6 +5,8 @@ export const memberships: MembershipEntry[] = [
     organization: {
       ja: 'Association for Computational Linguistics (ACL)',
       en: 'Association for Computational Linguistics (ACL)',
+      zh: 'Association for Computational Linguistics (ACL)',
+      ko: 'Association for Computational Linguistics (ACL)',
     },
     start: '2023-04',
   },

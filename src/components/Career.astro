@@ -1,0 +1,67 @@
+---
+import type { Locale } from '~/data/types';
+import { career, education } from '~/data';
+import { t } from '~/i18n/ui';
+import { L } from '~/i18n/locale';
+import { formatRangeParts, isoYearMonth } from '~/i18n/format';
+import Section from './Section.astro';
+
+type Props = { locale: Locale };
+const { locale } = Astro.props;
+const s = t(locale);
+
+const rows = [
+  {
+    heading: s.sections.career,
+    items: career.map((c) => ({
+      start: c.start,
+      end: c.end,
+      primary: L(c.role, locale),
+      secondary: L(c.organization, locale),
+    })),
+  },
+  {
+    heading: s.sections.education,
+    items: education.map((e) => ({
+      start: e.start,
+      end: e.end,
+      primary: L(e.program, locale),
+      secondary: L(e.school, locale),
+    })),
+  },
+];
+---
+
+<Section id="career" title={`${s.sections.career} / ${s.sections.education}`}>
+  <div class="space-y-9">
+    {
+      rows.map((group) => (
+        <div>
+          <h3 class="text-sm font-semibold text-muted">{group.heading}</h3>
+          <ol class="divided mt-1">
+            {group.items.map((item) => {
+              const parts = formatRangeParts(item.start, item.end, locale, s.labels.present);
+              return (
+                <li class="entry">
+                  <p class="entry-date">
+                    <time datetime={isoYearMonth(item.start)}>{parts.start}</time>
+                    <span aria-hidden="true"> – </span>
+                    {item.end ? (
+                      <time datetime={isoYearMonth(item.end)}>{parts.end}</time>
+                    ) : (
+                      <span>{parts.end}</span>
+                    )}
+                  </p>
+                  <div class="min-w-0">
+                    <p class="leading-snug font-medium">{item.primary}</p>
+                    <p class="mt-0.5 text-sm text-muted">{item.secondary}</p>
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+      ))
+    }
+  </div>
+</Section>

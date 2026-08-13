@@ -70,24 +70,47 @@ export type NewsItem = {
  */
 export const news: NewsItem[] = [
   {
+    date: '2026-07-31',
+    kind: 'grant',
+    title: {
+      ja: '科研費「研究活動スタート支援」に採択されました',
+      en: 'Awarded a JSPS KAKENHI Grant-in-Aid for Research Activity Start-up',
+      zh: '获批日本学术振兴会 科学研究费补助事业（KAKENHI）“研究活动启动支援”项目',
+      ko: '일본학술진흥회 과학연구비조성사업(KAKENHI) “연구활동 스타트업 지원”에 선정되었습니다',
+    },
+    detail: {
+      ja: '課題番号 26K25590「未十分学習ドメインへの言語モデル軽量適応に向けた学習時更新資源配分制御の研究」（研究代表者・2026–2027年度）',
+      en: 'Project 26K25590, "Controlling the Allocation of Update Resources during Training for Lightweight Language-Model Adaptation to Under-Trained Domains" (Principal Investigator, FY2026–2027)',
+      zh: '课题编号 26K25590《面向训练不足领域语言模型轻量化适应的训练时更新资源分配控制研究》（研究负责人，2026–2027年度）',
+      ko: '과제번호 26K25590 “학습이 충분하지 않은 도메인에 대한 언어 모델 경량 적응을 위한 학습 시 갱신 자원 배분 제어 연구” (연구대표자, 2026–2027년도)',
+    },
+    href: 'https://kaken.nii.ac.jp/grant/KAKENHI-PROJECT-26K25590/',
+  },
+  {
     date: '2026-09-14',
     endDate: '2026-09-16',
     kind: 'presentation',
     title: {
       ja: '「異なる語彙を持つLLM間のOPDに関する研究」を発表予定',
       en: 'Presenting research on OPD between LLMs with different vocabularies',
+      zh: '即将报告《具有不同词表的 LLM 之间的 OPD 研究》',
+      ko: '“서로 다른 어휘를 가진 LLM 간의 OPD에 관한 연구”를 발표할 예정입니다',
     },
     detail: {
       ja: '情報処理学会 第269回自然言語処理研究発表会｜帯広＋オンライン',
       en: 'IPSJ SIG-NL 269th Meeting · Obihiro + online',
+      zh: '信息处理学会 第269次自然语言处理研究会｜带广＋线上',
+      ko: '정보처리학회 제269회 자연어 처리 연구발표회 | 오비히로 + 온라인',
     },
     event: {
-      label: { ja: 'NL研 269', en: 'SIG-NL 269' },
+      label: { ja: 'NL研 269', en: 'SIG-NL 269', zh: 'SIG-NL 269', ko: 'SIG-NL 269' },
       name: {
         ja: '情報処理学会 第269回自然言語処理研究発表会',
         en: 'IPSJ SIG-NL 269th Meeting',
+        zh: '信息处理学会（IPSJ）第269次自然语言处理研究会',
+        ko: '정보처리학회(IPSJ) 제269회 자연어 처리 연구발표회',
       },
-      venue: { ja: '帯広＋オンライン', en: 'Obihiro + online' },
+      venue: { ja: '帯広＋オンライン', en: 'Obihiro + online', zh: '带广＋线上', ko: '오비히로 + 온라인' },
     },
     href: 'https://www.ipsj.or.jp/kenkyukai/event/nl269.html',
   },
@@ -98,18 +121,24 @@ export const news: NewsItem[] = [
     title: {
       ja: '「異なる語彙を持つLLM間のOPDに関する研究」を発表予定',
       en: 'Presenting research on OPD between LLMs with different vocabularies',
+      zh: '即将报告《具有不同词表的 LLM 之间的 OPD 研究》',
+      ko: '“서로 다른 어휘를 가진 LLM 간의 OPD에 관한 연구”를 발표할 예정입니다',
     },
     detail: {
       ja: '第21回言語処理若手シンポジウム（YANS2026）｜仙台国際センター',
       en: 'The 21st YANS Symposium (YANS 2026) · Sendai International Center',
+      zh: '第21届语言处理青年研究者研讨会（YANS2026）｜仙台国际中心',
+      ko: '제21회 언어 처리 젊은 연구자 심포지엄(YANS2026) | 센다이 국제센터',
     },
     event: {
-      label: { ja: 'YANS 2026', en: 'YANS 2026' },
+      label: { ja: 'YANS 2026', en: 'YANS 2026', zh: 'YANS 2026', ko: 'YANS 2026' },
       name: {
         ja: '第21回言語処理若手シンポジウム',
         en: 'The 21st YANS Symposium',
+        zh: '第21届语言处理青年研究者研讨会',
+        ko: '제21회 언어 처리 젊은 연구자 심포지엄',
       },
-      venue: { ja: '仙台国際センター', en: 'Sendai International Center' },
+      venue: { ja: '仙台国際センター', en: 'Sendai International Center', zh: '仙台国际中心', ko: '센다이 국제센터' },
     },
     href: 'https://yans.anlp.jp/entry/yans2026',
   },

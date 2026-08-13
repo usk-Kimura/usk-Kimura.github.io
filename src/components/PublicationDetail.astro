@@ -1,27 +1,33 @@
 ---
-import type { Locale, Publication } from '~/data/types';
+import type { Locale, Publication, SourceLocale } from '~/data/types';
 import { profile } from '~/data';
-import { bibtexEntry, isPdfUrl, parsePageRange, pubSlug, splitAuthors, highlightSelf } from '~/data/util';
+import {
+  bibtexEntry,
+  isPdfUrl,
+  parsePageRange,
+  pubSlug,
+  splitAuthors,
+  highlightSelf,
+} from '~/data/util';
 import { breadcrumbJsonLd } from '~/data/jsonld';
 import { t } from '~/i18n/ui';
-import { formatYearMonth, isoYearMonth } from '~/i18n/format';
-import '~/styles/global.css';
-import Header from '~/components/Header.astro';
-import Footer from '~/components/Footer.astro';
-import HeadIntegrations from '~/components/HeadIntegrations.astro';
+import { L, LO, localeMeta, localizePath } from '~/i18n/locale';
+import { formatYearMonth } from '~/i18n/format';
+import BaseLayout from '~/layouts/BaseLayout.astro';
 
 type Props = { pub: Publication; locale: Locale };
 const { pub, locale } = Astro.props;
 const s = t(locale);
 
 const slug = pubSlug(pub);
-const home = locale === 'ja' ? '/' : '/en/';
-const publicationsIndex = locale === 'ja' ? '/publications/' : '/en/publications/';
-const otherLocalePath = locale === 'ja' ? `/en/p/${slug}/` : `/p/${slug}/`;
+const publicationsIndex = localizePath('/publications/', locale);
 
 const CJK = /[　-ヿ㐀-䶿一-鿿＀-￯]/;
-const titleLang: Locale = pub.titleLang ?? (CJK.test(pub.title) ? 'ja' : 'en');
-const venueText = locale === 'en' && pub.venueEn ? pub.venueEn : pub.venue;
+const titleLang: SourceLocale = pub.titleLang ?? (CJK.test(pub.title) ? 'ja' : 'en');
+const useVenueEn = locale !== 'ja' && Boolean(pub.venueEn);
+const venueText = useVenueEn ? pub.venueEn! : pub.venue;
+const venueLang: SourceLocale = useVenueEn ? 'en' : CJK.test(pub.venue) ? 'ja' : 'en';
+/** Venue string used in machine-readable output — always the Latin form if we have one. */
 const venueScholar = pub.venueEn ?? pub.venue;
 
 const authors = splitAuthors(pub.authors);
@@ -31,39 +37,33 @@ const publicationDate = pub.month
   ? `${pub.year}-${pub.month}${pub.day ? `-${pub.day}` : ''}`
   : `${pub.year}`;
 const dateLabel = pub.month ? formatYearMonth(publicationDate, locale) : `${pub.year}`;
-const dateIso = pub.month ? isoYearMonth(publicationDate) : `${pub.year}`;
-const dateScholar = dateIso;
+const dateIso = pub.month
+  ? `${pub.year}-${String(pub.month).padStart(2, '0')}${pub.day ? `-${String(pub.day).padStart(2, '0')}` : ''}`
+  : `${pub.year}`;
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
-const altJaUrl = new URL(`/p/${slug}/`, Astro.site).toString();
-const altEnUrl = new URL(`/en/p/${slug}/`, Astro.site).toString();
 const externalUrl = pub.url ?? (pub.doi ? `https://doi.org/${pub.doi}` : null);
-const pageTitle = `${pub.title} — ${profile.name[locale]}`;
-const abstract = pub.abstract?.[locale] ?? pub.abstract?.[titleLang];
+const abstract = LO(pub.abstract, locale);
+// Abstracts are frequently English-only. Tag the element with the language the
+// text is actually in, not the page locale, so a Korean page reading an English
+// abstract is announced correctly.
+const abstractLocale: Locale = pub.abstract?.[locale] ? locale : pub.abstract?.en ? 'en' : 'ja';
+const abstractLang = localeMeta[abstractLocale].lang;
 const pageDesc = abstract ?? `${pub.authors}. ${venueText}, ${dateLabel}.`;
 ---
 
-<!doctype html>
-<html lang={locale === 'ja' ? 'ja' : 'en'}>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{pageTitle}</title>
-    <meta name="description" content={pageDesc} />
-    <link rel="canonical" href={canonicalUrl} />
-    <link rel="alternate" hreflang="ja" href={altJaUrl} />
-    <link rel="alternate" hreflang="en" href={altEnUrl} />
-    <link rel="alternate" hreflang="x-default" href={altJaUrl} />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <meta name="theme-color" content="#0f6670" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0f1724" media="(prefers-color-scheme: dark)" />
-
-    <HeadIntegrations />
-
-    {/* Google Scholar citation meta tags */}
+<BaseLayout
+  locale={locale}
+  title={pub.title}
+  description={pageDesc}
+  path={`/p/${slug}/`}
+  ogType="article"
+>
+  <Fragment slot="head">
+    {/* Google Scholar citation tags */}
     <meta name="citation_title" content={pub.title} />
     {authors.map((a) => <meta name="citation_author" content={a} />)}
-    <meta name="citation_publication_date" content={dateScholar} />
+    <meta name="citation_publication_date" content={dateIso} />
     {pub.type === 'journal' && <meta name="citation_journal_title" content={venueScholar} />}
     {pub.type !== 'journal' && <meta name="citation_conference_title" content={venueScholar} />}
     {pageRange && <meta name="citation_firstpage" content={pageRange.first} />}
@@ -73,29 +73,9 @@ const pageDesc = abstract ?? `${pub.authors}. ${venueText}, ${dateLabel}.`;
     {isPdfUrl(externalUrl) && <meta name="citation_pdf_url" content={externalUrl} />}
     <meta name="citation_language" content={titleLang} />
 
-    {/* Open Graph */}
-    <meta property="og:type" content="article" />
-    <meta property="og:title" content={pub.title} />
-    <meta property="og:description" content={pageDesc} />
-    <meta property="og:url" content={canonicalUrl} />
-    <meta property="og:image" content={new URL('/og-image.png', Astro.site).toString()} />
     <meta property="article:published_time" content={dateIso} />
     {authors.map((a) => <meta property="article:author" content={a} />)}
-    <meta name="twitter:card" content="summary_large_image" />
 
-    {/* Theme bootstrap */}
-    <script is:inline>
-      (() => {
-        try {
-          const saved = localStorage.getItem('theme');
-          if (saved === 'light' || saved === 'dark') {
-            document.documentElement.dataset.theme = saved;
-          }
-        } catch {}
-      })();
-    </script>
-
-    {/* JSON-LD ScholarlyArticle */}
     <script
       is:inline
       type="application/ld+json"
@@ -117,102 +97,83 @@ const pageDesc = abstract ?? `${pub.authors}. ${venueText}, ${dateLabel}.`;
       })}
     />
 
-    {/* JSON-LD BreadcrumbList */}
     <script
       is:inline
       type="application/ld+json"
       set:html={JSON.stringify(breadcrumbJsonLd(locale, pub.title, canonicalUrl, Astro.site!))}
     />
-  </head>
-  <body class="font-sans antialiased">
-    <a
-      href="#main"
-      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2 focus:bg-[var(--bg-elev)] focus:text-[var(--fg)] focus:border focus:hairline focus:rounded-md"
+  </Fragment>
+
+  <article class="container-page py-10 md:py-14">
+    <nav aria-label={s.labels.breadcrumb} class="text-sm text-muted">
+      <a href={localizePath('/', locale)} class="link-quiet">{L(profile.name, locale)}</a>
+      <span aria-hidden="true"> / </span>
+      <a href={publicationsIndex} class="link-quiet">{s.sections.publications}</a>
+    </nav>
+
+    <p class="mt-6 text-sm text-muted">
+      {s.pubTypes[pub.type]}
+      <span aria-hidden="true"> · </span>
+      <time datetime={dateIso}>{dateLabel}</time>
+    </p>
+
+    <h1
+      class="mt-2 text-2xl leading-tight font-bold tracking-tight md:text-3xl"
+      lang={titleLang}
     >
-      {locale === 'ja' ? 'メインコンテンツへ' : 'Skip to main content'}
-    </a>
+      {pub.title}
+    </h1>
 
-    <Header locale={locale} hideSectionNav otherLocalePath={otherLocalePath} />
+    <p class="mt-4 text-muted" set:html={highlightSelf(pub.authors)} />
+    <p class="text-muted">
+      <em lang={venueLang}>{venueText}</em>{pub.pages ? `, ${pub.pages}` : ''}
+    </p>
 
-    <main id="main">
-      <article class="container-page py-12 md:py-16 max-w-3xl">
-        <nav aria-label={locale === 'ja' ? 'パンくずリスト' : 'Breadcrumb'} class="text-xs font-mono uppercase tracking-wider text-muted mb-6">
-          <a href={home} class="hover:text-[var(--fg)] underline-offset-4 hover:underline">
-            {profile.name[locale]}
-          </a>
-          <span aria-hidden="true"> / </span>
-          <a href={publicationsIndex} class="hover:text-[var(--fg)] underline-offset-4 hover:underline">
-            {s.sections.publications}
-          </a>
-        </nav>
+    {
+      pub.flags && pub.flags.length > 0 && (
+        <ul class="flagset mt-3">
+          {pub.flags.map((f) => (
+            <li>{s.flags[f]}</li>
+          ))}
+        </ul>
+      )
+    }
 
-        <p class="text-xs font-mono uppercase tracking-[0.18em] text-[var(--accent)]">
-          {s.pubTypes[pub.type]} · <time datetime={dateIso}>{dateLabel}</time>
-        </p>
-
-        <h1
-          class="mt-3 font-serif text-2xl md:text-4xl font-semibold tracking-tight leading-tight text-balance"
-          lang={titleLang}
-        >
-          {pub.title}
-        </h1>
-
-        <p class="mt-4 text-muted" set:html={highlightSelf(pub.authors)} />
-        <p class="mt-1 text-muted italic" lang={locale === 'en' && pub.venueEn ? 'en' : titleLang}>
-          {venueText}{pub.pages ? `, ${pub.pages}` : ''}
-        </p>
-
-        {
-          pub.flags && pub.flags.length > 0 && (
-            <ul class="mt-4 flex flex-wrap gap-1.5">
-              {pub.flags.map((f) => (
-                <li class="text-xs tracking-wide font-mono px-2 py-0.5 rounded border hairline text-muted">
-                  {s.flags[f]}
-                </li>
-              ))}
-            </ul>
-          )
-        }
-
-        {
-          abstract && (
-            <section class="mt-8">
-              <h2 class="font-mono uppercase tracking-wider text-xs text-muted mb-3">Abstract</h2>
-              <p class="text-base leading-relaxed">{abstract}</p>
-            </section>
-          )
-        }
-
-        <div class="mt-8 flex flex-wrap gap-2">
-          {
-            externalUrl && (
-              <a
-                href={externalUrl}
-                target="_blank"
-                rel="noopener noreferrer external"
-                class="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-[var(--accent)] text-[var(--accent-contrast)] text-sm font-medium hover:opacity-90 transition-opacity"
-              >
-                {pub.doi ? 'DOI' : 'Open'}
-                <span aria-hidden="true">↗</span>
-              </a>
-            )
-          }
-          <a
-            href={publicationsIndex}
-            class="inline-flex items-center gap-2 px-4 py-2 rounded-md border hairline text-sm hover:bg-[var(--accent-soft)] transition-colors"
-          >
-            ← {s.sections.publications}
-          </a>
-        </div>
-
-        <section class="mt-12 surface p-6 md:p-8 text-sm">
-          <h2 class="font-mono uppercase tracking-wider text-xs text-muted mb-3">BibTeX</h2>
-          <pre class="overflow-x-auto whitespace-pre-wrap font-mono text-xs leading-relaxed"
-            >{bibtexEntry(pub, venueScholar)}</pre>
+    {
+      abstract && (
+        <section class="mt-8">
+          <h2 class="text-sm font-semibold text-muted">{s.labels.abstract}</h2>
+          <p class="mt-2 leading-[1.9]" lang={abstractLang}>{abstract}</p>
         </section>
-      </article>
-    </main>
+      )
+    }
 
-    <Footer locale={locale} />
-  </body>
-</html>
+    <div class="mt-8 flex flex-wrap gap-2">
+      {
+        externalUrl && (
+          <a
+            href={externalUrl}
+            target="_blank"
+            rel="noopener noreferrer external"
+            class="btn btn-primary"
+          >
+            {pub.doi ? 'DOI' : s.labels.external}
+            <span aria-hidden="true">↗</span>
+            <span class="sr-only">{s.labels.newTab}</span>
+          </a>
+        )
+      }
+      <a href={publicationsIndex} class="btn">
+        <span aria-hidden="true">←</span>
+        {s.actions.backToPublications}
+      </a>
+    </div>
+
+    <section class="mt-10 border-t hairline pt-6">
+      <h2 class="text-sm font-semibold text-muted">BibTeX</h2>
+      <pre
+        class="mt-2 overflow-x-auto rounded-md border hairline p-4 font-mono text-xs leading-relaxed"
+        style="background: var(--bg-soft);">{bibtexEntry(pub, venueScholar)}</pre>
+    </section>
+  </article>
+</BaseLayout>

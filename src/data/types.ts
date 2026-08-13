@@ -1,6 +1,14 @@
-export type Locale = 'ja' | 'en';
+/** Site locales. `ja` and `en` are author-written; `zh` and `ko` are
+ *  machine-translated from them and labelled as such on the page. */
+export type Locale = 'ja' | 'en' | 'zh' | 'ko';
 
-export type LocalizedString = Record<Locale, string>;
+/** Author-written locales, always present on every localized string. */
+export type SourceLocale = 'ja' | 'en';
+
+/** `ja` / `en` are required. `zh` / `ko` are optional so that adding a new
+ *  entry never blocks on translation — read them through `L()` in
+ *  `~/i18n/locale`, which falls back to English. */
+export type LocalizedString = { ja: string; en: string; zh?: string; ko?: string };
 
 export type EmailEntry = {
   address: string;
@@ -93,9 +101,10 @@ export type Publication = {
   /** Title rendered as published. Academic convention is to keep this as-is
    *  across languages so citations remain searchable. */
   title: string;
-  /** Language of `title`. Used so a Japanese title rendered inside an English
-   *  page still gets the right `lang=...` for screen readers / hyphenation. */
-  titleLang?: Locale;
+  /** Language of `title` as published. Used so a Japanese title rendered inside
+   *  a non-Japanese page still gets the right `lang=...` for screen readers and
+   *  line breaking. Only ever `ja` or `en` — titles are never translated. */
+  titleLang?: SourceLocale;
   authors: string;
   /** Primary venue string (as published). */
   venue: string;
@@ -134,6 +143,10 @@ export type GrantEntry = {
   end: string;
   role?: LocalizedString;
   category: GrantCategory;
+  /** Total award including indirect costs, in JPY. Rendered only if set. */
+  amountJpy?: number;
+  /** Public database record for the award (e.g. the KAKEN project page). */
+  url?: string;
 };
 
 export type ServiceEntry = {

@@ -1,54 +1,40 @@
 ---
 import type { Locale } from '~/data/types';
 import { publications } from '~/data';
-import { t } from '~/i18n/ui';
+import { t, fmt } from '~/i18n/ui';
+import { L, localizePath } from '~/i18n/locale';
 import Section from './Section.astro';
 import PublicationItem from './PublicationItem.astro';
 
 type Props = { locale: Locale };
 const { locale } = Astro.props;
 const s = t(locale);
-const selected = [...publications]
-  .filter((publication) => publication.selected)
+
+const selected = publications
+  .filter((p) => p.selected)
   .sort((a, b) => b.year * 12 + (b.month ?? 0) - (a.year * 12 + (a.month ?? 0)));
-const indexPath = locale === 'ja' ? '/publications/' : '/en/publications/';
 ---
 
-<Section
-  id="publications"
-  eyebrow={locale === 'ja' ? '主要業績' : 'SELECTED WORK'}
-  title={s.sections.selectedPublications}
-  description={locale === 'ja'
-    ? '研究の方向性が分かる代表的な論文を掲載しています。全論文は専用ページで検索・絞り込みできます。'
-    : 'A concise selection showing the direction of my research. Search and filter the full list on the publications page.'}
->
-  <div class="surface overflow-hidden px-5 py-1 md:px-8">
+<Section id="publications" title={s.sections.selectedPublications}>
+  <ol class="divided">
     {
-      selected.map((publication, index) => (
-        <div class:list={['hairline', index < selected.length - 1 && 'border-b']}>
-          {publication.selectedReason && (
-            <p class="pt-5 -mb-2 text-xs font-semibold tracking-wide text-[var(--accent-strong)]">
-              {publication.selectedReason[locale]}
-            </p>
-          )}
-          <PublicationItem pub={publication} locale={locale} />
-        </div>
+      selected.map((pub) => (
+        <li>
+          <PublicationItem
+            pub={pub}
+            locale={locale}
+            note={pub.selectedReason ? L(pub.selectedReason, locale) : undefined}
+          />
+        </li>
       ))
     }
-  </div>
+  </ol>
 
-  <div class="mt-6 flex flex-wrap items-center gap-3">
-    <a
-      href={indexPath}
-      class="inline-flex min-h-11 items-center gap-2 rounded-md bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-[var(--accent-contrast)] transition-colors hover:bg-[var(--accent-strong)]"
-    >
-      {locale === 'ja'
-        ? `全 ${publications.length} 件の論文を検索`
-        : `Search all ${publications.length} publications`}
+  <p class="mt-6">
+    <a href={localizePath('/publications/', locale)} class="btn">
+      {s.actions.seeAllPublications}
+      <span class="text-muted">{fmt(s.counts.publications, { n: publications.length })}</span>
       <span aria-hidden="true">→</span>
     </a>
-    <span class="text-sm text-muted">
-      {locale === 'ja' ? 'タイトル・著者・掲載先・種別で探せます' : 'Filter by title, author, venue, or type'}
-    </span>
-  </div>
+  </p>
 </Section>
