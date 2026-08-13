@@ -9,7 +9,6 @@ import type { UiStrings } from './ui';
  */
 export const zh: UiStrings = {
   nav: {
-    about: '简介',
     research: '研究',
     publications: '论文',
     awards: '获奖',
@@ -19,7 +18,6 @@ export const zh: UiStrings = {
     cv: '简历',
   },
   sections: {
-    about: '简介',
     activity: '近期动态',
     research: '研究方向',
     keywords: '关键词',

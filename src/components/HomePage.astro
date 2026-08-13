@@ -1,7 +1,6 @@
 ---
 import type { Locale } from '~/data/types';
 import Intro from './Intro.astro';
-import About from './About.astro';
 import Activity from './Activity.astro';
 import Research from './Research.astro';
 import FeaturedPublications from './FeaturedPublications.astro';
@@ -16,7 +15,6 @@ const { locale } = Astro.props;
 ---
 
 <Intro locale={locale} />
-<About locale={locale} />
 <Activity locale={locale} />
 <Research locale={locale} />
 <FeaturedPublications locale={locale} />
