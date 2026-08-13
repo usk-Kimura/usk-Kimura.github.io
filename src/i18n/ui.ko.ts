@@ -9,7 +9,6 @@ import type { UiStrings } from './ui';
  */
 export const ko: UiStrings = {
   nav: {
-    about: '소개',
     research: '연구',
     publications: '논문',
     awards: '수상',
@@ -19,7 +18,6 @@ export const ko: UiStrings = {
     cv: '이력서',
   },
   sections: {
-    about: '소개',
     activity: '최근 활동',
     research: '연구 주제',
     keywords: '키워드',

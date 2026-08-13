@@ -12,7 +12,6 @@ import { ko } from './ui.ko';
  */
 const ja = {
   nav: {
-    about: '概要',
     research: '研究',
     publications: '論文',
     awards: '受賞',
@@ -22,7 +21,6 @@ const ja = {
     cv: '履歴書',
   },
   sections: {
-    about: '概要',
     activity: '最近の活動',
     research: '研究テーマ',
     keywords: 'キーワード',
@@ -155,7 +153,6 @@ export type UiStrings = typeof ja;
 
 const en: UiStrings = {
   nav: {
-    about: 'About',
     research: 'Research',
     publications: 'Publications',
     awards: 'Awards',
@@ -165,7 +162,6 @@ const en: UiStrings = {
     cv: 'CV',
   },
   sections: {
-    about: 'About',
     activity: 'Recent activity',
     research: 'Research',
     keywords: 'Keywords',

@@ -50,7 +50,9 @@ const venueLang: SourceLocale = useVenueEn ? 'en' : CJK.test(pub.venue) ? 'ja' :
 
     <p class="mt-1 text-sm text-muted" set:html={highlightSelf(pub.authors)} />
 
-    <p class="text-sm text-muted">
+    {/* Full contrast, unlike the author line: where a paper appeared is the
+        thing readers scan a publication list for. */}
+    <p class="text-sm">
       <em lang={venueLang}>{venueText}</em>{pub.pages ? `, ${pub.pages}` : ''}
     </p>
 
