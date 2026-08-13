@@ -1,30 +1,27 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#0f1724"/>
-      <stop offset="1" stop-color="#0f6670"/>
-    </linearGradient>
-    <radialGradient id="glow" cx="0" cy="0" r="600" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#d98a24" stop-opacity="0.55"/>
-      <stop offset="1" stop-color="#d98a24" stop-opacity="0"/>
-    </radialGradient>
-  </defs>
-  <rect width="1200" height="630" fill="url(#bg)"/>
-  <rect width="1200" height="630" fill="url(#glow)"/>
-  <g font-family="ui-serif, Georgia, serif" fill="#ffffff">
-    <text x="80" y="200" font-size="28" font-weight="500" opacity="0.7" letter-spacing="6">
-      RESEARCHER PORTFOLIO
+  <!-- Social card. Deliberately matches the site: paper background, ink text,
+       one accent rule. Rendered to PNG by scripts/build-og.mjs. -->
+  <rect width="1200" height="630" fill="#ffffff"/>
+  <rect x="0" y="0" width="1200" height="10" fill="#0c666e"/>
+
+  <g font-family="ui-sans-serif, system-ui, 'Segoe UI', 'Noto Sans JP', Helvetica, Arial, sans-serif">
+    <text x="88" y="196" font-size="26" font-weight="500" fill="#585e66" letter-spacing="5">
+      RESEARCHER
     </text>
-    <text x="80" y="320" font-size="96" font-weight="600" letter-spacing="-2">
+
+    <text x="88" y="316" font-size="94" font-weight="700" fill="#16181c" letter-spacing="-2">
       Yusuke Kimura
     </text>
-    <text x="80" y="380" font-size="36" font-weight="400" opacity="0.85">
+    <text x="88" y="374" font-size="36" font-weight="400" fill="#585e66">
       木村 優介
     </text>
-    <text x="80" y="470" font-size="32" font-weight="400" opacity="0.95">
+
+    <rect x="88" y="428" width="72" height="3" fill="#0c666e"/>
+
+    <text x="88" y="490" font-size="31" font-weight="500" fill="#16181c">
       NLP · Large Language Models · Post-training
     </text>
-    <text x="80" y="540" font-size="22" font-weight="400" opacity="0.7">
+    <text x="88" y="546" font-size="22" font-weight="400" fill="#585e66">
       Graduate School of Informatics, Nagoya University
     </text>
   </g>
