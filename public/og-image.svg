@@ -19,7 +19,7 @@
     <rect x="88" y="428" width="72" height="3" fill="#0c666e"/>
 
     <text x="88" y="490" font-size="31" font-weight="500" fill="#16181c">
-      NLP · Large Language Models · Post-training
+      NLP · LLM Post-training · Cross-tokenizer Distillation
     </text>
     <text x="88" y="546" font-size="22" font-weight="400" fill="#585e66">
       Graduate School of Informatics, Nagoya University

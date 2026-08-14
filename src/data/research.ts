@@ -14,16 +14,16 @@ export type ResearchAgendaItem = {
 export const researchAgenda: ResearchAgendaItem[] = [
   {
     title: {
-      ja: 'LLM を効率よく事後適応させる On-policy Distillation',
-      en: 'Efficiently adapting LLMs with on-policy distillation',
-      zh: '高效实现 LLM 后训练适配的 On-policy Distillation（同策略蒸馏）',
-      ko: 'LLM을 효율적으로 사후 적응시키는 On-policy Distillation(온폴리시 증류)',
+      ja: 'ByteTop-k OPD：語彙の異なる LLM 間のオンポリシ蒸留',
+      en: 'ByteTop-k OPD for LLMs with Different Vocabularies',
+      zh: 'ByteTop-k OPD：不同词表 LLM 之间的同策略蒸馏',
+      ko: 'ByteTop-k OPD: 어휘가 다른 LLM 간의 온폴리시 증류',
     },
     description: {
-      ja: '大規模言語モデルの事後学習において、生徒モデルが自ら生成した出力の上で教師から学ぶ On-policy Distillation を研究しています。学習時と推論時の分布のずれを抑えつつ、効率的に能力を転移させることを目指しています。',
-      en: 'I study on-policy distillation for LLM post-training, where the student learns from a teacher on its own generated outputs — transferring capabilities efficiently while reducing the train/inference distribution shift.',
-      zh: '在大语言模型（LLM）的后训练中，主要研究让学生模型在自身生成的输出上向教师模型学习的 On-policy Distillation（同策略蒸馏）。旨在抑制训练与推理之间的分布偏移，同时高效地实现能力迁移。',
-      ko: '대규모 언어 모델(LLM)의 사후 학습(post-training)에서, 학생 모델이 스스로 생성한 출력을 바탕으로 교사 모델로부터 배우는 On-policy Distillation(온폴리시 증류)을 연구하고 있습니다. 학습 시와 추론 시의 분포 차이를 억제하면서 능력을 효율적으로 전이하는 것을 목표로 합니다.',
+      ja: '教師と生徒で語彙・トークナイザが異なる場合の On-policy Distillation を研究しています。現在は、生徒が実際に生成したトークンと各文脈で高い確率を置く次トークン候補を、バイト列上の共通ラベルとして扱う ByteTop-k OPD を開発しています。疎で動的な候補監督が、下流性能と教師信号の計算コストにどう影響するかを検証しています。',
+      en: 'I study on-policy distillation between teacher and student LLMs with different vocabularies or tokenizers. My current work develops ByteTop-k OPD, which treats the student\'s generated token and high-probability next-token candidates as shared byte-string labels. I investigate how this sparse, dynamic candidate supervision affects downstream accuracy and teacher-scoring cost.',
+      zh: '研究词表或分词器不同的教师大语言模型与学生大语言模型之间的同策略蒸馏。目前正在开发 ByteTop-k OPD，将学生模型实际生成的词元及其高概率下一词元候选作为基于字节串的共享标签，并考察这种稀疏、动态的候选监督如何影响下游准确率和教师模型评分成本。',
+      ko: '어휘 또는 토크나이저가 서로 다른 교사·학생 LLM 간의 온폴리시 증류를 연구합니다. 현재 학생 모델이 실제로 생성한 토큰과 확률이 높은 다음 토큰 후보를 바이트열 기반의 공통 레이블로 다루는 ByteTop-k OPD를 개발하고 있으며, 이러한 희소하고 동적인 후보 감독이 다운스트림 정확도와 교사 모델 채점 비용에 미치는 영향을 검증하고 있습니다.',
     },
     tag: { ja: '主軸', en: 'Primary focus', zh: '主攻方向', ko: '핵심 연구' },
   },

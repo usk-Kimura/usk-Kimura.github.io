@@ -29,16 +29,16 @@ export const profile: Profile = {
     ko: '박사(문화정보학) (2026년 3월, 도시샤대학)',
   },
   tagline: {
-    ja: '自然言語処理 / 大規模言語モデル / 事後学習',
-    en: 'NLP · Large Language Models · Post-training',
-    zh: '自然语言处理 / 大语言模型（LLM） / 后训练',
-    ko: '자연어 처리 / 대규모 언어 모델(LLM) / 사후 학습(post-training)',
+    ja: '自然言語処理 / LLM の事後学習 / 異語彙間知識蒸留',
+    en: 'NLP · LLM Post-training · Cross-tokenizer Distillation',
+    zh: '自然语言处理 / 大语言模型后训练 / 跨分词器知识蒸馏',
+    ko: '자연어 처리 / LLM 사후 학습 / 토크나이저 간 지식 증류',
   },
   bio: {
-    ja: '大規模言語モデルを、事前学習の後に効率的かつ信頼できる形で適応させる方法を研究しています。現在の主軸は On-policy Distillation（生徒モデルが自ら生成した出力の上で教師から学ぶ手法）です。これまでマルチタスク学習・文書分類・キーフレーズ抽出にも取り組み、共同研究では効率的なアダプタ学習や社会的バイアスの緩和にも関わっています。',
-    en: 'I study how to adapt large language models efficiently and reliably after pretraining. My current focus is on-policy distillation — training a student model from teacher feedback on the student\'s own generated outputs. My earlier work spans multi-task learning, text classification, and keyphrase extraction, and in collaborative projects I also work on efficient adapter learning and social bias mitigation.',
-    zh: '我的研究关注如何在预训练之后，以高效且可靠的方式对大语言模型（LLM）进行适配。当前的研究重心是 On-policy Distillation（同策略蒸馏，即让学生模型基于自身生成的输出向教师模型学习的方法）。此前我还开展过关于多任务学习、文本分类与关键短语抽取的研究，并在合作研究中参与高效的适配器学习与社会偏见缓解等课题。',
-    ko: '사전 학습을 마친 대규모 언어 모델(LLM)을 효율적이고 신뢰할 수 있는 방식으로 적응시키는 방법을 연구하고 있습니다. 현재의 주된 연구 주제는 On-policy Distillation(온폴리시 증류), 즉 학생 모델이 스스로 생성한 출력을 바탕으로 교사 모델로부터 학습하는 기법입니다. 그동안 멀티태스크 학습, 문서 분류, 키프레이즈 추출에 관한 연구도 수행해 왔으며, 공동 연구에서는 효율적인 어댑터 학습과 사회적 편향 완화 연구에도 참여하고 있습니다.',
+    ja: '大規模言語モデルの事後学習、特に語彙・トークナイザの異なる教師と生徒の間で行う On-policy Distillation を研究しています。現在は、生徒が実際に生成したトークンと高確率な次トークン候補をバイト列上の共通ラベルへ写像し、語彙の違いを越えて教師信号を与える ByteTop-k OPD を開発・検証しています。これまでマルチタスク学習・文書分類・キーフレーズ抽出にも取り組み、共同研究では効率的なアダプタ学習や社会的バイアスの緩和にも関わっています。',
+    en: 'I study LLM post-training, particularly on-policy distillation between teacher and student models with different vocabularies and tokenizers. My current work develops and evaluates ByteTop-k OPD, which maps the student\'s generated token and high-probability next-token candidates to shared byte-string labels so that teacher supervision can cross tokenizer boundaries. My earlier work spans multi-task learning, text classification, and keyphrase extraction, and in collaborative projects I also work on efficient adapter learning and social bias mitigation.',
+    zh: '我研究大语言模型（LLM）的后训练，尤其关注词表与分词器不同的教师模型和学生模型之间的 On-policy Distillation（同策略蒸馏）。目前，我正在开发和评估 ByteTop-k OPD：将学生模型实际生成的词元及其高概率下一词元候选映射为基于字节串的共享标签，从而跨越分词器差异提供教师监督。此前我还开展过多任务学习、文本分类和关键短语抽取研究，并在合作研究中参与高效适配器学习与社会偏见缓解。',
+    ko: '대규모 언어 모델(LLM)의 사후 학습, 특히 어휘와 토크나이저가 서로 다른 교사·학생 모델 간의 On-policy Distillation(온폴리시 증류)을 연구합니다. 현재는 학생 모델이 실제로 생성한 토큰과 확률이 높은 다음 토큰 후보를 바이트열 기반의 공통 레이블로 사상하여 토크나이저 차이를 넘어 교사 신호를 제공하는 ByteTop-k OPD를 개발하고 검증하고 있습니다. 그동안 멀티태스크 학습, 문서 분류, 키프레이즈 추출도 연구했으며, 공동 연구에서는 효율적인 어댑터 학습과 사회적 편향 완화에도 참여하고 있습니다.',
   },
   emails: [
     {
@@ -127,6 +127,18 @@ export const profile: Profile = {
       en: 'On-policy Distillation',
       zh: 'On-policy Distillation（同策略蒸馏）',
       ko: 'On-policy Distillation(온폴리시 증류)',
+    },
+    {
+      ja: 'ByteTop-k OPD',
+      en: 'ByteTop-k OPD',
+      zh: 'ByteTop-k OPD',
+      ko: 'ByteTop-k OPD',
+    },
+    {
+      ja: '異語彙間知識蒸留',
+      en: 'Cross-tokenizer Knowledge Distillation',
+      zh: '跨分词器知识蒸馏',
+      ko: '토크나이저 간 지식 증류',
     },
     {
       ja: '効率的なアダプタ学習',
