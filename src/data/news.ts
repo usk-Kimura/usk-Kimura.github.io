@@ -91,10 +91,10 @@ export const news: NewsItem[] = [
     endDate: '2026-09-16',
     kind: 'presentation',
     title: {
-      ja: '「異なる語彙を持つLLM間のOPDに関する研究」を発表予定',
-      en: 'Presenting research on OPD between LLMs with different vocabularies',
-      zh: '即将报告《具有不同词表的 LLM 之间的 OPD 研究》',
-      ko: '“서로 다른 어휘를 가진 LLM 간의 OPD에 관한 연구”를 발표할 예정입니다',
+      ja: '「ByteTop-k OPD：バイト列表現に基づく語彙の異なる LLM 間のオンポリシ蒸留」を発表予定',
+      en: 'Presenting “ByteTop-k OPD: On-Policy Distillation between LLMs with Different Vocabularies Based on Byte-String Representations”',
+      zh: '即将报告《ByteTop-k OPD：基于字节串表示的不同词表 LLM 之间的同策略蒸馏》',
+      ko: '“ByteTop-k OPD: 바이트열 표현에 기반한 어휘가 다른 LLM 간 온폴리시 증류”를 발표할 예정입니다',
     },
     detail: {
       ja: '情報処理学会 第269回自然言語処理研究発表会｜帯広＋オンライン',
