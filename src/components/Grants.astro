@@ -68,15 +68,20 @@ function range(start: string, end?: string) {
       {
         services.map((service) => {
           const parts = range(service.start, service.end);
+          const singleDate = service.end === service.start;
           return (
             <li class="entry">
               <p class="entry-date">
                 <time datetime={isoYearMonth(service.start)}>{parts.start}</time>
-                <span aria-hidden="true"> – </span>
-                {service.end ? (
-                  <time datetime={isoYearMonth(service.end)}>{parts.end}</time>
-                ) : (
-                  <span>{parts.end}</span>
+                {!singleDate && (
+                  <>
+                    <span aria-hidden="true"> – </span>
+                    {service.end ? (
+                      <time datetime={isoYearMonth(service.end)}>{parts.end}</time>
+                    ) : (
+                      <span>{parts.end}</span>
+                    )}
+                  </>
                 )}
               </p>
               <div class="min-w-0">

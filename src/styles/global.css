@@ -38,8 +38,8 @@
 
     /* Height of the sticky header; scroll-padding and sticky offsets read it. */
     --header-h: 3.5rem;
-    /* Single-column measure. ~78 Latin characters, ~40 CJK characters. */
-    --content: 42rem;
+    /* Single-column measure. Roomier on desktop while staying fluid on mobile. */
+    --content: 48rem;
   }
 
   :root[data-theme="light"] {
