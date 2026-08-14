@@ -273,10 +273,11 @@ const reading = L(profile.reading, locale);
       {
         services.map((sv) => {
           const parts = range(sv.start, sv.end);
+          const singleDate = sv.end === sv.start;
           return (
             <li>
               <span class="cv-date">
-                {parts.start} – {parts.end}
+                {parts.start}{!singleDate && ` – ${parts.end}`}
               </span>
               <span>
                 <strong>{L(sv.title, locale)}</strong>

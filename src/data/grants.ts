@@ -113,6 +113,39 @@ export const grants: GrantEntry[] = [
 
 export const services: ServiceEntry[] = [
   {
+    title: {
+      ja: 'iiWAS2026 Reviewer',
+      en: 'iiWAS2026 Reviewer',
+      zh: 'iiWAS2026 审稿人',
+      ko: 'iiWAS2026 심사위원',
+    },
+    kind: { ja: '査読', en: 'Peer Review', zh: '同行评审', ko: '동료 심사(피어 리뷰)' },
+    start: '2026-08',
+    end: '2026-08',
+  },
+  {
+    title: {
+      ja: '情報処理学会論文誌データベース 査読',
+      en: 'IPSJ-TOD Reviewer',
+      zh: 'IPSJ-TOD 审稿',
+      ko: 'IPSJ-TOD 심사',
+    },
+    kind: { ja: '査読', en: 'Peer Review', zh: '同行评审', ko: '동료 심사(피어 리뷰)' },
+    start: '2026-06',
+    end: '2026-06',
+  },
+  {
+    title: {
+      ja: 'IPSJ Journal 査読',
+      en: 'IPSJ Journal Reviewer',
+      zh: 'IPSJ Journal 审稿',
+      ko: 'IPSJ Journal 심사',
+    },
+    kind: { ja: '査読', en: 'Peer Review', zh: '同行评审', ko: '동료 심사(피어 리뷰)' },
+    start: '2026-04',
+    end: '2026-04',
+  },
+  {
     title: { ja: 'EMNLP Workshop Reviewer', en: 'EMNLP Workshop Reviewer', zh: 'EMNLP 研讨会审稿人', ko: 'EMNLP 워크숍 심사위원' },
     kind: { ja: '査読', en: 'Peer Review', zh: '同行评审', ko: '동료 심사(피어 리뷰)' },
     start: '2024-10-01',

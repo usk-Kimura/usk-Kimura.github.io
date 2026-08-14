@@ -58,7 +58,7 @@ export const profile: Profile = {
     jGlobalId: '202101017410101550',
     researchmapMemberId: 'R000022171',
   },
-  researchmapUpdated: '2026-07-26',
+  researchmapUpdated: '2026-08-14',
   portrait: {
     src: '/portrait-640.jpg',
     alt: {
