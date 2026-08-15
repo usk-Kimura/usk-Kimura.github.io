@@ -1,0 +1,51 @@
+---
+import type { Locale } from '~/data/types';
+import { stats } from '~/data/stats';
+import { t } from '~/i18n/ui';
+import { localizePath } from '~/i18n/locale';
+
+type Props = { locale: Locale };
+const { locale } = Astro.props;
+const s = t(locale);
+const home = localizePath('/', locale);
+const publications = localizePath('/publications/', locale);
+
+// Keep every number tied to a visible evidence page. These are deliberately
+// narrower claims than the raw 33-entry bibliography: domestic presentations
+// are not presented as peer-reviewed papers, and compute awards are not grants.
+const items = [
+  { value: stats.peerReviewed, label: s.highlights.peerReviewed, href: publications },
+  { value: stats.firstAuthor, label: s.highlights.firstAuthor, href: publications },
+  {
+    value: stats.principalInvestigator,
+    label: s.highlights.principalInvestigator,
+    href: `${home}#grants`,
+  },
+  { value: stats.awards, label: s.highlights.awards, href: `${home}#awards` },
+];
+---
+
+<section id="highlights" class="border-t hairline py-8 md:py-9">
+  <div class="container-home">
+    <h2 class="text-sm font-semibold tracking-wide text-muted">{s.sections.highlights}</h2>
+    <ul class="mt-4 grid grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-4">
+      {
+        items.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class="group block min-h-14 border-l-2 pl-3.5 hairline transition-colors hover:border-[var(--accent)]"
+            >
+              <span class="block text-2xl leading-none font-semibold tabular-nums md:text-3xl">
+                {item.value}
+              </span>
+              <span class="mt-1.5 block text-sm leading-snug text-muted group-hover:text-[var(--fg)]">
+                {item.label}
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

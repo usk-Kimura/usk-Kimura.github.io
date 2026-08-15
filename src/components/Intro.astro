@@ -23,99 +23,106 @@ const profileLinks = profile.links.filter((l) => !l.social);
 // Labels mirror the section headings exactly, so a reader can match a link to
 // the place it lands.
 const contents = [
-  { id: 'activity', label: s.sections.activity },
+  { id: 'highlights', label: s.sections.highlights },
   { id: 'research', label: s.sections.research },
   { id: 'publications', label: s.sections.selectedPublications },
+  { id: 'activity', label: s.sections.activity },
   { id: 'awards', label: s.sections.awards },
-  { id: 'career', label: `${s.sections.career} / ${s.sections.education}` },
   { id: 'grants', label: s.sections.grants },
+  { id: 'career', label: `${s.sections.career} / ${s.sections.education}` },
   { id: 'contact', label: s.sections.contact },
 ];
 ---
 
-<section class="container-page pt-9 pb-10 md:pt-12">
-  <div class="flex items-start gap-4 sm:gap-6">
-    {
-      profile.portrait && (
-        <Portrait
-          locale={locale}
-          class="avatar h-[4.5rem] w-[4.5rem] shrink-0 sm:h-24 sm:w-24"
-          sizes="96px"
-        />
-      )
-    }
-    <div class="min-w-0 flex-1">
-      <h1 class="text-[1.75rem] font-bold leading-tight tracking-tight sm:text-4xl">{name}</h1>
-      {showReading && <p class="mt-1 text-sm text-muted">{reading}</p>}
-      <p class="mt-2.5 text-[0.9375rem] leading-relaxed text-muted">
-        {L(profile.tagline, locale)}
-      </p>
+<section class="container-home pt-9 pb-10 md:pt-12">
+  <div class="lg:grid lg:grid-cols-[minmax(0,1.35fr)_minmax(19rem,.85fr)] lg:gap-12">
+    <div class="min-w-0">
+      <div class="flex items-start gap-4 sm:gap-6">
+        {
+          profile.portrait && (
+            <Portrait
+              locale={locale}
+              class="avatar h-[4.5rem] w-[4.5rem] shrink-0 sm:h-24 sm:w-24 lg:h-32 lg:w-32"
+              sizes="(min-width: 1024px) 128px, (min-width: 640px) 96px, 72px"
+            />
+          )
+        }
+        <div class="min-w-0 flex-1">
+          <h1 class="text-[1.75rem] font-bold leading-tight tracking-tight sm:text-4xl lg:text-[2.625rem]">
+            {name}
+          </h1>
+          {showReading && <p class="mt-1 text-sm text-muted">{reading}</p>}
+          <p class="mt-2.5 text-[0.9375rem] leading-relaxed text-muted">
+            {L(profile.tagline, locale)}
+          </p>
+        </div>
+      </div>
+
+      {/* The bio stays in a reading-width column even though the home-page
+          shell is wider on desktop. */}
+      <p class="mt-6 text-[0.9375rem] leading-[1.9] md:text-base">{L(profile.bio, locale)}</p>
+    </div>
+
+    <div class="mt-7 min-w-0 lg:mt-0 lg:pt-0.5">
+      <dl class="divided text-sm">
+        <div class="grid gap-x-4 py-2.5 sm:grid-cols-[5rem_minmax(0,1fr)] lg:block lg:py-3">
+          <dt class="text-muted">{s.labels.position}</dt>
+          <dd class="lg:mt-0.5">{L(profile.position, locale)}</dd>
+        </div>
+        <div class="grid gap-x-4 py-2.5 sm:grid-cols-[5rem_minmax(0,1fr)] lg:block lg:py-3">
+          <dt class="text-muted">{s.labels.affiliation}</dt>
+          <dd class="lg:mt-0.5">{L(profile.affiliation, locale)}</dd>
+        </div>
+        <div class="grid gap-x-4 py-2.5 sm:grid-cols-[5rem_minmax(0,1fr)] lg:block lg:py-3">
+          <dt class="text-muted">{s.labels.degree}</dt>
+          <dd class="lg:mt-0.5">{L(profile.degree, locale)}</dd>
+        </div>
+        {/* Spelled out rather than hidden behind a "Contact" link: reaching
+            the person is a primary reason to open a researcher page. */}
+        <div class="grid gap-x-4 py-2.5 sm:grid-cols-[5rem_minmax(0,1fr)] lg:block lg:py-3">
+          <dt class="text-muted">{s.labels.email}</dt>
+          <dd class="lg:mt-0.5">
+            <a href={`mailto:${primaryEmail.address}`} class="link break-all">
+              {primaryEmail.address}
+            </a>
+          </dd>
+        </div>
+      </dl>
+
+      {
+        opp && (
+          <p
+            class="mt-6 border-l-2 pl-3.5 text-sm leading-relaxed"
+            style="border-color: var(--accent);"
+          >
+            <a href="#contact" class="font-medium text-[var(--accent-strong)]">
+              {s.opportunities.heading}
+            </a>
+            <span class="text-muted">
+              <span aria-hidden="true"> — </span>
+              {L(opp.startFrom, locale)}
+              <span aria-hidden="true"> · </span>
+              {L(opp.detail, locale)}
+            </span>
+          </p>
+        )
+      }
+
+      <ul class="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+        {profileLinks.map((l) => (
+          <li>
+            <a href={l.href} target="_blank" rel="noopener noreferrer" class="link">
+              {L(l.label, locale)}
+              <span class="sr-only">{s.labels.newTab}</span>
+            </a>
+          </li>
+        ))}
+        <li>
+          <a href={localizePath('/cv/', locale)} class="link">{s.nav.cv}</a>
+        </li>
+      </ul>
     </div>
   </div>
-
-  {/* The bio sits directly under the name, the way nearly every researcher
-      page opens: who you are in prose first, the institutional facts after. */}
-  <p class="mt-6 text-[0.9375rem] leading-[1.9] md:text-base">{L(profile.bio, locale)}</p>
-
-  <dl class="divided mt-7 text-sm">
-    <div class="grid gap-x-4 py-2.5 sm:grid-cols-[5rem_minmax(0,1fr)]">
-      <dt class="text-muted">{s.labels.position}</dt>
-      <dd>{L(profile.position, locale)}</dd>
-    </div>
-    <div class="grid gap-x-4 py-2.5 sm:grid-cols-[5rem_minmax(0,1fr)]">
-      <dt class="text-muted">{s.labels.affiliation}</dt>
-      <dd>{L(profile.affiliation, locale)}</dd>
-    </div>
-    <div class="grid gap-x-4 py-2.5 sm:grid-cols-[5rem_minmax(0,1fr)]">
-      <dt class="text-muted">{s.labels.degree}</dt>
-      <dd>{L(profile.degree, locale)}</dd>
-    </div>
-    {/* Spelled out rather than hidden behind a "Contact" link: reaching the
-        person is the single most common reason to open one of these pages. */}
-    <div class="grid gap-x-4 py-2.5 sm:grid-cols-[5rem_minmax(0,1fr)]">
-      <dt class="text-muted">{s.labels.email}</dt>
-      <dd>
-        <a href={`mailto:${primaryEmail.address}`} class="link break-all">
-          {primaryEmail.address}
-        </a>
-      </dd>
-    </div>
-  </dl>
-
-  {
-    opp && (
-      <p
-        class="mt-6 border-l-2 pl-3.5 text-sm leading-relaxed"
-        style="border-color: var(--accent);"
-      >
-        <a href="#contact" class="font-medium text-[var(--accent-strong)]">
-          {s.opportunities.heading}
-        </a>
-        <span class="text-muted">
-          <span aria-hidden="true"> — </span>
-          {L(opp.startFrom, locale)}
-          <span aria-hidden="true"> · </span>
-          {L(opp.detail, locale)}
-        </span>
-      </p>
-    )
-  }
-
-  <ul class="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
-    {
-      profileLinks.map((l) => (
-        <li>
-          <a href={l.href} target="_blank" rel="noopener noreferrer" class="link">
-            {L(l.label, locale)}
-            <span class="sr-only">{s.labels.newTab}</span>
-          </a>
-        </li>
-      ))
-    }
-    <li>
-      <a href={localizePath('/cv/', locale)} class="link">{s.nav.cv}</a>
-    </li>
-  </ul>
 
   <nav aria-label={s.labels.contents} class="mt-8 border-t hairline pt-4">
     <ul class="flex flex-wrap gap-x-4 gap-y-1.5 text-sm">

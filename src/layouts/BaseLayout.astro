@@ -135,7 +135,7 @@ const ogImageAlt = `${name} — ${L(profile.tagline, locale)}`;
       {s.labels.skipToContent}
     </a>
 
-    <Header locale={locale} paths={paths} wide={wide} />
+    <Header locale={locale} paths={paths} wide={wide} homePage={path === '/'} />
     <TranslationNotice locale={locale} paths={paths} />
 
     <main id="main">

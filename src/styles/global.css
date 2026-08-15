@@ -38,8 +38,11 @@
 
     /* Height of the sticky header; scroll-padding and sticky offsets read it. */
     --header-h: 3.5rem;
-    /* Single-column measure. Roomier on desktop while staying fluid on mobile. */
+    /* Single-column reading measure. */
     --content: 48rem;
+    /* A wider shell for the home-page introduction and evidence strip. Long
+       prose still uses --content; the extra width is reserved for structure. */
+    --home-content: 70rem;
   }
 
   :root[data-theme="light"] {
@@ -148,6 +151,16 @@
 @utility container-page {
   width: 100%;
   max-width: var(--content);
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+  @media (min-width: 640px) {
+    padding-inline: 1.75rem;
+  }
+}
+
+@utility container-home {
+  width: 100%;
+  max-width: var(--home-content);
   margin-inline: auto;
   padding-inline: 1.25rem;
   @media (min-width: 640px) {

@@ -22,6 +22,7 @@ const ja = {
   },
   sections: {
     activity: '最近の活動',
+    highlights: '実績ハイライト',
     research: '研究テーマ',
     keywords: 'キーワード',
     fields: '研究分野',
@@ -86,6 +87,12 @@ const ja = {
     matching: '{n} / {m} 件が一致',
     awards: '全 {n} 件',
     older: '{n} 件',
+  },
+  highlights: {
+    peerReviewed: '査読付き論文',
+    firstAuthor: '筆頭著者業績',
+    principalInvestigator: '研究代表課題',
+    awards: '受賞実績',
   },
   actions: {
     seeAllPublications: '論文をすべて見る',
@@ -163,6 +170,7 @@ const en: UiStrings = {
   },
   sections: {
     activity: 'Recent activity',
+    highlights: 'Highlights',
     research: 'Research',
     keywords: 'Keywords',
     fields: 'Fields',
@@ -226,6 +234,12 @@ const en: UiStrings = {
     matching: '{n} of {m} match',
     awards: '{n} total',
     older: '{n}',
+  },
+  highlights: {
+    peerReviewed: 'Peer-reviewed papers',
+    firstAuthor: 'First-author works',
+    principalInvestigator: 'Projects as PI',
+    awards: 'Awards',
   },
   actions: {
     seeAllPublications: 'See all publications',
