@@ -19,6 +19,7 @@ export const zh: UiStrings = {
   },
   sections: {
     activity: '近期动态',
+    highlights: '成果亮点',
     research: '研究方向',
     keywords: '关键词',
     fields: '研究领域',
@@ -82,6 +83,12 @@ export const zh: UiStrings = {
     matching: '匹配 {n} / {m} 篇',
     awards: '共 {n} 项',
     older: '{n} 篇',
+  },
+  highlights: {
+    peerReviewed: '同行评审论文',
+    firstAuthor: '第一作者成果',
+    principalInvestigator: '主持课题',
+    awards: '获奖',
   },
   actions: {
     seeAllPublications: '查看全部论文',

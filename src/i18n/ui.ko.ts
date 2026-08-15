@@ -19,6 +19,7 @@ export const ko: UiStrings = {
   },
   sections: {
     activity: '최근 활동',
+    highlights: '주요 실적',
     research: '연구 주제',
     keywords: '키워드',
     fields: '연구 분야',
@@ -82,6 +83,12 @@ export const ko: UiStrings = {
     matching: '{m}편 중 {n}편 일치',
     awards: '총 {n}건',
     older: '{n}편',
+  },
+  highlights: {
+    peerReviewed: '동료 심사 논문',
+    firstAuthor: '제1저자 연구 실적',
+    principalInvestigator: '연구대표 과제',
+    awards: '수상',
   },
   actions: {
     seeAllPublications: '논문 전체 보기',

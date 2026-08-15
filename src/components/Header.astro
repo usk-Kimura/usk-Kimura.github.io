@@ -13,31 +13,62 @@ type Props = {
   /** Match the wider document measure used by the CV, so the header lines up
    *  with the page content instead of floating inside it. */
   wide?: boolean;
+  /** Match the wider, structured introduction used only on landing pages. */
+  homePage?: boolean;
 };
 
-const { locale, paths, wide = false } = Astro.props;
+const { locale, paths, wide = false, homePage = false } = Astro.props;
 const s = t(locale);
 const home = localizePath('/', locale);
+const publications = localizePath('/publications/', locale);
+const cv = localizePath('/cv/', locale);
+const normalizePath = (path: string) => path.replace(/\/$/, '') || '/';
+const currentPath = normalizePath(Astro.url.pathname);
 ---
 
 <header
   class="sticky top-0 z-40 border-b hairline no-print"
   style="height: var(--header-h); background: color-mix(in oklch, var(--bg) 88%, transparent); backdrop-filter: blur(8px);"
 >
-  <div class:list={[wide ? 'container-wide' : 'container-page', 'flex h-full items-center gap-2']}>
+  <div
+    class:list={[
+      wide ? 'container-wide' : homePage ? 'container-home' : 'container-page',
+      'flex h-full items-center gap-2',
+    ]}
+  >
     <a href={home} class="min-w-0 truncate font-semibold tracking-tight">
       {L(profile.name, locale)}
     </a>
 
-    {/* Hidden on the narrowest screens: at 320px these links squeeze the name
-        down to a few characters, and both destinations are reachable from the
-        page body and the footer. */}
+    {/* Hidden on the narrowest screens: at 320px navigation squeezes the name
+        down to a few characters. Research and Contact join the two core page
+        links only when the desktop header has enough room. */}
     <nav aria-label={s.labels.mainNav} class="ml-auto hidden items-center gap-0.5 text-sm sm:flex">
-      <a href={localizePath('/publications/', locale)} class="link-quiet rounded-md px-2 py-2">
+      <a
+        href={`${home}#research`}
+        class="link-quiet hidden min-h-10 items-center rounded-md px-2 py-2 lg:inline-flex"
+      >
+        {s.nav.research}
+      </a>
+      <a
+        href={publications}
+        class="link-quiet inline-flex min-h-10 items-center rounded-md px-2 py-2"
+        aria-current={currentPath === normalizePath(publications) ? 'page' : undefined}
+      >
         {s.nav.publications}
       </a>
-      <a href={localizePath('/cv/', locale)} class="link-quiet rounded-md px-2 py-2">
+      <a
+        href={cv}
+        class="link-quiet inline-flex min-h-10 items-center rounded-md px-2 py-2"
+        aria-current={currentPath === normalizePath(cv) ? 'page' : undefined}
+      >
         {s.nav.cv}
+      </a>
+      <a
+        href={`${home}#contact`}
+        class="link-quiet hidden min-h-10 items-center rounded-md px-2 py-2 lg:inline-flex"
+      >
+        {s.nav.contact}
       </a>
     </nav>
 
