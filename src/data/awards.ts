@@ -11,7 +11,7 @@ export const awards: AwardEntry[] = [
     },
     organization: {
       ja: 'NLP若手の会（YANS）',
-      en: 'Young Researchers Association for NLP Studies (YANS)',
+      en: 'Young Researcher Association for NLP Studies (YANS)',
       zh: 'NLP 青年研究者协会（YANS）',
       ko: 'NLP 젊은 연구자 모임(YANS)',
     },
@@ -25,7 +25,7 @@ export const awards: AwardEntry[] = [
       ja: '第21回言語処理若手シンポジウム（YANS2026）での発表に対してスポンサー企業の株式会社ELYZAから授与',
       en: 'Awarded by sponsor company ELYZA, Inc. for a presentation at the 21st YANS Symposium (YANS 2026)',
       zh: '因在第21届语言处理青年研究者研讨会（YANS2026）上的报告，由赞助企业 ELYZA 股份有限公司授予',
-      ko: '제21회 언어 처리 젊은 연구자 심포지엄(YANS2026)에서의 발표에 대해 스폰서 기업 주식회사 ELYZA가 수여',
+      ko: '제21회 언어 처리 젊은 연구자 심포지엄(YANS2026)에서의 발표에 대해 스폰서 기업 주식회사 ELYZA로부터 수여받았습니다',
     },
     link: {
       label: {

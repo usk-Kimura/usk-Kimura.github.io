@@ -117,7 +117,10 @@ export const news: NewsItem[] = [
   {
     date: '2026-08-17',
     endDate: '2026-08-18',
-    kind: 'presentation',
+    // Tagged as an award, not a presentation: this entry stands in for the
+    // awards.ts record, which `recent.ts` dedups out of the feed because both
+    // link to the poster.
+    kind: 'award',
     title: {
       ja: '「異なる語彙を持つLLM間のOn-Policy Distillation」を発表し、スポンサー賞（株式会社ELYZA）を受賞しました',
       en: 'Presented “On-Policy Distillation between LLMs with Different Vocabularies” and received the Sponsor Award (ELYZA, Inc.)',

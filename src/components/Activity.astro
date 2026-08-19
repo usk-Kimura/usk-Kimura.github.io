@@ -1,6 +1,7 @@
 ---
 import type { Locale } from '~/data/types';
 import { buildActivity } from '~/data/recent';
+import { isPdfUrl } from '~/data/util';
 import { t } from '~/i18n/ui';
 import { formatEventRange } from '~/i18n/format';
 import Section from './Section.astro';
@@ -11,10 +12,12 @@ const s = t(locale);
 
 const items = buildActivity(locale, 6);
 
-// Build-time "is this still ahead of us?" check. The inline script below
-// re-evaluates it in the browser, so the badge stays correct on a site that
-// hasn't been rebuilt in a while.
-const today = new Date().toISOString().slice(0, 10);
+// Build-time "is this still ahead of us?" check, in JST to match the inline
+// script below — CI runners are UTC, and a UTC cutoff keeps the "upcoming"
+// badge on an event that already finished in Japan. The script re-evaluates
+// this in the browser, so the badge stays correct on a site that hasn't been
+// rebuilt in a while.
+const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Tokyo' });
 ---
 
 {
@@ -46,6 +49,7 @@ const today = new Date().toISOString().slice(0, 10);
                       class="link"
                       target={item.external ? '_blank' : undefined}
                       rel={item.external ? 'noopener noreferrer' : undefined}
+                      data-astro-prefetch={isPdfUrl(item.href) ? 'false' : undefined}
                     >
                       {item.title}
                       {item.external && <span class="sr-only">{s.labels.newTab}</span>}
