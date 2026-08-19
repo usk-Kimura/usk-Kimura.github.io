@@ -2,6 +2,43 @@ import type { AwardEntry } from './types';
 
 export const awards: AwardEntry[] = [
   {
+    date: '2026-08',
+    name: {
+      ja: 'スポンサー賞（株式会社ELYZA）',
+      en: 'Sponsor Award (ELYZA, Inc.)',
+      zh: '赞助商奖（ELYZA 股份有限公司）',
+      ko: '스폰서상 (주식회사 ELYZA)',
+    },
+    organization: {
+      ja: 'NLP若手の会（YANS）',
+      en: 'Young Researchers Association for NLP Studies (YANS)',
+      zh: 'NLP 青年研究者协会（YANS）',
+      ko: 'NLP 젊은 연구자 모임(YANS)',
+    },
+    work: {
+      ja: '異なる語彙を持つLLM間のOn-Policy Distillation',
+      en: 'On-Policy Distillation between LLMs with Different Vocabularies',
+      zh: '具有不同词表的 LLM 之间的 On-Policy Distillation',
+      ko: '서로 다른 어휘를 가진 LLM 간의 On-Policy Distillation',
+    },
+    context: {
+      ja: '第21回言語処理若手シンポジウム（YANS2026）での発表に対してスポンサー企業の株式会社ELYZAから授与',
+      en: 'Awarded by sponsor company ELYZA, Inc. for a presentation at the 21st YANS Symposium (YANS 2026)',
+      zh: '因在第21届语言处理青年研究者研讨会（YANS2026）上的报告，由赞助企业 ELYZA 股份有限公司授予',
+      ko: '제21회 언어 처리 젊은 연구자 심포지엄(YANS2026)에서의 발표에 대해 스폰서 기업 주식회사 ELYZA가 수여',
+    },
+    link: {
+      label: {
+        ja: '発表ポスター（PDF）',
+        en: 'Poster (PDF)',
+        zh: '海报（PDF）',
+        ko: '발표 포스터 (PDF)',
+      },
+      href: '/yans2026-poster.pdf',
+    },
+    recipients: '木村 優介, 駒水 孝裕, 波多野 賢治, 石川 佳治',
+  },
+  {
     date: '2025-12',
     name: {
       ja: 'マネーフォワード賞',

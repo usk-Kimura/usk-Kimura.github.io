@@ -58,7 +58,12 @@ export function buildActivity(locale: Locale, limit = 6): ActivityItem[] {
     });
   }
 
+  // A hand-written news entry about an award or grant is a better headline
+  // than the record itself, so let it win rather than showing both.
+  const announced = new Set(news.map((n) => n.href).filter(Boolean));
+
   for (const a of awards) {
+    if (a.link?.href && announced.has(a.link.href)) continue;
     items.push({
       date: padDate(a.date),
       display: a.date,
@@ -67,10 +72,6 @@ export function buildActivity(locale: Locale, limit = 6): ActivityItem[] {
       detail: L(a.organization, locale),
     });
   }
-
-  // A hand-written news entry about an award is a better headline than the
-  // award record itself, so let it win rather than showing both.
-  const announced = new Set(news.map((n) => n.href).filter(Boolean));
 
   for (const g of grants) {
     if (g.url && announced.has(g.url)) continue;
