@@ -1,6 +1,7 @@
 ---
 import type { Locale } from '~/data/types';
 import { awards } from '~/data';
+import { isPdfUrl } from '~/data/util';
 import { t, fmt } from '~/i18n/ui';
 import { L } from '~/i18n/locale';
 import { formatYearMonth, isoYearMonth } from '~/i18n/format';
@@ -33,6 +34,7 @@ const s = t(locale);
                   target="_blank"
                   rel="noopener noreferrer"
                   class="link"
+                  data-astro-prefetch={isPdfUrl(award.link.href) ? 'false' : undefined}
                 >
                   {L(award.link.label, locale)}
                   <span aria-hidden="true"> ↗</span>

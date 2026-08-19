@@ -8,8 +8,10 @@ export type ResearchAgendaItem = {
   tag: LocalizedString;
 };
 
-// NOTE: review/edit this narrative — it frames the research story for hiring
-// committees. The first item is the personal focus; the others are
+// NOTE: this is the scan layer, not the full story — a fellow researcher should
+// get each thread in one glance. Keep every description to a single sentence:
+// what problem, what approach. Detail belongs in the publications and the
+// poster/paper themselves. The first item is the personal focus; the others are
 // collaborative threads grounded in recent publications and HPC support.
 export const researchAgenda: ResearchAgendaItem[] = [
   {
@@ -20,10 +22,10 @@ export const researchAgenda: ResearchAgendaItem[] = [
       ko: 'ByteTop-k OPD: 어휘가 다른 LLM 간의 온폴리시 증류',
     },
     description: {
-      ja: '教師と生徒で語彙・トークナイザが異なる場合の On-policy Distillation を研究しています。現在は、生徒が実際に生成したトークンと各文脈で高い確率を置く次トークン候補を、バイト列上の共通ラベルとして扱う ByteTop-k OPD を開発しています。疎で動的な候補監督が、下流性能と教師信号の計算コストにどう影響するかを検証しています。',
-      en: 'I study on-policy distillation between teacher and student LLMs with different vocabularies or tokenizers. My current work develops ByteTop-k OPD, which treats the student\'s generated token and high-probability next-token candidates as shared byte-string labels. I investigate how this sparse, dynamic candidate supervision affects downstream accuracy and teacher-scoring cost.',
-      zh: '研究词表或分词器不同的教师大语言模型与学生大语言模型之间的同策略蒸馏。目前正在开发 ByteTop-k OPD，将学生模型实际生成的词元及其高概率下一词元候选作为基于字节串的共享标签，并考察这种稀疏、动态的候选监督如何影响下游准确率和教师模型评分成本。',
-      ko: '어휘 또는 토크나이저가 서로 다른 교사·학생 LLM 간의 온폴리시 증류를 연구합니다. 현재 학생 모델이 실제로 생성한 토큰과 확률이 높은 다음 토큰 후보를 바이트열 기반의 공통 레이블로 다루는 ByteTop-k OPD를 개발하고 있으며, 이러한 희소하고 동적인 후보 감독이 다운스트림 정확도와 교사 모델 채점 비용에 미치는 영향을 검증하고 있습니다.',
+      ja: '生徒モデルの次トークン候補をバイト列として教師モデルの語彙に対応づけることで、語彙・トークナイザが異なる LLM 間でも次トークン予測を直接指導できるようにする蒸留手法です。',
+      en: 'Maps the student\'s next-token candidates onto the teacher\'s vocabulary as byte strings, so a teacher can supervise next-token prediction directly even when the two models share no tokenizer.',
+      zh: '将学生模型的下一词元候选以字节串的形式对应到教师模型的词表，使得即使两个模型的词表与分词器不同，教师也能直接指导下一词元预测。',
+      ko: '학생 모델의 다음 토큰 후보를 바이트열로 교사 모델의 어휘에 대응시켜, 토크나이저가 다른 LLM 사이에서도 다음 토큰 예측을 직접 지도할 수 있게 하는 증류 기법입니다.',
     },
     tag: { ja: '主軸', en: 'Primary focus', zh: '主攻方向', ko: '핵심 연구' },
   },
@@ -35,10 +37,10 @@ export const researchAgenda: ResearchAgendaItem[] = [
       ko: '제한된 계산 자원에서의 효율적인 어댑터 학습',
     },
     description: {
-      ja: '量子化スケジューラや学習進度に応じた層別動的量子化など、限られた計算資源で大規模言語モデルを適応させる手法を共同研究しています。複数の HPC 採択課題に支えられています。',
-      en: 'Methods that adapt LLMs under tight compute budgets — quantization scheduling and training-progress-driven layer-wise dynamic quantization. Backed by several competitive HPC allocations.',
-      zh: '与合作者共同研究在有限计算资源下适配大语言模型（LLM）的方法，例如量化调度器，以及依据训练进度进行调整的分层动态量化。相关工作得到多项获批的 HPC 计算资源课题的支持。',
-      ko: '양자화 스케줄러, 학습 진행 정도에 따른 계층별 동적 양자화 등, 제한된 계산 자원에서 대규모 언어 모델(LLM)을 적응시키는 방법을 공동으로 연구하고 있습니다. 여러 건의 HPC 계산 자원 배분 과제에 선정되어 지원을 받고 있습니다.',
+      ja: '量子化スケジューラや学習進度に応じた層別動的量子化により、限られた計算資源で LLM を適応させる手法（HPC 採択課題に基づく共同研究）。',
+      en: 'Adapting LLMs under tight compute budgets via quantization scheduling and training-progress-driven layer-wise dynamic quantization (collaborative, backed by competitive HPC allocations).',
+      zh: '通过量化调度器与依据训练进度调整的分层动态量化，在有限计算资源下适配大语言模型（基于获批 HPC 课题的合作研究）。',
+      ko: '양자화 스케줄러와 학습 진행도에 따른 계층별 동적 양자화로, 제한된 계산 자원에서 LLM을 적응시키는 방법(HPC 배분 과제에 기반한 공동 연구).',
     },
     tag: { ja: '共同研究', en: 'Collaborative', zh: '合作研究', ko: '공동 연구' },
   },
@@ -50,10 +52,10 @@ export const researchAgenda: ResearchAgendaItem[] = [
       ko: '신뢰할 수 있는 적응: 편향 완화와 지식 기반 생성',
     },
     description: {
-      ja: '活性化ステアリングによる社会的バイアスの緩和や、外部知識を優先した出力生成など、大規模言語モデルをより信頼できる形で適応させる研究に共同で取り組んでいます。',
-      en: 'Making LLM adaptation more trustworthy — social bias mitigation via activation steering and knowledge-prioritized generation (collaborative work).',
-      zh: '与合作者共同研究如何以更可信的方式适配大语言模型（LLM），包括利用激活引导（activation steering）缓解社会偏见，以及优先依据外部知识生成输出。',
-      ko: '활성화 스티어링(activation steering)을 통한 사회적 편향 완화, 외부 지식을 우선시하는 출력 생성 등, 대규모 언어 모델(LLM)을 보다 신뢰할 수 있는 방식으로 적응시키는 연구를 공동으로 수행하고 있습니다.',
+      ja: '活性化ステアリングによる社会的バイアスの緩和と、外部知識を優先した出力生成による、信頼できる LLM 適応の研究（共同研究）。',
+      en: 'Trustworthy LLM adaptation through social-bias mitigation with activation steering and knowledge-prioritized generation (collaborative).',
+      zh: '通过激活引导（activation steering）缓解社会偏见，并优先依据外部知识生成输出，实现更可信的大语言模型适配（合作研究）。',
+      ko: '활성화 스티어링을 통한 사회적 편향 완화와 외부 지식을 우선하는 출력 생성으로, 신뢰할 수 있는 LLM 적응을 연구합니다(공동 연구).',
     },
     tag: { ja: '共同研究', en: 'Collaborative', zh: '合作研究', ko: '공동 연구' },
   },
