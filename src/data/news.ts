@@ -119,16 +119,16 @@ export const news: NewsItem[] = [
     endDate: '2026-08-18',
     kind: 'presentation',
     title: {
-      ja: '「異なる語彙を持つLLM間のOPDに関する研究」を発表予定',
-      en: 'Presenting research on OPD between LLMs with different vocabularies',
-      zh: '即将报告《具有不同词表的 LLM 之间的 OPD 研究》',
-      ko: '“서로 다른 어휘를 가진 LLM 간의 OPD에 관한 연구”를 발표할 예정입니다',
+      ja: '「異なる語彙を持つLLM間のOn-Policy Distillation」を発表し、スポンサー賞（株式会社ELYZA）を受賞しました',
+      en: 'Presented “On-Policy Distillation between LLMs with Different Vocabularies” and received the Sponsor Award (ELYZA, Inc.)',
+      zh: '报告了《具有不同词表的 LLM 之间的 On-Policy Distillation》，并荣获赞助商奖（ELYZA 股份有限公司）',
+      ko: '“서로 다른 어휘를 가진 LLM 간의 On-Policy Distillation”을 발표하고 스폰서상(주식회사 ELYZA)을 수상했습니다',
     },
     detail: {
-      ja: '第21回言語処理若手シンポジウム（YANS2026）｜仙台国際センター',
-      en: 'The 21st YANS Symposium (YANS 2026) · Sendai International Center',
-      zh: '第21届语言处理青年研究者研讨会（YANS2026）｜仙台国际中心',
-      ko: '제21회 언어 처리 젊은 연구자 심포지엄(YANS2026) | 센다이 국제센터',
+      ja: '第21回言語処理若手シンポジウム（YANS2026）｜仙台国際センター｜リンク先は発表ポスター（PDF）',
+      en: 'The 21st YANS Symposium (YANS 2026) · Sendai International Center · Link opens the poster (PDF)',
+      zh: '第21届语言处理青年研究者研讨会（YANS2026）｜仙台国际中心｜链接为海报（PDF）',
+      ko: '제21회 언어 처리 젊은 연구자 심포지엄(YANS2026) | 센다이 국제센터 | 링크는 발표 포스터(PDF)',
     },
     event: {
       label: { ja: 'YANS 2026', en: 'YANS 2026', zh: 'YANS 2026', ko: 'YANS 2026' },
@@ -140,6 +140,6 @@ export const news: NewsItem[] = [
       },
       venue: { ja: '仙台国際センター', en: 'Sendai International Center', zh: '仙台国际中心', ko: '센다이 국제센터' },
     },
-    href: 'https://yans.anlp.jp/entry/yans2026',
+    href: '/yans2026-poster.pdf',
   },
 ];
