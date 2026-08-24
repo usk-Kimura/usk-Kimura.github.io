@@ -16,16 +16,16 @@ export type ResearchAgendaItem = {
 export const researchAgenda: ResearchAgendaItem[] = [
   {
     title: {
-      ja: 'ByteTop-k OPD：語彙の異なる LLM 間のオンポリシ蒸留',
-      en: 'ByteTop-k OPD for LLMs with Different Vocabularies',
-      zh: 'ByteTop-k OPD：不同词表 LLM 之间的同策略蒸馏',
-      ko: 'ByteTop-k OPD: 어휘가 다른 LLM 간의 온폴리시 증류',
+      ja: '語彙・トークナイザの異なる LLM 間の知識蒸留',
+      en: 'Knowledge Distillation between LLMs with Different Vocabularies and Tokenizers',
+      zh: '词表与分词器不同的 LLM 之间的知识蒸馏',
+      ko: '어휘와 토크나이저가 다른 LLM 간 지식 증류',
     },
     description: {
-      ja: '生徒モデルの次トークン候補をバイト列として教師モデルの語彙に対応づけることで、語彙・トークナイザが異なる LLM 間でも次トークン予測を直接指導できるようにする蒸留手法です。',
-      en: 'Maps the student\'s next-token candidates onto the teacher\'s vocabulary as byte strings, so a teacher can supervise next-token prediction directly even when the two models share no tokenizer.',
-      zh: '将学生模型的下一词元候选以字节串的形式对应到教师模型的词表，使得即使两个模型的词表与分词器不同，教师也能直接指导下一词元预测。',
-      ko: '학생 모델의 다음 토큰 후보를 바이트열로 교사 모델의 어휘에 대응시켜, 토크나이저가 다른 LLM 사이에서도 다음 토큰 예측을 직접 지도할 수 있게 하는 증류 기법입니다.',
+      ja: '語彙やトークンの区切り方が異なるため直接比較できない教師モデルと生徒モデルの出力を共通の表現上で対応づけることで、トークナイザを共有しない LLM 間でも知識を移せる事後学習を研究しています。',
+      en: 'I study post-training methods that align otherwise incomparable teacher and student outputs through a shared representation, enabling knowledge transfer between LLMs whose vocabularies and token boundaries differ.',
+      zh: '针对教师模型与学生模型因词表和词元切分方式不同而难以直接比较输出的问题，我研究将双方输出对齐到统一表示形式的后训练方法，使不共享同一分词器的 LLM 之间也能迁移知识。',
+      ko: '교사 모델과 학생 모델의 어휘와 토큰 분할 방식이 달라 출력을 직접 비교하기 어려운 문제를 해결하기 위해, 두 모델의 출력을 공통 표현으로 정렬하여 같은 토크나이저를 사용하지 않는 LLM 사이에서도 지식을 이전할 수 있는 사후 학습 방법을 연구합니다.',
     },
     tag: { ja: '主軸', en: 'Primary focus', zh: '主攻方向', ko: '핵심 연구' },
   },

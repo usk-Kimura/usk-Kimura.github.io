@@ -35,10 +35,10 @@ export const profile: Profile = {
     ko: '자연어 처리 / LLM 사후 학습 / 토크나이저 간 지식 증류',
   },
   bio: {
-    ja: '大規模言語モデルの事後学習、特に語彙・トークナイザの異なる教師と生徒の間で行う On-policy Distillation を研究しています。現在は、生徒が実際に生成したトークンと高確率な次トークン候補をバイト列上の共通ラベルへ写像し、語彙の違いを越えて教師信号を与える ByteTop-k OPD を開発・検証しています。これまでマルチタスク学習・文書分類・キーフレーズ抽出にも取り組み、共同研究では効率的なアダプタ学習や社会的バイアスの緩和にも関わっています。',
-    en: 'I study LLM post-training, particularly on-policy distillation between teacher and student models with different vocabularies and tokenizers. My current work develops and evaluates ByteTop-k OPD, which maps the student\'s generated token and high-probability next-token candidates to shared byte-string labels so that teacher supervision can cross tokenizer boundaries. My earlier work spans multi-task learning, text classification, and keyphrase extraction, and in collaborative projects I also work on efficient adapter learning and social bias mitigation.',
-    zh: '我研究大语言模型（LLM）的后训练，尤其关注词表与分词器不同的教师模型和学生模型之间的 On-policy Distillation（同策略蒸馏）。目前，我正在开发和评估 ByteTop-k OPD：将学生模型实际生成的词元及其高概率下一词元候选映射为基于字节串的共享标签，从而跨越分词器差异提供教师监督。此前我还开展过多任务学习、文本分类和关键短语抽取研究，并在合作研究中参与高效适配器学习与社会偏见缓解。',
-    ko: '대규모 언어 모델(LLM)의 사후 학습, 특히 어휘와 토크나이저가 서로 다른 교사·학생 모델 간의 On-policy Distillation(온폴리시 증류)을 연구합니다. 현재는 학생 모델이 실제로 생성한 토큰과 확률이 높은 다음 토큰 후보를 바이트열 기반의 공통 레이블로 사상하여 토크나이저 차이를 넘어 교사 신호를 제공하는 ByteTop-k OPD를 개발하고 검증하고 있습니다. 그동안 멀티태스크 학습, 문서 분류, 키프레이즈 추출도 연구했으며, 공동 연구에서는 효율적인 어댑터 학습과 사회적 편향 완화에도 참여하고 있습니다.',
+    ja: '大規模言語モデルを、さまざまな用途や利用環境に合わせて効率的かつ信頼できる形で適応させるための事後学習を研究しています。特に、語彙やトークナイザが異なるモデル間の知識移転に関心があり、既存モデルの能力を別のモデルへ柔軟に受け継ぐ方法を探究しています。これまでマルチタスク学習・文書分類・キーフレーズ抽出にも取り組み、共同研究では限られた計算資源でのアダプタ学習や社会的バイアスの緩和にも関わっています。',
+    en: 'I study post-training methods for adapting large language models efficiently and reliably to different tasks and deployment settings. I am particularly interested in transferring knowledge between models with different vocabularies and tokenizers, so that the capabilities of existing models can be carried over flexibly to other models. My earlier work spans multi-task learning, text classification, and keyphrase extraction; in collaborative projects, I also work on adapter learning under limited compute and social bias mitigation.',
+    zh: '我研究大语言模型的后训练，旨在使模型能够针对不同任务与应用环境进行高效、可靠的适配。我尤其关注词表和分词器不同的模型之间如何迁移知识，以便将现有模型的能力灵活地传递给其他模型。此前，我还开展过多任务学习、文本分类和关键短语抽取研究；在合作研究中，也参与了有限计算资源下的适配器学习与社会偏见缓解。',
+    ko: '대규모 언어 모델을 다양한 과제와 활용 환경에 맞게 효율적이고 신뢰할 수 있는 방식으로 적응시키기 위한 사후 학습을 연구합니다. 특히 어휘와 토크나이저가 서로 다른 모델 사이의 지식 이전에 관심이 있으며, 기존 모델의 능력을 다른 모델이 유연하게 이어받을 수 있는 방법을 탐구합니다. 그동안 멀티태스크 학습, 문서 분류, 키프레이즈 추출도 연구했으며, 공동 연구에서는 제한된 계산 자원에서의 어댑터 학습과 사회적 편향 완화에도 참여하고 있습니다.',
   },
   emails: [
     {
@@ -127,12 +127,6 @@ export const profile: Profile = {
       en: 'On-policy Distillation',
       zh: 'On-policy Distillation（同策略蒸馏）',
       ko: 'On-policy Distillation(온폴리시 증류)',
-    },
-    {
-      ja: 'ByteTop-k OPD',
-      en: 'ByteTop-k OPD',
-      zh: 'ByteTop-k OPD',
-      ko: 'ByteTop-k OPD',
     },
     {
       ja: '異語彙間知識蒸留',
