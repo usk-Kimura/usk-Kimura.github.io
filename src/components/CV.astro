@@ -5,6 +5,7 @@ import {
   career,
   education,
   awards,
+  presentations,
   publications,
   grantCategoryOrder,
   grants,
@@ -12,7 +13,7 @@ import {
   services,
 } from '~/data';
 import { highlightSelf } from '~/data/util';
-import { publicationAwardsFor } from '~/data/relations';
+import { presentationAwardsFor, publicationAwardsFor } from '~/data/relations';
 import { t } from '~/i18n/ui';
 import { L, localizePath } from '~/i18n/locale';
 import { formatAmountJpy, formatRangeParts, formatYearMonth, isoYearMonth } from '~/i18n/format';
@@ -24,6 +25,7 @@ const s = t(locale);
 const sortedPubs = [...publications].sort(
   (a, b) => b.year * 12 + (b.month ?? 0) - (a.year * 12 + (a.month ?? 0)),
 );
+const sortedPresentations = [...presentations].sort((a, b) => b.date.localeCompare(a.date));
 
 const CJK = /[　-ヿ㐀-䶿一-鿿＀-￯]/;
 
@@ -180,7 +182,7 @@ const reading = L(profile.reading, locale);
               {formatYearMonth(a.date, locale)}
             </time>
             <span>
-              <strong>{L(a.name, locale)}</strong>, {L(a.organization, locale)}
+              <strong class="text-award">{L(a.name, locale)}</strong>, {L(a.organization, locale)}
               <br />
               <span class="cv-note">{L(a.work, locale)}</span>
               {a.context && (
@@ -198,7 +200,7 @@ const reading = L(profile.reading, locale);
 
   <section class="cv-section">
     <h2>
-      {s.sections.publications} <span class="cv-note">({sortedPubs.length})</span>
+      {s.sections.archivalPublications} <span class="cv-note">({sortedPubs.length})</span>
     </h2>
     {
       pubsByType.map((group) => (
@@ -240,7 +242,7 @@ const reading = L(profile.reading, locale);
                   {publicationAwards.map((award) => (
                     <Fragment>
                       <br />
-                      <span class="cv-note">
+                      <span class="cv-note text-award">
                         [{s.labels.publicationAward}:{' '}
                         {award.link ? (
                           <a href={award.link.href}>{L(award.name, locale)}</a>
@@ -253,7 +255,7 @@ const reading = L(profile.reading, locale);
                   {pub.coauthorAwards?.map((award) => (
                     <Fragment>
                       <br />
-                      <span class="cv-note">
+                      <span class="cv-note text-award">
                         [{s.labels.coauthorAward}:{' '}
                         {award.url ? (
                           <a href={award.url}>{L(award.name, locale)}</a>
@@ -277,6 +279,47 @@ const reading = L(profile.reading, locale);
       ))
     }
   </section>
+
+  {sortedPresentations.length > 0 && (
+    <section class="cv-section">
+      <h2>
+        {s.sections.posterPresentations}{' '}
+        <span class="cv-note">({sortedPresentations.length})</span>
+      </h2>
+      <ol class="cv-pubs">
+        {sortedPresentations.map((presentation) => {
+          const presentationAwards = presentationAwardsFor(presentation);
+          return (
+            <li>
+              <span set:html={highlightSelf(presentation.authors)} />
+              {'. '}
+              <span class="cv-pub-title" lang={presentation.titleLang}>
+                {presentation.title}
+              </span>
+              {'. '}
+              <em>{L(presentation.event, locale)}</em>
+              {', '}{L(presentation.venue, locale)}{', '}
+              {formatYearMonth(presentation.date, locale)}.
+              <span class="cv-note"> [{s.labels.noProceedings}]</span>
+              {presentationAwards.map((award) => (
+                <Fragment>
+                  <br />
+                  <span class="cv-note text-award">
+                    [{s.labels.publicationAward}:{' '}
+                    {award.link ? (
+                      <a href={award.link.href}>{L(award.name, locale)}</a>
+                    ) : (
+                      L(award.name, locale)
+                    )}]
+                  </span>
+                </Fragment>
+              ))}
+            </li>
+          );
+        })}
+      </ol>
+    </section>
+  )}
 
   <section class="cv-section">
     <h2>{s.sections.grants}</h2>

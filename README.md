@@ -25,6 +25,7 @@ src/
 │   ├── career.ts
 │   ├── awards.ts
 │   ├── publications.ts
+│   ├── presentations.ts  non-archival posters, kept out of publication counts
 │   ├── grants.ts
 │   ├── news.ts        manual activity items (talks, announcements)
 │   ├── recent.ts      merges news + publications + awards + grants into one feed
@@ -82,6 +83,8 @@ All the visible text comes from the typed data layer:
 - **Career & education** — `src/data/career.ts`
 - **Awards** — `src/data/awards.ts`
 - **Publications** — `src/data/publications.ts` (newest first; `venueEn` is used outside `/`)
+- **Non-archival poster presentations** — `src/data/presentations.ts` (shown under research outputs,
+  but excluded from publication and peer-review counts)
 - **Grants, HPC allocations & academic service** — `src/data/grants.ts`
 - **News / talks / announcements** — `src/data/news.ts`
 - **Professional memberships** — `src/data/memberships.ts`

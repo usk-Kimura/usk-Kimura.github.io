@@ -7,6 +7,7 @@ export type NewsKind =
   | 'grant'
   | 'hpc'
   | 'fellowship'
+  | 'participation'
   | 'presentation'
   | 'talk'
   | 'media'
@@ -75,7 +76,7 @@ export const news: NewsItem[] = [
     date: '2026-07-31',
     kind: 'grant',
     title: {
-      ja: '科研費「研究活動スタート支援」に採択されました。',
+      ja: '科研費「研究活動スタート支援」に採択されました．',
       en: 'I received a JSPS KAKENHI Grant-in-Aid for Research Activity Start-up.',
       zh: '获批日本学术振兴会 科学研究费补助事业（KAKENHI）“研究活动启动支援”项目。',
       ko: '일본학술진흥회 과학연구비조성사업(KAKENHI) “연구활동 스타트업 지원”에 선정되었습니다.',
@@ -93,7 +94,7 @@ export const news: NewsItem[] = [
     endDate: '2026-09-16',
     kind: 'presentation',
     title: {
-      ja: '「ByteTop-k OPD：バイト列表現に基づく語彙の異なる LLM 間のオンポリシ蒸留」を発表する予定です。',
+      ja: '「ByteTop-k OPD：バイト列表現に基づく語彙の異なる LLM 間のオンポリシ蒸留」を発表する予定です．',
       en: 'I will present “ByteTop-k OPD: On-Policy Distillation between LLMs with Different Vocabularies Based on Byte-String Representations”.',
       zh: '即将报告《ByteTop-k OPD：基于字节串表示的不同词表 LLM 之间的同策略蒸馏》。',
       ko: '“ByteTop-k OPD: 바이트열 표현에 기반한 어휘가 다른 LLM 간 온폴리시 증류”를 발표할 예정입니다.',
@@ -121,19 +122,19 @@ export const news: NewsItem[] = [
     endDate: '2026-08-18',
     // Tagged as an award, not a presentation: this entry stands in for the
     // awards.ts record, which `recent.ts` dedups out of the feed because both
-    // link to the poster.
+    // link to the official award results.
     kind: 'award',
     title: {
-      ja: '「異なる語彙を持つLLM間のOn-Policy Distillation」を発表し、スポンサー賞（株式会社ELYZA）を受賞しました。',
-      en: 'I presented “On-Policy Distillation between LLMs with Different Vocabularies” and received the Sponsor Award (ELYZA, Inc.).',
-      zh: '报告了《具有不同词表的 LLM 之间的 On-Policy Distillation》，并荣获赞助商奖（ELYZA 股份有限公司）。',
-      ko: '“서로 다른 어휘를 가진 LLM 간의 On-Policy Distillation”을 발표하고 스폰서상(주식회사 ELYZA)을 수상했습니다.',
+      ja: '「異なる語彙を持つ LLM 間のオンポリシ蒸留」をポスター発表し，株式会社ELYZA賞を受賞しました．',
+      en: 'I presented the poster “On-Policy Distillation between LLMs with Different Vocabularies” and received the ELYZA Award.',
+      zh: '以海报形式报告了《不同词表 LLM 间的同策略蒸馏》，并荣获 ELYZA 股份有限公司奖。',
+      ko: '“서로 다른 어휘를 가진 LLM 간 온폴리시 증류”를 포스터로 발표하고 주식회사 ELYZA상을 수상했습니다.',
     },
     detail: {
-      ja: '第21回言語処理若手シンポジウム（YANS2026）｜仙台国際センター｜リンク先は発表ポスター（PDF）',
-      en: 'The 21st YANS Symposium (YANS 2026) · Sendai International Center · Link opens the poster (PDF)',
-      zh: '第21届语言处理青年研究者研讨会（YANS2026）｜仙台国际中心｜链接为海报（PDF）',
-      ko: '제21회 언어 처리 젊은 연구자 심포지엄(YANS2026) | 센다이 국제센터 | 링크는 발표 포스터(PDF)',
+      ja: '第21回言語処理若手シンポジウム（YANS 2026）｜仙台国際センター｜リンク先は公式受賞結果',
+      en: 'The 21st YANS Symposium (YANS 2026) · Sendai International Center · Link opens the official award results',
+      zh: '第21届语言处理青年研究者研讨会（YANS 2026）｜仙台国际中心｜链接为官方获奖结果',
+      ko: '제21회 언어 처리 젊은 연구자 심포지엄(YANS 2026) | 센다이 국제센터 | 링크는 공식 수상 결과',
     },
     event: {
       label: { ja: 'YANS 2026', en: 'YANS 2026', zh: 'YANS 2026', ko: 'YANS 2026' },
@@ -145,6 +146,24 @@ export const news: NewsItem[] = [
       },
       venue: { ja: '仙台国際センター', en: 'Sendai International Center', zh: '仙台国际中心', ko: '센다이 국제센터' },
     },
-    href: '/yans2026-poster.pdf',
+    href: 'https://yans.anlp.jp/entry/award#株式会社ELYZA賞',
+  },
+  {
+    date: '2025-09-11',
+    endDate: '2025-09-12',
+    kind: 'participation',
+    title: {
+      ja: '東海関西データベースワークショップ 2025（DBWS 2025）に参加し，「アダプタを効果的に学習する量子化スケジューラに関する研究」をポスター発表しました．',
+      en: 'I participated in the Tokai–Kansai Database Workshop 2025 (DBWS 2025) and presented the poster “A Study on a Quantization Scheduler for Effective Adapter Training”.',
+      zh: '参加了东海关西数据库研讨会2025（DBWS 2025），并以海报形式报告了《有效训练适配器的量化调度器研究》。',
+      ko: '도카이·간사이 데이터베이스 워크숍 2025(DBWS 2025)에 참가하여 “어댑터를 효과적으로 학습하는 양자화 스케줄러에 관한 연구”를 포스터로 발표했습니다.',
+    },
+    detail: {
+      ja: '関西・東海地域の複数大学・研究室による合同ワークショップ｜同志社大学 今出川キャンパス',
+      en: 'Joint workshop involving multiple universities and laboratories in the Kansai and Tokai regions · Doshisha University, Imadegawa Campus',
+      zh: '关西与东海地区多所大学及研究室联合研讨会｜同志社大学今出川校区',
+      ko: '간사이·도카이 지역 여러 대학 및 연구실의 합동 워크숍 | 도시샤대학교 이마데가와 캠퍼스',
+    },
+    href: 'https://www.milcis.doshisha.ac.jp/portfolio/dbws-2025/',
   },
 ];

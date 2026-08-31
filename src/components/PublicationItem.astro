@@ -13,10 +13,13 @@ type Props = {
   locale: Locale;
   /** Optional line shown above the title (used by the selected-work list). */
   note?: string;
+  /** Publication lists nested below a category and year use an h4. */
+  headingLevel?: 3 | 4;
 };
 
-const { pub, locale, note } = Astro.props;
+const { pub, locale, note, headingLevel = 3 } = Astro.props;
 const s = t(locale);
+const Heading = headingLevel === 4 ? 'h4' : 'h3';
 
 const detailHref = localizePath(`/p/${pubSlug(pub)}/`, locale);
 const externalUrl = pub.url ?? (pub.doi ? `https://doi.org/${pub.doi}` : null);
@@ -48,9 +51,9 @@ const venueLang: SourceLocale = useVenueEn ? 'en' : CJK.test(pub.venue) ? 'ja' :
   <div class="min-w-0">
     {note && <p class="tag tag-accent mb-0.5">{note}</p>}
 
-    <h3 class="leading-snug font-medium">
+    <Heading class="leading-snug font-medium">
       <a href={detailHref} class="link" lang={titleLang}>{pub.title}</a>
-    </h3>
+    </Heading>
 
     <p class="mt-1 text-sm text-muted" set:html={highlightSelf(pub.authors)} />
 

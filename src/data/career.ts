@@ -26,7 +26,7 @@ export const career: CareerEntry[] = [
       ko: '도시샤대학 대학원 문화정보학연구과',
     },
     role: {
-      ja: 'TA（データベースシステム、プログラミング入門・基礎・応用 等）',
+      ja: 'TA（データベースシステム，プログラミング入門・基礎・応用 等）',
       en: 'Teaching Assistant (Database Systems, Programming I–III)',
       zh: '助教（TA）：数据库系统、程序设计入门/基础/应用等',
       ko: '조교(TA): 데이터베이스 시스템, 프로그래밍 입문·기초·응용 등',

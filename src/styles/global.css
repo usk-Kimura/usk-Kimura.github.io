@@ -35,6 +35,11 @@
     --accent-strong: #084f56;
     --accent-soft: #edf5f5;
     --accent-contrast: #ffffff;
+    /* Semantic recognition colour. Teal remains the interaction/research
+       accent; red is reserved for awards and recognitions. */
+    --award: #9c2632;
+    --award-strong: #761923;
+    --award-soft: #fff1f2;
 
     /* Height of the sticky header; scroll-padding and sticky offsets read it. */
     --header-h: 3.5rem;
@@ -61,6 +66,9 @@
     --accent-strong: #8fd8dd;
     --accent-soft: #17292c;
     --accent-contrast: #0d1c1e;
+    --award: #ff9aa3;
+    --award-strong: #ffb4ba;
+    --award-soft: #321b20;
   }
 
   @media (prefers-color-scheme: dark) {
@@ -76,6 +84,9 @@
       --accent-strong: #8fd8dd;
       --accent-soft: #17292c;
       --accent-contrast: #0d1c1e;
+      --award: #ff9aa3;
+      --award-strong: #ffb4ba;
+      --award-soft: #321b20;
     }
   }
 
@@ -285,6 +296,16 @@
 
 .tag-accent {
   color: var(--accent-strong);
+}
+
+/* Red has one job throughout the site: identifying awards and recognition. */
+.text-award,
+.tag-award {
+  color: var(--award);
+}
+.link-award:hover {
+  color: var(--award-strong);
+  text-decoration-color: var(--award);
 }
 
 /* Button-ish affordances. Deliberately only two: solid and outline. */

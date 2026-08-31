@@ -1,0 +1,76 @@
+---
+import type { Locale, Presentation } from '~/data/types';
+import { highlightSelf, isPdfUrl } from '~/data/util';
+import { presentationAwardsFor } from '~/data/relations';
+import { L } from '~/i18n/locale';
+import { formatYearMonth } from '~/i18n/format';
+import { t } from '~/i18n/ui';
+import PublicationAwards from './PublicationAwards.astro';
+
+type Props = {
+  presentation: Presentation;
+  locale: Locale;
+};
+
+const { presentation, locale } = Astro.props;
+const s = t(locale);
+const presentationAwards = presentationAwardsFor(presentation);
+---
+
+<article class="entry">
+  <p class="entry-date">
+    <time datetime={presentation.date}>{formatYearMonth(presentation.date, locale)}</time>
+    <span class="block">{s.pubTypes.poster}</span>
+  </p>
+
+  <div class="min-w-0">
+    <h3 class="leading-snug font-medium" lang={presentation.titleLang}>
+      {presentation.title}
+    </h3>
+
+    <p class="mt-1 text-sm text-muted" set:html={highlightSelf(presentation.authors)} />
+    <p class="text-sm">
+      <em>{L(presentation.event, locale)}</em>
+      <span aria-hidden="true"> · </span>
+      {L(presentation.venue, locale)}
+    </p>
+
+    {presentationAwards.length > 0 && (
+      <div class="mt-2 border-l-2 border-[var(--award)] pl-3">
+        <PublicationAwards awards={presentationAwards} locale={locale} />
+      </div>
+    )}
+
+    <ul class="flagset mt-2">
+      <li>{s.labels.noProceedings}</li>
+    </ul>
+
+    <div class="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+      {presentation.posterUrl && (
+        <a
+          href={presentation.posterUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn min-h-11 justify-center"
+          data-astro-prefetch={isPdfUrl(presentation.posterUrl) ? 'false' : undefined}
+        >
+          {s.labels.posterPdf}
+          <span aria-hidden="true">↗</span>
+          <span class="sr-only">{s.labels.newTab}</span>
+        </a>
+      )}
+      {presentation.programUrl && (
+        <a
+          href={presentation.programUrl}
+          target="_blank"
+          rel="noopener noreferrer external"
+          class="btn min-h-11 justify-center"
+        >
+          {s.labels.officialProgram}
+          <span aria-hidden="true">↗</span>
+          <span class="sr-only">{s.labels.newTab}</span>
+        </a>
+      )}
+    </div>
+  </div>
+</article>

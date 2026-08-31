@@ -23,7 +23,7 @@ export const profile: Profile = {
     ko: '일본과학기술진흥기구(JST) 전략적창조연구추진사업(CREST) 연구원',
   },
   degree: {
-    ja: '博士（文化情報学）（2026年3月、同志社大学）',
+    ja: '博士（文化情報学）（2026年3月，同志社大学）',
     en: 'Ph.D. in Culture and Information Science (Doshisha University, Mar. 2026)',
     zh: '博士（文化信息学）（2026年3月，同志社大学）',
     ko: '박사(문화정보학) (2026년 3월, 도시샤대학)',
@@ -35,7 +35,7 @@ export const profile: Profile = {
     ko: '자연어 처리 / LLM 사후 학습 / 토크나이저 간 지식 증류',
   },
   bio: {
-    ja: '大規模言語モデルを、用途や利用環境に合わせて効率的かつ信頼できる形で適応させるための事後学習を研究しています。特に、語彙・トークナイザの異なるモデル間の知識移転と、限られた計算資源での学習に取り組んでいます。',
+    ja: '大規模言語モデルを，用途や利用環境に合わせて効率的かつ信頼できる形で適応させるための事後学習を研究しています．特に，語彙・トークナイザの異なるモデル間の知識移転と，限られた計算資源での学習に取り組んでいます．',
     en: 'I study post-training methods for adapting large language models efficiently and reliably to different tasks and deployment settings. My current focus is knowledge transfer between models with different vocabularies and tokenizers, including learning under limited compute.',
     zh: '我研究大语言模型的后训练，旨在使模型能够针对不同任务与应用环境进行高效、可靠的适配。目前主要关注词表与分词器不同的模型之间的知识迁移，以及有限计算资源下的模型训练。',
     ko: '대규모 언어 모델을 다양한 과제와 활용 환경에 맞게 효율적이고 신뢰할 수 있는 방식으로 적응시키기 위한 사후 학습을 연구합니다. 특히 어휘와 토크나이저가 다른 모델 간의 지식 이전과 제한된 계산 자원에서의 학습에 중점을 두고 있습니다.',
@@ -76,7 +76,7 @@ export const profile: Profile = {
       ko: '2027년 4월 부임 가능',
     },
     detail: {
-      ja: 'ポスドク・助教・研究員・企業研究職を希望（NLP / LLM、アカデミア・産業界とも）',
+      ja: 'ポスドク・助教・研究員・企業研究職を希望（NLP / LLM，アカデミア・産業界とも）',
       en: 'Seeking postdoc, faculty-track, or research-scientist roles in NLP / LLMs (academia or industry)',
       zh: '希望从事博士后、助理教授、研究员或企业研究等工作（NLP / LLM 领域，学术界与产业界均可）',
       ko: '박사후연구원·조교수·연구원·기업 연구직 희망 (NLP / LLM 분야, 학계·산업계 모두 가능)',
@@ -164,7 +164,7 @@ export const profile: Profile = {
       ko: '정보통신 / 데이터베이스',
     },
     {
-      ja: '情報通信 / ウェブ情報学、サービス情報学',
+      ja: '情報通信 / ウェブ情報学，サービス情報学',
       en: 'Web & Service Informatics',
       zh: '信息通信 / 网络信息学、服务信息学',
       ko: '정보통신 / 웹 정보학, 서비스 정보학',

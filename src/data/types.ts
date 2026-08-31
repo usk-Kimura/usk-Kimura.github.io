@@ -75,7 +75,7 @@ export type EducationEntry = {
 };
 
 export type AwardEntry = {
-  date: string; // YYYY-MM
+  date: string; // YYYY-MM or YYYY-MM-DD
   name: LocalizedString;
   organization: LocalizedString;
   work: LocalizedString;
@@ -92,6 +92,10 @@ export type AwardEntry = {
    *  Omitted for presentation, pitch, and other awards that are not attached
    *  to a publication record. */
   relatedPublicationId?: string;
+  /** Stable ID of a non-archival presentation directly recognized by this
+   *  award. Kept separate from publications so it cannot affect paper counts
+   *  or generate publication-detail metadata. */
+  relatedPresentationId?: string;
 };
 
 export type PublicationType =
@@ -153,6 +157,22 @@ export type Publication = {
   selected?: boolean;
   /** Short reason this paper is selected (shown only in the Selected list). */
   selectedReason?: LocalizedString;
+};
+
+/** A presentation without an archival paper or proceedings record. These are
+ *  shown as research outputs, but deliberately excluded from publication and
+ *  peer-review statistics. */
+export type Presentation = {
+  id: string;
+  date: string; // YYYY-MM-DD
+  kind: 'poster';
+  title: string;
+  titleLang: SourceLocale;
+  authors: string;
+  event: LocalizedString;
+  venue: LocalizedString;
+  posterUrl?: string;
+  programUrl?: string;
 };
 
 /** Distinguishes a money grant from non-monetary support (compute allocation,

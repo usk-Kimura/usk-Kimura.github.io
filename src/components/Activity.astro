@@ -50,7 +50,7 @@ const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Tokyo' })
             <span>{s.activity.scrollHint}</span>
           </p>
           <p class="mt-6">
-            <a href={publications} class="btn">{s.actions.seeAllPublications}</a>
+            <a href={publications} class="btn">{s.actions.seeAllResearchOutputs}</a>
           </p>
         </header>
 
@@ -89,7 +89,12 @@ const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Tokyo' })
                           )}
                         </p>
                         <div class="activity-body min-w-0">
-                          <p class:list={['tag', item.kind === 'coauthor-award' && 'tag-accent']}>
+                          <p
+                            class:list={[
+                              'tag',
+                              (item.kind === 'award' || item.kind === 'coauthor-award') && 'tag-award',
+                            ]}
+                          >
                             {s.newsKinds[item.kind]}
                             <span data-upcoming-badge hidden={!upcoming}>
                               <span aria-hidden="true"> · </span>

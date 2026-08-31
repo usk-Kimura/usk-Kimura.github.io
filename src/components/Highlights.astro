@@ -14,14 +14,15 @@ const publications = localizePath('/publications/', locale);
 // narrower claims than the raw bibliography: domestic presentations
 // are not presented as peer-reviewed papers, and compute awards are not grants.
 const items = [
-  { value: stats.peerReviewed, label: s.highlights.peerReviewed, href: publications },
-  { value: stats.firstAuthor, label: s.highlights.firstAuthor, href: publications },
+  { value: stats.peerReviewed, label: s.highlights.peerReviewed, href: publications, award: false },
+  { value: stats.firstAuthor, label: s.highlights.firstAuthor, href: publications, award: false },
   {
     value: stats.kakenhiPrincipalInvestigator,
     label: s.highlights.kakenhiPrincipalInvestigator,
     href: `${home}#grants`,
+    award: false,
   },
-  { value: stats.awards, label: s.highlights.awards, href: `${home}#awards` },
+  { value: stats.awards, label: s.highlights.awards, href: `${home}#awards`, award: true },
 ];
 ---
 
@@ -34,9 +35,19 @@ const items = [
           <li>
             <a
               href={item.href}
-              class="group block min-h-14 border-l-2 pl-3.5 hairline transition-colors hover:border-[var(--accent)]"
+              class:list={[
+                'group block min-h-14 border-l-2 pl-3.5 transition-colors',
+                item.award
+                  ? 'border-[var(--award)] hover:border-[var(--award-strong)]'
+                  : 'hairline hover:border-[var(--accent)]',
+              ]}
             >
-              <span class="block text-2xl leading-none font-semibold tabular-nums md:text-3xl">
+              <span
+                class:list={[
+                  'block text-2xl leading-none font-semibold tabular-nums md:text-3xl',
+                  item.award && 'text-award',
+                ]}
+              >
                 {item.value}
               </span>
               <span class="mt-1.5 block text-sm leading-snug text-muted group-hover:text-[var(--fg)]">

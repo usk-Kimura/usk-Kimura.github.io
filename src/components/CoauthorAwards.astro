@@ -16,21 +16,21 @@ const s = t(locale);
   {
     awards.map((award) => (
       <li class="text-sm leading-relaxed">
-        <span class="tag tag-accent">{s.labels.coauthorAward}</span>
+        <span class="tag tag-award">{s.labels.coauthorAward}</span>
         <span aria-hidden="true"> · </span>
         {award.url ? (
           <a
             href={award.url}
             target="_blank"
             rel="noopener noreferrer external"
-            class="link"
+            class="link link-award text-award"
           >
             {L(award.name, locale)}
             <span aria-hidden="true"> ↗</span>
             <span class="sr-only">{s.labels.newTab}</span>
           </a>
         ) : (
-          <span>{L(award.name, locale)}</span>
+          <span class="text-award">{L(award.name, locale)}</span>
         )}
         <span class="text-muted">
           {' — '}{s.labels.recipient}:{' '}

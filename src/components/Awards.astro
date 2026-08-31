@@ -2,7 +2,7 @@
 import type { Locale } from '~/data/types';
 import { awards } from '~/data';
 import { isPdfUrl, pubSlug } from '~/data/util';
-import { publicationForAward } from '~/data/relations';
+import { presentationForAward, publicationForAward } from '~/data/relations';
 import { t, fmt } from '~/i18n/ui';
 import { L, localizePath } from '~/i18n/locale';
 import { formatYearMonth, isoYearMonth } from '~/i18n/format';
@@ -18,20 +18,25 @@ const s = t(locale);
     {
       awards.map((award) => {
         const relatedPublication = publicationForAward(award);
+        const relatedPresentation = presentationForAward(award);
         const publicationHref = relatedPublication
           ? localizePath(`/p/${pubSlug(relatedPublication)}/`, locale)
           : undefined;
+        const presentationHref = relatedPresentation
+          ? `${localizePath('/publications/', locale)}#presentation-${relatedPresentation.id}`
+          : undefined;
+        const workHref = publicationHref ?? presentationHref;
         return (
           <li class="entry">
             <p class="entry-date">
               <time datetime={isoYearMonth(award.date)}>{formatYearMonth(award.date, locale)}</time>
             </p>
             <div class="min-w-0">
-              <h3 class="leading-snug font-medium">{L(award.name, locale)}</h3>
+              <h3 class="text-award leading-snug font-medium">{L(award.name, locale)}</h3>
               <p class="mt-0.5 text-sm text-muted">{L(award.organization, locale)}</p>
               <p class="mt-1.5 text-sm">
-                {publicationHref ? (
-                  <a href={publicationHref} class="link">{L(award.work, locale)}</a>
+                {workHref ? (
+                  <a href={workHref} class="link">{L(award.work, locale)}</a>
                 ) : (
                   L(award.work, locale)
                 )}

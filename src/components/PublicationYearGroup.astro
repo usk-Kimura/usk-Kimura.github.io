@@ -8,21 +8,22 @@ type Props = {
   year: number;
   items: Publication[];
   locale: Locale;
+  headingLevel?: 2 | 3;
+  itemHeadingLevel?: 3 | 4;
 };
 
-const { year, items, locale } = Astro.props;
+const { year, items, locale, headingLevel = 2, itemHeadingLevel = 3 } = Astro.props;
+const Heading = headingLevel === 3 ? 'h3' : 'h2';
 ---
 
-<section data-pub-year-group data-year={year} aria-labelledby={`year-${year}`}>
-  {/* h2: this group sits under the page's h1 ("Publications"), and each entry
-      inside renders its title as an h3. */}
-  <h2
+<section data-output-group data-year={year} aria-labelledby={`year-${year}`}>
+  <Heading
     id={`year-${year}`}
     class="sticky z-10 border-b hairline py-1.5 text-sm font-semibold tabular-nums"
     style="top: var(--header-h); background: color-mix(in oklch, var(--bg) 92%, transparent); backdrop-filter: blur(6px);"
   >
     {year}
-  </h2>
+  </Heading>
   <ol class="divided">
     {
       items.map((pub) => {
@@ -36,11 +37,11 @@ const { year, items, locale } = Astro.props;
             .join(' ') ?? '';
         return (
           <li
-            data-pub-item
-            data-pub-type={pub.type}
-            data-pub-search={`${pub.title} ${pub.authors} ${pub.venue} ${pub.venueEn ?? ''} ${pub.year} ${awardSearch} ${coauthorAwardSearch}`}
+            data-output-item
+            data-output-type={pub.type}
+            data-output-search={`${pub.title} ${pub.authors} ${pub.venue} ${pub.venueEn ?? ''} ${pub.year} ${awardSearch} ${coauthorAwardSearch}`}
           >
-            <PublicationItem pub={pub} locale={locale} />
+            <PublicationItem pub={pub} locale={locale} headingLevel={itemHeadingLevel} />
           </li>
         );
       })

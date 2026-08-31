@@ -1,17 +1,23 @@
 ---
 import type { Locale, PublicationType } from '~/data/types';
-import { publications } from '~/data';
+import { presentations, publications } from '~/data';
+import { presentationAwardsFor } from '~/data/relations';
+import { L } from '~/i18n/locale';
 import { t, fmt } from '~/i18n/ui';
 import Section from './Section.astro';
+import PresentationItem from './PresentationItem.astro';
 import PublicationYearGroup from './PublicationYearGroup.astro';
 
 type Props = { locale: Locale };
+type OutputType = PublicationType | 'poster';
+
 const { locale } = Astro.props;
 const s = t(locale);
 
 const sorted = [...publications].sort(
   (a, b) => b.year * 12 + (b.month ?? 0) - (a.year * 12 + (a.month ?? 0)),
 );
+const sortedPresentations = [...presentations].sort((a, b) => b.date.localeCompare(a.date));
 
 const groups = sorted.reduce<Map<number, typeof sorted>>((acc, pub) => {
   if (!acc.has(pub.year)) acc.set(pub.year, []);
@@ -21,7 +27,11 @@ const groups = sorted.reduce<Map<number, typeof sorted>>((acc, pub) => {
 
 // Conventional academic ordering; only categories that actually occur.
 const TYPE_ORDER: PublicationType[] = ['journal', 'international-conference', 'domestic-conference'];
-const types = TYPE_ORDER.filter((tp) => sorted.some((p) => p.type === tp));
+const publicationTypes = TYPE_ORDER.filter((type) => sorted.some((publication) => publication.type === type));
+const outputTypes: OutputType[] = [
+  ...publicationTypes,
+  ...(sortedPresentations.length > 0 ? (['poster'] as const) : []),
+];
 
 const groupEntries = Array.from(groups.entries());
 const latestYear = groupEntries[0]?.[0] ?? new Date().getFullYear();
@@ -31,23 +41,26 @@ const olderCount = olderGroups.reduce((sum, [, items]) => sum + items.length, 0)
 ---
 
 <Section
-  id="publications"
-  title={s.sections.publications}
+  id="research-outputs"
+  title={s.sections.researchOutputs}
   level={1}
-  meta={fmt(s.counts.publications, { n: publications.length })}
+  meta={fmt(s.counts.researchOutputs, {
+    publications: publications.length,
+    posters: sortedPresentations.length,
+  })}
 >
   {/* Search and filtering are entirely client-side, so they stay hidden until
-      the document is marked as scripted — a dead search box is worse than none.
-      The full list below is always rendered. */}
+      the document is marked as scripted. The complete list remains available
+      with JavaScript disabled. */}
   <div class="js-only flex flex-col gap-3">
     <label class="block">
       <span class="sr-only">{s.labels.search}</span>
       <input
-        id="publication-search"
+        id="output-search"
         type="search"
         placeholder={s.labels.searchPlaceholder}
         autocomplete="off"
-        aria-controls="publication-list"
+        aria-controls="research-output-list"
         class="min-h-10 w-full rounded-md border hairline px-3 text-base sm:text-sm placeholder:text-muted focus:border-[var(--accent)]"
         style="background: var(--bg);"
       />
@@ -57,75 +70,131 @@ const olderCount = olderGroups.reduce((sum, [, items]) => sum + items.length, 0)
       <span class="text-muted">{s.labels.filter}</span>
       <button
         type="button"
-        class="pub-filter link-quiet aria-pressed:font-semibold aria-pressed:text-[var(--accent-strong)]"
+        class="output-filter link-quiet min-h-10 aria-pressed:font-semibold aria-pressed:text-[var(--accent-strong)]"
         data-filter="all"
         aria-pressed="true"
-        aria-controls="publication-list"
+        aria-controls="research-output-list"
       >
         {s.labels.all}
       </button>
-      {
-        types.map((tp) => (
-          <button
-            type="button"
-            class="pub-filter link-quiet aria-pressed:font-semibold aria-pressed:text-[var(--accent-strong)]"
-            data-filter={tp}
-            aria-pressed="false"
-            aria-controls="publication-list"
-          >
-            {s.pubTypes[tp]}
-          </button>
-        ))
-      }
+      {outputTypes.map((type) => (
+        <button
+          type="button"
+          class="output-filter link-quiet min-h-10 aria-pressed:font-semibold aria-pressed:text-[var(--accent-strong)]"
+          data-filter={type}
+          aria-pressed="false"
+          aria-controls="research-output-list"
+        >
+          {s.pubTypes[type]}
+        </button>
+      ))}
     </div>
 
-    {/* Always in the DOM and never `hidden`: a live region that starts out
-        display:none is not reliably announced when it later appears. It simply
-        holds no text until a filter is applied. */}
-    <p id="publication-count" class="min-h-5 text-sm text-muted" aria-live="polite" role="status"></p>
+    <p id="output-count" class="min-h-5 text-sm text-muted" aria-live="polite" role="status"></p>
   </div>
 
-  <div id="publication-list" class="mt-7 space-y-8">
-    {
-      recentGroups.map(([year, items]) => (
-        <PublicationYearGroup year={year} items={items} locale={locale} />
-      ))
-    }
-
-    {
-      olderGroups.length > 0 && (
-        <details id="older-publications" class="group">
-          <summary class="cursor-pointer list-none text-sm select-none [&::-webkit-details-marker]:hidden">
-            <span class="link-quiet inline-flex items-center gap-1.5">
-              <span aria-hidden="true" class="inline-block transition-transform group-open:rotate-90">
-                ›
-              </span>
-              {s.labels.olderPublications}
-              <span id="older-publication-count" class="tabular-nums">
-                ({olderCount})
-              </span>
+  <div id="research-output-list" class="mt-7 space-y-10">
+    {sortedPresentations.length > 0 && (
+      <section
+        id="poster-presentations"
+        data-output-section
+        aria-labelledby="poster-presentations-heading"
+      >
+        <header>
+          <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <h2 id="poster-presentations-heading" class="text-lg font-semibold tracking-tight">
+              {s.sections.posterPresentations}
+            </h2>
+            <span class="text-sm text-muted tabular-nums">
+              {fmt(s.counts.presentations, { n: sortedPresentations.length })}
             </span>
-          </summary>
-          <div class="mt-6 space-y-8">
-            {olderGroups.map(([year, items]) => (
-              <PublicationYearGroup year={year} items={items} locale={locale} />
-            ))}
           </div>
-        </details>
-      )
-    }
+          <p class="mt-1.5 text-sm leading-relaxed text-muted">{s.labels.posterDescription}</p>
+        </header>
 
-    <p id="publication-empty" class="hidden py-8 text-center text-muted">{s.labels.noResults}</p>
+        <ol class="mt-4 rounded-lg border px-4 hairline sm:px-5" style="background: var(--bg-soft);">
+          {sortedPresentations.map((presentation) => {
+            const presentationAwards = presentationAwardsFor(presentation);
+            const awardSearch = presentationAwards
+              .map((award) => `${L(award.name, locale)} ${L(award.organization, locale)} ${award.recipients}`)
+              .join(' ');
+            return (
+              <li
+                id={`presentation-${presentation.id}`}
+                data-output-item
+                data-output-type={presentation.kind}
+                data-output-search={`${presentation.title} ${presentation.authors} ${L(presentation.event, locale)} ${L(presentation.venue, locale)} ${presentation.date} ${awardSearch}`}
+              >
+                <PresentationItem presentation={presentation} locale={locale} />
+              </li>
+            );
+          })}
+        </ol>
+      </section>
+    )}
+
+    <section id="papers-and-proceedings" data-output-section aria-labelledby="papers-heading">
+      <header class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+        <h2 id="papers-heading" class="text-lg font-semibold tracking-tight">
+          {s.sections.archivalPublications}
+        </h2>
+        <span class="text-sm text-muted tabular-nums">
+          {fmt(s.counts.publications, { n: publications.length })}
+        </span>
+      </header>
+
+      <div class="mt-4 space-y-8">
+        {recentGroups.map(([year, items]) => (
+          <PublicationYearGroup
+            year={year}
+            items={items}
+            locale={locale}
+            headingLevel={3}
+            itemHeadingLevel={4}
+          />
+        ))}
+
+        {olderGroups.length > 0 && (
+          <details id="older-publications" class="group">
+            <summary class="cursor-pointer list-none text-sm select-none [&::-webkit-details-marker]:hidden">
+              <span class="link-quiet inline-flex min-h-10 items-center gap-1.5">
+                <span aria-hidden="true" class="inline-block transition-transform group-open:rotate-90">
+                  ›
+                </span>
+                {s.labels.olderPublications}
+                <span id="older-publication-count" class="tabular-nums">
+                  ({olderCount})
+                </span>
+              </span>
+            </summary>
+            <div class="mt-6 space-y-8">
+              {olderGroups.map(([year, items]) => (
+                <PublicationYearGroup
+                  year={year}
+                  items={items}
+                  locale={locale}
+                  headingLevel={3}
+                  itemHeadingLevel={4}
+                />
+              ))}
+            </div>
+          </details>
+        )}
+      </div>
+    </section>
+
+    <p id="output-empty" class="hidden py-8 text-center text-muted">{s.labels.noResults}</p>
   </div>
 </Section>
 
 <script is:inline define:vars={{ matchTemplate: s.counts.matching }}>
-  const buttons = document.querySelectorAll('.pub-filter');
-  const items = Array.from(document.querySelectorAll('[data-pub-item]'));
-  const groups = document.querySelectorAll('[data-pub-year-group]');
-  const search = document.getElementById('publication-search');
-  const count = document.getElementById('publication-count');
-  const empty = document.getElementById('publication-empty');
+  const buttons = document.querySelectorAll('.output-filter');
+  const items = Array.from(document.querySelectorAll('[data-output-item]'));
+  const groups = document.querySelectorAll('[data-output-group]');
+  const sections = document.querySelectorAll('[data-output-section]');
+  const search = document.getElementById('output-search');
+  const count = document.getElementById('output-count');
+  const empty = document.getElementById('output-empty');
   const older = document.getElementById('older-publications');
   const olderCount = document.getElementById('older-publication-count');
   let activeFilter = 'all';
@@ -138,25 +207,29 @@ const olderCount = olderGroups.reduce((sum, [, items]) => sum + items.length, 0)
     let visibleCount = 0;
 
     for (const item of items) {
-      const typeMatch = activeFilter === 'all' || item.dataset.pubType === activeFilter;
-      const textMatch = query.length === 0 || normalize(item.dataset.pubSearch ?? '').includes(query);
+      const typeMatch = activeFilter === 'all' || item.dataset.outputType === activeFilter;
+      const textMatch = query.length === 0 || normalize(item.dataset.outputSearch ?? '').includes(query);
       const match = typeMatch && textMatch;
       item.hidden = !match;
       if (match) visibleCount += 1;
     }
 
     for (const group of groups) {
-      const visible = Array.from(group.querySelectorAll('[data-pub-item]')).filter((i) => !i.hidden);
+      const visible = Array.from(group.querySelectorAll('[data-output-item]')).filter((item) => !item.hidden);
       group.hidden = visible.length === 0;
-      // Keep the hairline rules attached to the first *visible* row.
       visible.forEach((item, index) => item.classList.toggle('rule-none', index === 0));
     }
 
     if (older) {
-      const matches = older.querySelectorAll('[data-pub-item]:not([hidden])').length;
+      const matches = older.querySelectorAll('[data-output-item]:not([hidden])').length;
       if (olderCount) olderCount.textContent = `(${matches})`;
       older.hidden = matches === 0;
       if (filtering && matches > 0) older.open = true;
+    }
+
+    for (const section of sections) {
+      const matches = section.querySelectorAll('[data-output-item]:not([hidden])').length;
+      section.hidden = matches === 0;
     }
 
     if (count) {
@@ -176,10 +249,10 @@ const olderCount = olderGroups.reduce((sum, [, items]) => sum + items.length, 0)
     }
   }
 
-  for (const btn of buttons) {
-    btn.addEventListener('click', () => {
-      activeFilter = btn.dataset.filter ?? 'all';
-      for (const b of buttons) b.setAttribute('aria-pressed', String(b === btn));
+  for (const button of buttons) {
+    button.addEventListener('click', () => {
+      activeFilter = button.dataset.filter ?? 'all';
+      for (const candidate of buttons) candidate.setAttribute('aria-pressed', String(candidate === button));
       applyFilters(true);
     });
   }
@@ -192,10 +265,10 @@ const olderCount = olderGroups.reduce((sum, [, items]) => sum + items.length, 0)
   const initialFilter = params.get('type');
   if (search && initialQuery) search.value = initialQuery;
   if (initialFilter) {
-    const target = Array.from(buttons).find((b) => b.dataset.filter === initialFilter);
+    const target = Array.from(buttons).find((button) => button.dataset.filter === initialFilter);
     if (target) {
       activeFilter = initialFilter;
-      for (const b of buttons) b.setAttribute('aria-pressed', String(b === target));
+      for (const button of buttons) button.setAttribute('aria-pressed', String(button === target));
     }
   }
   if (initialQuery || initialFilter) applyFilters();
