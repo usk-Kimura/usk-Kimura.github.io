@@ -182,7 +182,7 @@ const reading = L(profile.reading, locale);
               {formatYearMonth(a.date, locale)}
             </time>
             <span>
-              <strong class="text-award">{L(a.name, locale)}</strong>, {L(a.organization, locale)}
+              <strong>{L(a.name, locale)}</strong>, {L(a.organization, locale)}
               <br />
               <span class="cv-note">{L(a.work, locale)}</span>
               {a.context && (
@@ -242,7 +242,7 @@ const reading = L(profile.reading, locale);
                   {publicationAwards.map((award) => (
                     <Fragment>
                       <br />
-                      <span class="cv-note text-award">
+                      <span class="cv-note">
                         [{s.labels.publicationAward}:{' '}
                         {award.link ? (
                           <a href={award.link.href}>{L(award.name, locale)}</a>
@@ -255,7 +255,7 @@ const reading = L(profile.reading, locale);
                   {pub.coauthorAwards?.map((award) => (
                     <Fragment>
                       <br />
-                      <span class="cv-note text-award">
+                      <span class="cv-note">
                         [{s.labels.coauthorAward}:{' '}
                         {award.url ? (
                           <a href={award.url}>{L(award.name, locale)}</a>
@@ -304,7 +304,7 @@ const reading = L(profile.reading, locale);
               {presentationAwards.map((award) => (
                 <Fragment>
                   <br />
-                  <span class="cv-note text-award">
+                  <span class="cv-note">
                     [{s.labels.publicationAward}:{' '}
                     {award.link ? (
                       <a href={award.link.href}>{L(award.name, locale)}</a>
