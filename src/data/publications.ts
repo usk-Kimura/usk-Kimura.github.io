@@ -5,13 +5,26 @@ export const publications: Publication[] = [
   {
     title: 'LoRAマルチタスク学習における更新空間の分離による学習偏りの抑制',
     authors: '平子 翔太, 木村 優介, 波多野 賢治',
-    venue: '情報処理学会研究報告',
-    venueEn: 'IPSJ SIG Technical Report',
+    venue: '情報処理学会研究報告 2026-IFAT-162(4)',
+    venueEn: 'IPSJ SIG-IFAT Technical Report 2026-IFAT-162(4)',
     year: 2026,
     month: 3,
-    pages: '4: 1-6',
+    day: 30,
+    pages: '1-6',
     type: 'domestic-conference',
     flags: ['corresponding-author'],
+    coauthorAwards: [
+      {
+        name: {
+          ja: '2026年度 山下記念研究賞',
+          en: '2026 IPSJ Yamashita SIG Research Award',
+          zh: '2026年度 IPSJ 山下纪念研究奖',
+          ko: '2026년도 IPSJ 야마시타 기념 연구상',
+        },
+        recipient: '平子 翔太',
+        url: 'https://www.ipsj.or.jp/award/yamashita2026.html',
+      },
+    ],
   },
   {
     title: '社会的属性ごとに異なる内部表現を考慮した活性化ステアリングによるLLMの社会的バイアス緩和',
@@ -20,8 +33,23 @@ export const publications: Publication[] = [
     venueEn: 'IPSJ SIG-NL Technical Report 2026-NL-267(31)',
     year: 2026,
     month: 2,
+    day: 28,
+    pages: '1-9',
     type: 'domestic-conference',
     flags: ['corresponding-author'],
+    coauthorAwards: [
+      {
+        name: {
+          ja: '若手奨励賞（情報処理学会自然言語処理研究会）',
+          en: 'Young Researcher Award (IPSJ SIG-NL)',
+          zh: '青年鼓励奖（IPSJ 自然语言处理研究会）',
+          ko: '젊은 연구자 장려상(IPSJ 자연어 처리 연구회)',
+        },
+        recipient: '前川 知歩',
+        recipientUrl: 'https://sites.google.com/komachi.live/chiho-maekawa/home',
+        url: 'https://www.ipsj.or.jp/award/nl-award2.html',
+      },
+    ],
   },
   {
     title: '外部知識を優先した出力生成のための類似度カーネル平滑化手法',
@@ -164,6 +192,19 @@ export const publications: Publication[] = [
     pages: '1: 437-438',
     type: 'domestic-conference',
     flags: ['corresponding-author'],
+    coauthorAwards: [
+      {
+        name: {
+          ja: '情報処理学会第86回全国大会 学生奨励賞',
+          en: 'Student Encouragement Award, 86th IPSJ National Convention',
+          zh: '第86届 IPSJ 全国大会学生鼓励奖',
+          ko: '제86회 IPSJ 전국대회 학생 장려상',
+        },
+        recipient: '洪 惠珍',
+        recipientUrl: 'https://researchmap.jp/hyejin_hong',
+        url: 'https://www.ipsj.or.jp/award/taikaigakusei.html',
+      },
+    ],
     url: 'https://cir.nii.ac.jp/crid/1050863782913278080',
   },
   {
@@ -279,6 +320,31 @@ export const publications: Publication[] = [
     },
   },
   {
+    title: '部分構造を考慮した化合物分散表現の食材分類タスクにおける効果',
+    authors: '吉丸 直希, 木村 優介, 楠 和馬, 波多野 賢治',
+    venue: '情報処理学会研究報告 2022-IFAT-148(31)',
+    venueEn: 'IPSJ SIG-IFAT Technical Report 2022-IFAT-148(31)',
+    year: 2022,
+    month: 9,
+    day: 2,
+    pages: '1-6',
+    type: 'domestic-conference',
+    coauthorAwards: [
+      {
+        name: {
+          ja: '学生奨励賞（情報処理学会データベースシステム研究会）',
+          en: 'Student Encouragement Award (IPSJ SIG-DBS)',
+          zh: '学生鼓励奖（IPSJ 数据库系统研究会）',
+          ko: '학생 장려상(IPSJ 데이터베이스 시스템 연구회)',
+        },
+        recipient: '吉丸 直希',
+        recipientUrl: 'https://researchmap.jp/naokiyoshimaru',
+        url: 'https://www.ipsj.or.jp/award/dbs-award1.html',
+      },
+    ],
+    url: 'https://ipsj.ixsq.nii.ac.jp/records/220029',
+  },
+  {
     title: '前後文のアスペクトを考慮したレビュー文に対する教師ありアスペクト推定の高精度化',
     authors: '蔦永 紗希, 木村 優介, 寺本 優香, 波多野 賢治',
     venue: '2022年電子情報通信学会総合大会「ジュニア＆学生ポスターセッション」予稿集',
@@ -295,6 +361,19 @@ export const publications: Publication[] = [
     year: 2022,
     month: 3,
     type: 'domestic-conference',
+    coauthorAwards: [
+      {
+        name: {
+          ja: '情報処理学会第84回全国大会 学生奨励賞',
+          en: 'Student Encouragement Award, 84th IPSJ National Convention',
+          zh: '第84届 IPSJ 全国大会学生鼓励奖',
+          ko: '제84회 IPSJ 전국대회 학생 장려상',
+        },
+        recipient: '吉丸 直希',
+        recipientUrl: 'https://researchmap.jp/naokiyoshimaru',
+        url: 'https://www.ipsj.or.jp/award/taikaigakusei.html',
+      },
+    ],
   },
   {
     title: 'ストップフレーズ抽出を併用した文書分類',
@@ -316,6 +395,18 @@ export const publications: Publication[] = [
     month: 3,
     pages: '1L-07',
     type: 'domestic-conference',
+    coauthorAwards: [
+      {
+        name: {
+          ja: '情報処理学会第83回全国大会 学生奨励賞',
+          en: 'Student Encouragement Award, 83rd IPSJ National Convention',
+          zh: '第83届 IPSJ 全国大会学生鼓励奖',
+          ko: '제83회 IPSJ 전국대회 학생 장려상',
+        },
+        recipient: '小森 雄太',
+        url: 'https://www.ipsj.or.jp/award/taikaigakusei.html',
+      },
+    ],
     url: 'https://cir.nii.ac.jp/crid/1050011097133777024',
   },
   {
@@ -365,6 +456,19 @@ export const publications: Publication[] = [
     month: 3,
     pages: '1M-05',
     type: 'domestic-conference',
+    coauthorAwards: [
+      {
+        name: {
+          ja: '情報処理学会第82回全国大会 学生奨励賞',
+          en: 'Student Encouragement Award, 82nd IPSJ National Convention',
+          zh: '第82届 IPSJ 全国大会学生鼓励奖',
+          ko: '제82회 IPSJ 전국대회 학생 장려상',
+        },
+        recipient: '笹田 大翔',
+        recipientUrl: 'https://taishosasada.github.io/',
+        url: 'https://www.ipsj.or.jp/award/taikaigakusei.html',
+      },
+    ],
     url: 'https://cir.nii.ac.jp/crid/1050855522047755264',
   },
   {

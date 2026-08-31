@@ -229,6 +229,25 @@ const reading = L(profile.reading, locale);
                       {pub.flags.map((f) => ` [${s.flags[f]}]`).join('')}
                     </span>
                   )}
+                  {pub.coauthorAwards?.map((award) => (
+                    <Fragment>
+                      <br />
+                      <span class="cv-note">
+                        [{s.labels.coauthorAward}:{' '}
+                        {award.url ? (
+                          <a href={award.url}>{L(award.name, locale)}</a>
+                        ) : (
+                          L(award.name, locale)
+                        )}
+                        {' — '}{s.labels.recipient}:{' '}
+                        {award.recipientUrl ? (
+                          <a href={award.recipientUrl}>{award.recipient}</a>
+                        ) : (
+                          award.recipient
+                        )}]
+                      </span>
+                    </Fragment>
+                  ))}
                 </li>
               );
             })}

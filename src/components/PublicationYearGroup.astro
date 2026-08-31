@@ -1,5 +1,6 @@
 ---
 import type { Locale, Publication } from '~/data/types';
+import { L } from '~/i18n/locale';
 import PublicationItem from './PublicationItem.astro';
 
 type Props = {
@@ -27,7 +28,7 @@ const { year, items, locale } = Astro.props;
         <li
           data-pub-item
           data-pub-type={pub.type}
-          data-pub-search={`${pub.title} ${pub.authors} ${pub.venue} ${pub.venueEn ?? ''} ${pub.year}`}
+          data-pub-search={`${pub.title} ${pub.authors} ${pub.venue} ${pub.venueEn ?? ''} ${pub.year} ${pub.coauthorAwards?.map((award) => `${L(award.name, locale)} ${award.recipient}`).join(' ') ?? ''}`}
         >
           <PublicationItem pub={pub} locale={locale} />
         </li>

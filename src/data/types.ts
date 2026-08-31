@@ -97,6 +97,18 @@ export type PublicationType =
 
 export type PublicationFlag = 'peer-reviewed' | 'first-author' | 'corresponding-author' | 'invited';
 
+/**
+ * Recognition connected to a publication but awarded to a coauthor rather
+ * than to the profile owner. Keeping this on the publication prevents it from
+ * being counted or exposed as one of the profile owner's own awards.
+ */
+export type CoauthorAward = {
+  name: LocalizedString;
+  recipient: string;
+  recipientUrl?: string;
+  url?: string;
+};
+
 export type Publication = {
   /** Title rendered as published. Academic convention is to keep this as-is
    *  across languages so citations remain searchable. */
@@ -117,6 +129,8 @@ export type Publication = {
   pages?: string;
   type: PublicationType;
   flags?: PublicationFlag[];
+  /** Award for which a coauthor/presenter, not the profile owner, is the recipient. */
+  coauthorAwards?: CoauthorAward[];
   doi?: string;
   url?: string;
   /** Author-written abstract. Scholar's inclusion policy says detail pages

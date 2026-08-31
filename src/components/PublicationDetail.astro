@@ -14,6 +14,7 @@ import { t } from '~/i18n/ui';
 import { L, LO, localeMeta, localizePath } from '~/i18n/locale';
 import { formatYearMonth } from '~/i18n/format';
 import BaseLayout from '~/layouts/BaseLayout.astro';
+import CoauthorAwards from './CoauthorAwards.astro';
 
 type Props = { pub: Publication; locale: Locale };
 const { pub, locale } = Astro.props;
@@ -138,6 +139,12 @@ const pageDesc = abstract ?? `${pub.authors}. ${venueText}, ${dateLabel}.`;
         </ul>
       )
     }
+
+    {pub.coauthorAwards && (
+      <div class="mt-4 border-l-2 border-[var(--accent)] pl-3">
+        <CoauthorAwards awards={pub.coauthorAwards} locale={locale} />
+      </div>
+    )}
 
     {
       abstract && (

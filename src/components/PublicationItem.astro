@@ -4,6 +4,7 @@ import { t } from '~/i18n/ui';
 import { formatYearMonth } from '~/i18n/format';
 import { localizePath } from '~/i18n/locale';
 import { pubSlug, highlightSelf } from '~/data/util';
+import CoauthorAwards from './CoauthorAwards.astro';
 
 type Props = {
   pub: Publication;
@@ -55,6 +56,12 @@ const venueLang: SourceLocale = useVenueEn ? 'en' : CJK.test(pub.venue) ? 'ja' :
     <p class="text-sm">
       <em lang={venueLang}>{venueText}</em>{pub.pages ? `, ${pub.pages}` : ''}
     </p>
+
+    {pub.coauthorAwards && (
+      <div class="mt-1.5">
+        <CoauthorAwards awards={pub.coauthorAwards} locale={locale} />
+      </div>
+    )}
 
     {
       ((pub.flags && pub.flags.length > 0) || externalUrl) && (
