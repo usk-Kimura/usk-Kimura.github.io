@@ -1,4 +1,4 @@
-import type { Locale } from './types';
+import type { Locale, SourceLocale } from './types';
 import { publications } from './publications';
 import { awards } from './awards';
 import { grants } from './grants';
@@ -18,10 +18,24 @@ export type ActivityItem = {
   kind: NewsKind;
   /** Already localized to the requested locale. */
   title: string;
+  /** Language of a publication title shown as originally published. */
+  titleLang?: SourceLocale;
   detail?: string;
   href?: string;
   /** True when `href` points off-site. */
   external?: boolean;
+  /** Structured links for recognition awarded to a coauthor. Keeping this
+   *  distinct from a normal award makes the recipient unambiguous and keeps
+   *  it out of the profile owner's award counts. */
+  coauthorAward?: {
+    recipient: string;
+    recipientUrl?: string;
+    name: string;
+    url?: string;
+    publicationTitle: string;
+    publicationTitleLang: SourceLocale;
+    publicationHref: string;
+  };
 };
 
 function toIso(year: number, month?: number, day?: number): string {
@@ -41,21 +55,46 @@ function padDate(date: string): string {
  * Future-dated entries sort to the top, which is deliberate — an upcoming talk
  * is the most interesting thing on the page.
  */
-export function buildActivity(locale: Locale, limit = 6): ActivityItem[] {
+export function buildActivity(locale: Locale, limit?: number): ActivityItem[] {
   const items: ActivityItem[] = [];
 
   for (const p of publications) {
     const display = p.month
-      ? `${p.year}-${p.month}${p.day ? `-${p.day}` : ''}`
+      ? `${p.year}-${String(p.month).padStart(2, '0')}${p.day ? `-${String(p.day).padStart(2, '0')}` : ''}`
       : String(p.year);
+    const publicationHref = localizePath(`/p/${pubSlug(p)}/`, locale);
+    const titleLang: SourceLocale = p.titleLang ?? (CJK.test(p.title) ? 'ja' : 'en');
     items.push({
       date: toIso(p.year, p.month, p.day),
       display,
       kind: 'paper',
       title: p.title,
+      titleLang,
       detail: locale === 'ja' ? p.venue : (p.venueEn ?? p.venue),
-      href: localizePath(`/p/${pubSlug(p)}/`, locale),
+      href: publicationHref,
     });
+
+    for (const award of p.coauthorAwards ?? []) {
+      const awardName = L(award.name, locale);
+      items.push({
+        date: padDate(award.date),
+        display: award.date,
+        kind: 'coauthor-award',
+        // This neutral fallback is useful to data consumers; Activity.astro
+        // renders the linked recipient and award with locale-aware grammar.
+        title: `${award.recipient}: ${awardName}`,
+        detail: locale === 'ja' ? p.venue : (p.venueEn ?? p.venue),
+        coauthorAward: {
+          recipient: award.recipient,
+          recipientUrl: award.recipientUrl,
+          name: awardName,
+          url: award.url,
+          publicationTitle: p.title,
+          publicationTitleLang: titleLang,
+          publicationHref,
+        },
+      });
+    }
   }
 
   // A hand-written news entry about an award or grant is a better headline
@@ -86,7 +125,7 @@ export function buildActivity(locale: Locale, limit = 6): ActivityItem[] {
       title: L(g.title, locale),
       detail: L(g.funder, locale),
       href: g.url,
-      external: Boolean(g.url),
+      external: isExternalHref(g.url),
     });
   }
 
@@ -99,10 +138,23 @@ export function buildActivity(locale: Locale, limit = 6): ActivityItem[] {
       title: L(item.title, locale),
       detail: item.detail ? L(item.detail, locale) : undefined,
       href: item.href,
-      external: Boolean(item.href),
+      external: isExternalHref(item.href),
     });
   }
 
-  items.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
-  return items.slice(0, limit);
+  // Recognition leads a paper published on the same day, so the award is not
+  // hidden immediately below a duplicate date. Array.sort is stable, keeping
+  // the curated source order for all remaining ties.
+  const priority = (item: ActivityItem) =>
+    item.kind === 'coauthor-award' ? 0 : item.kind === 'award' ? 1 : item.kind === 'paper' ? 2 : 3;
+  items.sort((a, b) =>
+    a.date < b.date ? 1 : a.date > b.date ? -1 : priority(a) - priority(b),
+  );
+  return limit === undefined ? items : items.slice(0, limit);
 }
+
+function isExternalHref(href: string | undefined): boolean {
+  return Boolean(href && /^https?:\/\//i.test(href));
+}
+
+const CJK = /[　-ヿ㐀-䶿一-鿿＀-￯]/;

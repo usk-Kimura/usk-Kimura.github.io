@@ -15,6 +15,10 @@ export const publications: Publication[] = [
     flags: ['corresponding-author'],
     coauthorAwards: [
       {
+        // The talk was on March 30; the FY2026 award list was publicly
+        // confirmed in August. Keep the recognition date distinct from the
+        // presentation date so the timeline does not imply an on-site award.
+        date: '2026-08',
         name: {
           ja: '2026年度 山下記念研究賞',
           en: '2026 IPSJ Yamashita SIG Research Award',
@@ -39,6 +43,7 @@ export const publications: Publication[] = [
     flags: ['corresponding-author'],
     coauthorAwards: [
       {
+        date: '2026-03-08',
         name: {
           ja: '若手奨励賞（情報処理学会自然言語処理研究会）',
           en: 'Young Researcher Award (IPSJ SIG-NL)',
@@ -194,6 +199,7 @@ export const publications: Publication[] = [
     flags: ['corresponding-author'],
     coauthorAwards: [
       {
+        date: '2024-03-16',
         name: {
           ja: '情報処理学会第86回全国大会 学生奨励賞',
           en: 'Student Encouragement Award, 86th IPSJ National Convention',
@@ -331,6 +337,7 @@ export const publications: Publication[] = [
     type: 'domestic-conference',
     coauthorAwards: [
       {
+        date: '2022-09-10',
         name: {
           ja: '学生奨励賞（情報処理学会データベースシステム研究会）',
           en: 'Student Encouragement Award (IPSJ SIG-DBS)',
@@ -363,6 +370,7 @@ export const publications: Publication[] = [
     type: 'domestic-conference',
     coauthorAwards: [
       {
+        date: '2022-03-06',
         name: {
           ja: '情報処理学会第84回全国大会 学生奨励賞',
           en: 'Student Encouragement Award, 84th IPSJ National Convention',
@@ -397,6 +405,7 @@ export const publications: Publication[] = [
     type: 'domestic-conference',
     coauthorAwards: [
       {
+        date: '2021-03-18',
         name: {
           ja: '情報処理学会第83回全国大会 学生奨励賞',
           en: 'Student Encouragement Award, 83rd IPSJ National Convention',
@@ -458,6 +467,7 @@ export const publications: Publication[] = [
     type: 'domestic-conference',
     coauthorAwards: [
       {
+        date: '2020-03-07',
         name: {
           ja: '情報処理学会第82回全国大会 学生奨励賞',
           en: 'Student Encouragement Award, 82nd IPSJ National Convention',

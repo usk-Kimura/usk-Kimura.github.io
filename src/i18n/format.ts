@@ -21,6 +21,15 @@ const enDate = new Intl.DateTimeFormat('en', {
 
 /** Human-readable year/month(/day), e.g. `2026年7月` / `Jul 2026` / `2026년 7월`. */
 export function formatYearMonth(date: string, locale: Locale): string {
+  // A bibliography may only know the publication year. Do not invent January
+  // when displaying that lower-granularity source date.
+  if (/^\d{4}$/.test(date)) {
+    return locale === 'ja' || locale === 'zh'
+      ? `${date}年`
+      : locale === 'ko'
+        ? `${date}년`
+        : date;
+  }
   const { y, m, d } = parts(date);
   switch (locale) {
     case 'ja':

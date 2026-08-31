@@ -35,10 +35,10 @@ export const profile: Profile = {
     ko: '자연어 처리 / LLM 사후 학습 / 토크나이저 간 지식 증류',
   },
   bio: {
-    ja: '大規模言語モデルを、さまざまな用途や利用環境に合わせて効率的かつ信頼できる形で適応させるための事後学習を研究しています。特に、語彙やトークナイザが異なるモデル間の知識移転に関心があり、既存モデルの能力を別のモデルへ柔軟に受け継ぐ方法を探究しています。これまでマルチタスク学習・文書分類・キーフレーズ抽出にも取り組み、共同研究では限られた計算資源でのアダプタ学習や社会的バイアスの緩和にも関わっています。',
-    en: 'I study post-training methods for adapting large language models efficiently and reliably to different tasks and deployment settings. I am particularly interested in transferring knowledge between models with different vocabularies and tokenizers, so that the capabilities of existing models can be carried over flexibly to other models. My earlier work spans multi-task learning, text classification, and keyphrase extraction; in collaborative projects, I also work on adapter learning under limited compute and social bias mitigation.',
-    zh: '我研究大语言模型的后训练，旨在使模型能够针对不同任务与应用环境进行高效、可靠的适配。我尤其关注词表和分词器不同的模型之间如何迁移知识，以便将现有模型的能力灵活地传递给其他模型。此前，我还开展过多任务学习、文本分类和关键短语抽取研究；在合作研究中，也参与了有限计算资源下的适配器学习与社会偏见缓解。',
-    ko: '대규모 언어 모델을 다양한 과제와 활용 환경에 맞게 효율적이고 신뢰할 수 있는 방식으로 적응시키기 위한 사후 학습을 연구합니다. 특히 어휘와 토크나이저가 서로 다른 모델 사이의 지식 이전에 관심이 있으며, 기존 모델의 능력을 다른 모델이 유연하게 이어받을 수 있는 방법을 탐구합니다. 그동안 멀티태스크 학습, 문서 분류, 키프레이즈 추출도 연구했으며, 공동 연구에서는 제한된 계산 자원에서의 어댑터 학습과 사회적 편향 완화에도 참여하고 있습니다.',
+    ja: '大規模言語モデルを、用途や利用環境に合わせて効率的かつ信頼できる形で適応させるための事後学習を研究しています。特に、語彙・トークナイザの異なるモデル間の知識移転と、限られた計算資源での学習に取り組んでいます。',
+    en: 'I study post-training methods for adapting large language models efficiently and reliably to different tasks and deployment settings. My current focus is knowledge transfer between models with different vocabularies and tokenizers, including learning under limited compute.',
+    zh: '我研究大语言模型的后训练，旨在使模型能够针对不同任务与应用环境进行高效、可靠的适配。目前主要关注词表与分词器不同的模型之间的知识迁移，以及有限计算资源下的模型训练。',
+    ko: '대규모 언어 모델을 다양한 과제와 활용 환경에 맞게 효율적이고 신뢰할 수 있는 방식으로 적응시키기 위한 사후 학습을 연구합니다. 특히 어휘와 토크나이저가 다른 모델 간의 지식 이전과 제한된 계산 자원에서의 학습에 중점을 두고 있습니다.',
   },
   emails: [
     {

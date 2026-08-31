@@ -15,7 +15,7 @@ const profileLinks = profile.links.filter((l) => !l.social);
 const socialLinks = profile.links.filter((l) => l.social);
 ---
 
-<Section id="contact" title={s.sections.contact}>
+<Section id="contact" title={s.sections.contact} home>
   <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
     <a href={`mailto:${primary.address}`} class="link text-lg break-all sm:text-xl">
       {primary.address}

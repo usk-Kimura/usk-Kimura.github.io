@@ -103,6 +103,10 @@ export type PublicationFlag = 'peer-reviewed' | 'first-author' | 'corresponding-
  * being counted or exposed as one of the profile owner's own awards.
  */
 export type CoauthorAward = {
+  /** Date on which the award was announced or received (YYYY-MM or YYYY-MM-DD).
+   *  This is kept separate from the publication date so the activity
+   *  timeline can place the recognition at the correct point in time. */
+  date: string;
   name: LocalizedString;
   recipient: string;
   recipientUrl?: string;

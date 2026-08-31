@@ -3,6 +3,7 @@ import type { LocalizedString } from './types';
 export type NewsKind =
   | 'paper'
   | 'award'
+  | 'coauthor-award'
   | 'grant'
   | 'hpc'
   | 'fellowship'

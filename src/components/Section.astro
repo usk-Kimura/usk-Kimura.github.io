@@ -9,20 +9,37 @@ type Props = {
    *  `2` when it is one of several sections on the home page. */
   level?: 1 | 2;
   class?: string;
+  /** Keep home-page sections aligned with the wider introduction shell. */
+  home?: boolean;
+  /** Use the whole home shell (for structured grids); ordinary record lists
+   *  retain a comfortable reading measure while sharing the same left edge. */
+  full?: boolean;
 };
 
-const { id, title, meta, level = 2, class: extra = '' } = Astro.props;
+const {
+  id,
+  title,
+  meta,
+  level = 2,
+  class: extra = '',
+  home = false,
+  full = false,
+} = Astro.props;
 const Heading = level === 1 ? 'h1' : 'h2';
+const container = home ? 'container-home' : 'container-page';
+const measure = home && !full ? 'max-w-[54rem]' : '';
 ---
 
 <section id={id} class={`border-t hairline py-10 md:py-12 ${extra}`}>
-  <div class="container-page">
-    <header class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-      <Heading class="text-xl md:text-2xl font-semibold tracking-tight leading-snug">{title}</Heading>
-      {meta && <span class="text-sm text-muted tabular-nums">{meta}</span>}
-    </header>
-    <div class="mt-5 md:mt-6">
-      <slot />
+  <div class={container}>
+    <div class={measure}>
+      <header class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+        <Heading class="text-[1.375rem] md:text-2xl font-semibold tracking-tight leading-snug">{title}</Heading>
+        {meta && <span class="text-sm text-muted tabular-nums">{meta}</span>}
+      </header>
+      <div class="mt-5 md:mt-6">
+        <slot />
+      </div>
     </div>
   </div>
 </section>

@@ -22,6 +22,10 @@ const s = t(locale);
 const home = localizePath('/', locale);
 const publications = localizePath('/publications/', locale);
 const cv = localizePath('/cv/', locale);
+const activity = `${home}#activity`;
+const research = `${home}#research`;
+const awards = `${home}#awards`;
+const contact = `${home}#contact`;
 const normalizePath = (path: string) => path.replace(/\/$/, '') || '/';
 const currentPath = normalizePath(Astro.url.pathname);
 ---
@@ -45,8 +49,14 @@ const currentPath = normalizePath(Astro.url.pathname);
         links only when the desktop header has enough room. */}
     <nav aria-label={s.labels.mainNav} class="ml-auto hidden items-center gap-0.5 text-sm sm:flex">
       <a
-        href={`${home}#research`}
+        href={activity}
         class="link-quiet hidden min-h-10 items-center rounded-md px-2 py-2 lg:inline-flex"
+      >
+        {s.sections.activity}
+      </a>
+      <a
+        href={research}
+        class="link-quiet hidden min-h-10 items-center rounded-md px-2 py-2 xl:inline-flex"
       >
         {s.nav.research}
       </a>
@@ -65,16 +75,73 @@ const currentPath = normalizePath(Astro.url.pathname);
         {s.nav.cv}
       </a>
       <a
-        href={`${home}#contact`}
+        href={contact}
         class="link-quiet hidden min-h-10 items-center rounded-md px-2 py-2 lg:inline-flex"
       >
         {s.nav.contact}
       </a>
     </nav>
 
-    <div class="ml-auto flex shrink-0 items-center gap-1 sm:ml-0">
+    <details class="mobile-site-menu relative ml-auto sm:hidden">
+      <summary class="inline-flex min-h-10 cursor-pointer list-none items-center rounded-md px-2 text-sm text-muted">
+        {s.labels.menu}
+      </summary>
+      <nav
+        aria-label={s.labels.mainNav}
+        class="absolute top-[calc(100%+.35rem)] left-0 z-50 w-52 rounded-lg border p-1.5 text-sm shadow-lg hairline"
+        style="background: var(--bg);"
+      >
+        <a href={activity} class="link-quiet block min-h-10 rounded-md px-3 py-2">{s.sections.activity}</a>
+        <a href={research} class="link-quiet block min-h-10 rounded-md px-3 py-2">{s.nav.research}</a>
+        <a href={publications} class="link-quiet block min-h-10 rounded-md px-3 py-2">{s.nav.publications}</a>
+        <a href={awards} class="link-quiet block min-h-10 rounded-md px-3 py-2">{s.nav.awards}</a>
+        <a href={cv} class="link-quiet block min-h-10 rounded-md px-3 py-2">{s.nav.cv}</a>
+        <a href={contact} class="link-quiet block min-h-10 rounded-md px-3 py-2">{s.nav.contact}</a>
+      </nav>
+    </details>
+
+    <div class="flex shrink-0 items-center gap-1 sm:ml-0">
       <LangSwitcher locale={locale} paths={paths} />
       <ThemeToggle locale={locale} />
     </div>
   </div>
 </header>
+
+<script>
+  const languageMenu = document.querySelector<HTMLDetailsElement>('[data-lang-menu]');
+
+  for (const menu of document.querySelectorAll<HTMLDetailsElement>('.mobile-site-menu')) {
+    for (const link of menu.querySelectorAll('a')) {
+      link.addEventListener('click', () => menu.removeAttribute('open'));
+    }
+
+    menu.addEventListener('toggle', () => {
+      if (menu.open && languageMenu?.open) languageMenu.open = false;
+    });
+
+    languageMenu?.addEventListener('toggle', () => {
+      if (languageMenu.open && menu.open) menu.open = false;
+    });
+
+    document.addEventListener('click', (event) => {
+      if (menu.open && !menu.contains(event.target as Node)) menu.open = false;
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape' || !menu.open) return;
+      menu.open = false;
+      menu.querySelector('summary')?.focus();
+    });
+  }
+</script>
+
+<style>
+  .mobile-site-menu > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .mobile-site-menu[open] > summary {
+    color: var(--fg);
+    background: var(--bg-soft);
+  }
+</style>

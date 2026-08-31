@@ -18,7 +18,7 @@ export const zh: UiStrings = {
     cv: '简历',
   },
   sections: {
-    activity: '近期动态',
+    activity: '活动历程',
     highlights: '成果亮点',
     research: '研究方向',
     keywords: '关键词',
@@ -75,6 +75,7 @@ export const zh: UiStrings = {
     mainNav: '站点导航',
     contents: '本页目录',
     footerNav: '页脚导航',
+    menu: '目录',
   },
   meta: {
     publications: '{name} 的论文列表，可按标题、作者、期刊会议与类型检索。',
@@ -84,6 +85,7 @@ export const zh: UiStrings = {
     publications: '共 {n} 篇',
     matching: '匹配 {n} / {m} 篇',
     awards: '共 {n} 项',
+    activities: '共 {n} 条',
     older: '{n} 篇',
   },
   highlights: {
@@ -91,6 +93,18 @@ export const zh: UiStrings = {
     firstAuthor: '第一作者成果',
     principalInvestigator: '主持课题',
     awards: '获奖',
+  },
+  activity: {
+    description: '按时间从新到旧汇总论文、报告、获奖与科研支持。',
+    scrollHint: '在框内纵向滚动即可查看全部过往活动。',
+    regionLabel: '活动历程（从新到旧）',
+    period: '{from}–{to}',
+    relatedPublication: '相关论文',
+    coauthorAward: {
+      afterRecipient: ' 获得',
+      beforeAward: '“',
+      afterAward: '”',
+    },
   },
   actions: {
     seeAllPublications: '查看全部论文',
@@ -113,6 +127,7 @@ export const zh: UiStrings = {
   newsKinds: {
     paper: '论文',
     award: '获奖',
+    'coauthor-award': '合著者获奖',
     grant: '科研经费',
     hpc: '计算资源',
     fellowship: '研究资助',

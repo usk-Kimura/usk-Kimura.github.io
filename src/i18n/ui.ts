@@ -21,7 +21,7 @@ const ja = {
     cv: '履歴書',
   },
   sections: {
-    activity: '最近の活動',
+    activity: '活動履歴',
     highlights: '実績ハイライト',
     research: '研究テーマ',
     keywords: 'キーワード',
@@ -78,6 +78,7 @@ const ja = {
     mainNav: 'サイトナビゲーション',
     contents: 'ページ内目次',
     footerNav: 'フッターナビゲーション',
+    menu: '目次',
   },
   /** `<meta name="description">` per page. `{name}` is substituted. */
   meta: {
@@ -88,6 +89,7 @@ const ja = {
     publications: '全 {n} 件',
     matching: '{n} / {m} 件が一致',
     awards: '全 {n} 件',
+    activities: '全 {n} 件',
     older: '{n} 件',
   },
   highlights: {
@@ -95,6 +97,18 @@ const ja = {
     firstAuthor: '筆頭著者業績',
     principalInvestigator: '研究代表課題',
     awards: '受賞実績',
+  },
+  activity: {
+    description: '論文・発表・受賞・研究支援を、最新から過去へまとめています。',
+    scrollHint: '枠内を縦にスクロールすると、これまでの活動をすべて見られます。',
+    regionLabel: '活動履歴（新しい順）',
+    period: '{from}–{to}',
+    relatedPublication: '関連論文',
+    coauthorAward: {
+      afterRecipient: '氏が',
+      beforeAward: '「',
+      afterAward: '」を受賞',
+    },
   },
   actions: {
     seeAllPublications: '論文をすべて見る',
@@ -117,6 +131,7 @@ const ja = {
   newsKinds: {
     paper: '論文',
     award: '受賞',
+    'coauthor-award': '共著者の受賞',
     grant: '研究費',
     hpc: '計算資源',
     fellowship: 'フェローシップ',
@@ -171,7 +186,7 @@ const en: UiStrings = {
     cv: 'CV',
   },
   sections: {
-    activity: 'Recent activity',
+    activity: 'Activity timeline',
     highlights: 'Highlights',
     research: 'Research',
     keywords: 'Keywords',
@@ -228,6 +243,7 @@ const en: UiStrings = {
     mainNav: 'Site navigation',
     contents: 'On this page',
     footerNav: 'Footer navigation',
+    menu: 'Menu',
   },
   meta: {
     publications: 'Publications by {name}, searchable by title, author, venue, and type.',
@@ -237,6 +253,7 @@ const en: UiStrings = {
     publications: '{n} total',
     matching: '{n} of {m} match',
     awards: '{n} total',
+    activities: '{n} entries',
     older: '{n}',
   },
   highlights: {
@@ -244,6 +261,18 @@ const en: UiStrings = {
     firstAuthor: 'First-author works',
     principalInvestigator: 'Projects as PI',
     awards: 'Awards',
+  },
+  activity: {
+    description: 'Publications, presentations, awards, and research support, from newest to oldest.',
+    scrollHint: 'Scroll within the panel to browse the complete history.',
+    regionLabel: 'Activity timeline, newest first',
+    period: '{from}–{to}',
+    relatedPublication: 'Related publication',
+    coauthorAward: {
+      afterRecipient: ' received ',
+      beforeAward: '',
+      afterAward: '',
+    },
   },
   actions: {
     seeAllPublications: 'See all publications',
@@ -266,6 +295,7 @@ const en: UiStrings = {
   newsKinds: {
     paper: 'Paper',
     award: 'Award',
+    'coauthor-award': 'Coauthor award',
     grant: 'Grant',
     hpc: 'Compute',
     fellowship: 'Fellowship',

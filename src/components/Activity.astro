@@ -1,75 +1,181 @@
 ---
 import type { Locale } from '~/data/types';
+import type { ActivityItem } from '~/data/recent';
 import { buildActivity } from '~/data/recent';
 import { isPdfUrl } from '~/data/util';
-import { t } from '~/i18n/ui';
-import { formatEventRange } from '~/i18n/format';
-import Section from './Section.astro';
+import { t, fmt } from '~/i18n/ui';
+import { localizePath } from '~/i18n/locale';
+import { formatYearMonth } from '~/i18n/format';
 
 type Props = { locale: Locale };
 const { locale } = Astro.props;
 const s = t(locale);
 
-const items = buildActivity(locale, 6);
+const items = buildActivity(locale);
+const groups: { year: string; items: ActivityItem[] }[] = [];
+for (const item of items) {
+  const year = item.date.slice(0, 4);
+  const current = groups.at(-1);
+  if (current?.year === year) current.items.push(item);
+  else groups.push({ year, items: [item] });
+}
 
-// Build-time "is this still ahead of us?" check, in JST to match the inline
-// script below — CI runners are UTC, and a UTC cutoff keeps the "upcoming"
-// badge on an event that already finished in Japan. The script re-evaluates
-// this in the browser, so the badge stays correct on a site that hasn't been
-// rebuilt in a while.
+const newestYear = groups[0]?.year ?? '';
+const oldestYear = groups.at(-1)?.year ?? '';
+const count = fmt(s.counts.activities, { n: items.length });
+const period = fmt(s.activity.period, { from: oldestYear, to: newestYear });
+const publications = localizePath('/publications/', locale);
+
+// Build-time check in JST. The small browser script below re-evaluates it so
+// a static deployment does not leave an expired event marked as upcoming.
 const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Tokyo' });
 ---
 
 {
   items.length > 0 && (
-    <Section id="activity" title={s.sections.activity}>
-      <ol class="divided">
-        {items.map((item) => {
-          const until = item.endDate ?? item.date;
-          const upcoming = until >= today;
-          return (
-            <li class="entry" data-activity-item data-until={until}>
-              <p class="entry-date">
-                <time datetime={item.date}>
-                  {formatEventRange(item.display, item.endDate, locale)}
-                </time>
-              </p>
-              <div class="min-w-0">
-                <p class="tag">
-                  {s.newsKinds[item.kind]}
-                  <span data-upcoming-badge hidden={!upcoming}>
-                    <span aria-hidden="true"> · </span>
-                    <span class="tag-accent">{s.labels.upcoming}</span>
-                  </span>
-                </p>
-                <p class="mt-0.5 leading-snug font-medium">
-                  {item.href ? (
-                    <a
-                      href={item.href}
-                      class="link"
-                      target={item.external ? '_blank' : undefined}
-                      rel={item.external ? 'noopener noreferrer' : undefined}
-                      data-astro-prefetch={isPdfUrl(item.href) ? 'false' : undefined}
-                    >
-                      {item.title}
-                      {item.external && <span class="sr-only">{s.labels.newTab}</span>}
-                    </a>
-                  ) : (
-                    item.title
-                  )}
-                </p>
-                {item.detail && <p class="mt-1 text-sm text-muted">{item.detail}</p>}
-              </div>
-            </li>
-          );
-        })}
-      </ol>
-    </Section>
+    <section id="activity" class="activity-shell border-t hairline py-10 md:py-14" aria-labelledby="activity-heading">
+      <div class="container-home lg:grid lg:grid-cols-[17rem_minmax(0,1fr)] lg:gap-10 xl:gap-14">
+        <header>
+          <h2 id="activity-heading" class="text-[1.375rem] leading-snug font-semibold tracking-tight md:text-2xl">
+            {s.sections.activity}
+          </h2>
+          <p class="mt-2 text-sm font-medium tabular-nums">
+            {count}
+            <span class="mx-1.5 text-[var(--border-strong)]" aria-hidden="true">·</span>
+            {period}
+          </p>
+          <p class="mt-4 text-[0.9375rem] leading-relaxed text-muted">{s.activity.description}</p>
+          <p class="mt-3 flex gap-2 text-sm leading-relaxed text-muted">
+            <span aria-hidden="true">↓</span>
+            <span>{s.activity.scrollHint}</span>
+          </p>
+          <p class="mt-6">
+            <a href={publications} class="btn">{s.actions.seeAllPublications}</a>
+          </p>
+        </header>
+
+        <div class="activity-frame mt-7 lg:mt-0">
+          <div
+            class="activity-scroll"
+            role="region"
+            tabindex="0"
+            aria-label={s.activity.regionLabel}
+          >
+            {groups.map((group) => (
+              <section class="activity-year" aria-labelledby={`activity-year-${group.year}`}>
+                <h3 id={`activity-year-${group.year}`} class="activity-year-heading">
+                  <span>{group.year}</span>
+                  <span class="text-xs font-normal text-muted tabular-nums" aria-hidden="true">{group.items.length}</span>
+                  <span class="sr-only">{fmt(s.counts.activities, { n: group.items.length })}</span>
+                </h3>
+                <ol class="activity-list">
+                  {group.items.map((item) => {
+                    const until = item.endDate ?? item.date;
+                    const upcoming = until >= today;
+                    const award = item.coauthorAward;
+
+                    return (
+                      <li class="activity-row" data-activity-item data-until={until}>
+                        <p class="activity-date">
+                          <time datetime={item.display}>
+                            {formatYearMonth(item.display, locale)}
+                          </time>
+                          {item.endDate && (
+                            <>
+                              <span aria-hidden="true"> – </span>
+                              <time datetime={item.endDate}>{formatYearMonth(item.endDate, locale)}</time>
+                            </>
+                          )}
+                        </p>
+                        <div class="activity-body min-w-0">
+                          <p class:list={['tag', item.kind === 'coauthor-award' && 'tag-accent']}>
+                            {s.newsKinds[item.kind]}
+                            <span data-upcoming-badge hidden={!upcoming}>
+                              <span aria-hidden="true"> · </span>
+                              <span class="tag-accent">{s.labels.upcoming}</span>
+                            </span>
+                          </p>
+
+                          {award ? (
+                            <>
+                              <p class="mt-1 leading-snug font-medium">
+                                {award.recipientUrl ? (
+                                  <a
+                                    href={award.recipientUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="link-title"
+                                  >
+                                    {award.recipient}
+                                    <span class="sr-only">{s.labels.newTab}</span>
+                                  </a>
+                                ) : (
+                                  <span>{award.recipient}</span>
+                                )}
+                                {s.activity.coauthorAward.afterRecipient}
+                                {award.url ? (
+                                  <a
+                                    href={award.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="link-title"
+                                  >
+                                    {s.activity.coauthorAward.beforeAward}{award.name}{s.activity.coauthorAward.afterAward}
+                                    <span class="sr-only">{s.labels.newTab}</span>
+                                  </a>
+                                ) : (
+                                  <span>{s.activity.coauthorAward.beforeAward}{award.name}{s.activity.coauthorAward.afterAward}</span>
+                                )}
+                              </p>
+                              <p class="mt-1.5 text-sm leading-relaxed">
+                                <span class="text-muted">{s.activity.relatedPublication}: </span>
+                                <a
+                                  href={award.publicationHref}
+                                  class="link-title"
+                                  lang={award.publicationTitleLang}
+                                >
+                                  {award.publicationTitle}
+                                </a>
+                              </p>
+                              {item.detail && <p class="mt-1 text-xs leading-relaxed text-muted">{item.detail}</p>}
+                            </>
+                          ) : (
+                            <>
+                              <p class="mt-1 leading-snug font-medium">
+                                {item.href ? (
+                                  <a
+                                    href={item.href}
+                                    class="link-title"
+                                    lang={item.titleLang}
+                                    target={item.external ? '_blank' : undefined}
+                                    rel={item.external ? 'noopener noreferrer' : undefined}
+                                    data-astro-prefetch={isPdfUrl(item.href) ? 'false' : undefined}
+                                  >
+                                    {item.title}
+                                    {item.external && <span class="sr-only">{s.labels.newTab}</span>}
+                                  </a>
+                                ) : (
+                                  <span lang={item.titleLang}>{item.title}</span>
+                                )}
+                              </p>
+                              {item.detail && <p class="mt-1 text-sm leading-relaxed text-muted">{item.detail}</p>}
+                            </>
+                          )}
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ol>
+              </section>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
   )
 }
 
 <script>
-  // Drop the "upcoming" badge once the event has actually finished (JST).
   const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Tokyo' });
 
   for (const row of document.querySelectorAll<HTMLElement>('[data-activity-item]')) {
@@ -79,3 +185,125 @@ const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Tokyo' })
     badge.hidden = !until || until < today;
   }
 </script>
+
+<style>
+  .activity-shell {
+    background: var(--bg-soft);
+  }
+
+  .activity-frame {
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 0.875rem;
+    background: var(--bg);
+    box-shadow: 0 1px 2px color-mix(in oklch, var(--fg) 5%, transparent);
+  }
+
+  .activity-scroll {
+    max-block-size: min(70svh, 42rem);
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+  }
+
+  .activity-scroll:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -3px;
+    border-radius: 0.75rem;
+  }
+
+  .activity-year-heading {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--border);
+    background: color-mix(in oklch, var(--bg) 94%, transparent);
+    backdrop-filter: blur(8px);
+    font-size: 0.9375rem;
+    font-weight: 650;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .activity-year + .activity-year .activity-year-heading {
+    border-top: 1px solid var(--border);
+  }
+
+  .activity-list {
+    padding-inline: 1rem;
+  }
+
+  .activity-row {
+    display: grid;
+    gap: 0.35rem 1.25rem;
+    padding-block: 1rem;
+  }
+
+  .activity-row + .activity-row {
+    border-top: 1px solid var(--border);
+  }
+
+  .activity-date {
+    color: var(--fg-muted);
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.6;
+  }
+
+  .activity-body {
+    position: relative;
+    border-left: 1px solid var(--border-strong);
+    padding-left: 1rem;
+  }
+
+  .activity-body::before {
+    position: absolute;
+    top: 0.35rem;
+    left: -0.27rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    border: 2px solid var(--bg);
+    border-radius: 9999px;
+    background: var(--border-strong);
+    content: '';
+  }
+
+  @media (min-width: 40rem) {
+    .activity-list {
+      padding-inline: 1.25rem;
+    }
+
+    .activity-year-heading {
+      padding-inline: 1.25rem;
+    }
+
+    .activity-row {
+      grid-template-columns: 8.75rem minmax(0, 1fr);
+    }
+
+    .activity-date {
+      padding-top: 0.15rem;
+    }
+  }
+
+  @media print {
+    .activity-scroll {
+      max-block-size: none;
+      overflow: visible;
+    }
+
+    .activity-year-heading {
+      position: static;
+      background: transparent;
+      backdrop-filter: none;
+    }
+
+    .activity-frame {
+      border: 0;
+      box-shadow: none;
+    }
+  }
+</style>

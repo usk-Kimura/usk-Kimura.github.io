@@ -12,7 +12,7 @@ const { locale } = Astro.props;
 const s = t(locale);
 ---
 
-<Section id="awards" title={s.sections.awards} meta={fmt(s.counts.awards, { n: awards.length })}>
+<Section id="awards" title={s.sections.awards} meta={fmt(s.counts.awards, { n: awards.length })} home>
   <ol class="divided">
     {
       awards.map((award) => (

@@ -18,7 +18,7 @@ export const ko: UiStrings = {
     cv: '이력서',
   },
   sections: {
-    activity: '최근 활동',
+    activity: '활동 이력',
     highlights: '주요 실적',
     research: '연구 주제',
     keywords: '키워드',
@@ -75,6 +75,7 @@ export const ko: UiStrings = {
     mainNav: '사이트 내비게이션',
     contents: '이 페이지의 목차',
     footerNav: '푸터 내비게이션',
+    menu: '목차',
   },
   meta: {
     publications: '{name}의 논문 목록. 제목, 저자, 게재처, 유형으로 검색할 수 있습니다.',
@@ -84,6 +85,7 @@ export const ko: UiStrings = {
     publications: '총 {n}편',
     matching: '{m}편 중 {n}편 일치',
     awards: '총 {n}건',
+    activities: '총 {n}건',
     older: '{n}편',
   },
   highlights: {
@@ -91,6 +93,18 @@ export const ko: UiStrings = {
     firstAuthor: '제1저자 연구 실적',
     principalInvestigator: '연구대표 과제',
     awards: '수상',
+  },
+  activity: {
+    description: '논문, 발표, 수상, 연구 지원을 최신순으로 정리했습니다.',
+    scrollHint: '상자 안을 세로로 스크롤하면 지금까지의 활동을 모두 볼 수 있습니다.',
+    regionLabel: '활동 이력(최신순)',
+    period: '{from}–{to}',
+    relatedPublication: '관련 논문',
+    coauthorAward: {
+      afterRecipient: ' 님이 ',
+      beforeAward: '‘',
+      afterAward: '’ 수상',
+    },
   },
   actions: {
     seeAllPublications: '논문 전체 보기',
@@ -113,6 +127,7 @@ export const ko: UiStrings = {
   newsKinds: {
     paper: '논문',
     award: '수상',
+    'coauthor-award': '공동 저자 수상',
     grant: '연구비',
     hpc: '계산 자원',
     fellowship: '펠로십',
