@@ -33,9 +33,10 @@ export type NewsItem = {
 };
 
 /**
- * Manually-curated activity items. The "Recent" block on the home page
- * aggregates this with publications/awards/grants and shows the most recent
- * few entries.
+ * Manually-curated activity items. The activity timeline aggregates this with
+ * publications, awards, and research support. Each localized `title` here must
+ * be a complete sentence that says what happened; generated records receive
+ * their localized verb phrase in `recent.ts` instead.
  *
  * Examples (uncomment and edit as needed):
  *
@@ -74,10 +75,10 @@ export const news: NewsItem[] = [
     date: '2026-07-31',
     kind: 'grant',
     title: {
-      ja: '科研費「研究活動スタート支援」に採択されました',
-      en: 'Awarded a JSPS KAKENHI Grant-in-Aid for Research Activity Start-up',
-      zh: '获批日本学术振兴会 科学研究费补助事业（KAKENHI）“研究活动启动支援”项目',
-      ko: '일본학술진흥회 과학연구비조성사업(KAKENHI) “연구활동 스타트업 지원”에 선정되었습니다',
+      ja: '科研費「研究活動スタート支援」に採択されました。',
+      en: 'I received a JSPS KAKENHI Grant-in-Aid for Research Activity Start-up.',
+      zh: '获批日本学术振兴会 科学研究费补助事业（KAKENHI）“研究活动启动支援”项目。',
+      ko: '일본학술진흥회 과학연구비조성사업(KAKENHI) “연구활동 스타트업 지원”에 선정되었습니다.',
     },
     detail: {
       ja: '課題番号 26K25590「未十分学習ドメインへの言語モデル軽量適応に向けた学習時更新資源配分制御の研究」（研究代表者・2026–2027年度）',
@@ -92,10 +93,10 @@ export const news: NewsItem[] = [
     endDate: '2026-09-16',
     kind: 'presentation',
     title: {
-      ja: '「ByteTop-k OPD：バイト列表現に基づく語彙の異なる LLM 間のオンポリシ蒸留」を発表予定',
-      en: 'Presenting “ByteTop-k OPD: On-Policy Distillation between LLMs with Different Vocabularies Based on Byte-String Representations”',
-      zh: '即将报告《ByteTop-k OPD：基于字节串表示的不同词表 LLM 之间的同策略蒸馏》',
-      ko: '“ByteTop-k OPD: 바이트열 표현에 기반한 어휘가 다른 LLM 간 온폴리시 증류”를 발표할 예정입니다',
+      ja: '「ByteTop-k OPD：バイト列表現に基づく語彙の異なる LLM 間のオンポリシ蒸留」を発表する予定です。',
+      en: 'I will present “ByteTop-k OPD: On-Policy Distillation between LLMs with Different Vocabularies Based on Byte-String Representations”.',
+      zh: '即将报告《ByteTop-k OPD：基于字节串表示的不同词表 LLM 之间的同策略蒸馏》。',
+      ko: '“ByteTop-k OPD: 바이트열 표현에 기반한 어휘가 다른 LLM 간 온폴리시 증류”를 발표할 예정입니다.',
     },
     detail: {
       ja: '情報処理学会 第269回自然言語処理研究発表会｜帯広＋オンライン',
@@ -123,10 +124,10 @@ export const news: NewsItem[] = [
     // link to the poster.
     kind: 'award',
     title: {
-      ja: '「異なる語彙を持つLLM間のOn-Policy Distillation」を発表し、スポンサー賞（株式会社ELYZA）を受賞しました',
-      en: 'Presented “On-Policy Distillation between LLMs with Different Vocabularies” and received the Sponsor Award (ELYZA, Inc.)',
-      zh: '报告了《具有不同词表的 LLM 之间的 On-Policy Distillation》，并荣获赞助商奖（ELYZA 股份有限公司）',
-      ko: '“서로 다른 어휘를 가진 LLM 간의 On-Policy Distillation”을 발표하고 스폰서상(주식회사 ELYZA)을 수상했습니다',
+      ja: '「異なる語彙を持つLLM間のOn-Policy Distillation」を発表し、スポンサー賞（株式会社ELYZA）を受賞しました。',
+      en: 'I presented “On-Policy Distillation between LLMs with Different Vocabularies” and received the Sponsor Award (ELYZA, Inc.).',
+      zh: '报告了《具有不同词表的 LLM 之间的 On-Policy Distillation》，并荣获赞助商奖（ELYZA 股份有限公司）。',
+      ko: '“서로 다른 어휘를 가진 LLM 간의 On-Policy Distillation”을 발표하고 스폰서상(주식회사 ELYZA)을 수상했습니다.',
     },
     detail: {
       ja: '第21回言語処理若手シンポジウム（YANS2026）｜仙台国際センター｜リンク先は発表ポスター（PDF）',

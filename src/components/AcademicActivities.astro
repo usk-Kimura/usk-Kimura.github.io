@@ -1,0 +1,90 @@
+---
+import type { Locale } from '~/data/types';
+import { memberships, services } from '~/data';
+import { t } from '~/i18n/ui';
+import { L } from '~/i18n/locale';
+import { formatRangeParts, isoYearMonth } from '~/i18n/format';
+import Section from './Section.astro';
+
+type Props = { locale: Locale };
+const { locale } = Astro.props;
+const s = t(locale);
+
+function range(start: string, end?: string) {
+  return formatRangeParts(start, end, locale, s.labels.present);
+}
+---
+
+<Section id="academic-activities" title={s.sections.academicActivities} home>
+  <section aria-labelledby="academic-service-heading">
+    <h3 id="academic-service-heading" class="text-sm font-semibold text-muted">
+      {s.sections.services}
+    </h3>
+    <ol class="divided mt-2">
+      {
+        services.map((service) => {
+          const parts = range(service.start, service.end);
+          const singleDate = service.end === service.start;
+          return (
+            <li class="entry">
+              <p class="entry-date">
+                <time datetime={isoYearMonth(service.start)}>{parts.start}</time>
+                {!singleDate && (
+                  <>
+                    <span aria-hidden="true"> – </span>
+                    {service.end ? (
+                      <time datetime={isoYearMonth(service.end)}>{parts.end}</time>
+                    ) : (
+                      <span>{parts.end}</span>
+                    )}
+                  </>
+                )}
+              </p>
+              <div class="min-w-0">
+                <p class="leading-snug font-medium">{L(service.title, locale)}</p>
+                <p class="mt-0.5 text-sm text-muted">
+                  {L(service.kind, locale)}
+                  {service.organization && (
+                    <>
+                      <span aria-hidden="true"> · </span>
+                      {L(service.organization, locale)}
+                    </>
+                  )}
+                </p>
+              </div>
+            </li>
+          );
+        })
+      }
+    </ol>
+  </section>
+
+  {
+    memberships.length > 0 && (
+      <section class="mt-9" aria-labelledby="memberships-heading">
+        <h3 id="memberships-heading" class="text-sm font-semibold text-muted">
+          {s.sections.memberships}
+        </h3>
+        <ol class="divided mt-2">
+          {memberships.map((membership) => {
+            const parts = range(membership.start, membership.end);
+            return (
+              <li class="entry">
+                <p class="entry-date">
+                  <time datetime={isoYearMonth(membership.start)}>{parts.start}</time>
+                  <span aria-hidden="true"> – </span>
+                  {membership.end ? (
+                    <time datetime={isoYearMonth(membership.end)}>{parts.end}</time>
+                  ) : (
+                    <span>{parts.end}</span>
+                  )}
+                </p>
+                <p class="leading-snug font-medium">{L(membership.organization, locale)}</p>
+              </li>
+            );
+          })}
+        </ol>
+      </section>
+    )
+  }
+</Section>

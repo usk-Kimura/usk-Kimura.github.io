@@ -28,7 +28,8 @@ export const zh: UiStrings = {
     awards: '获奖',
     career: '经历',
     education: '学历',
-    grants: '科研经费与计算资源',
+    grants: '研究支持',
+    academicActivities: '学术活动',
     services: '学术服务',
     memberships: '学会会员',
     contact: '联系方式',
@@ -41,6 +42,7 @@ export const zh: UiStrings = {
     recipients: '获奖人',
     recipient: '获奖人',
     coauthorAward: '合著者获奖',
+    publicationAward: '获奖',
     projectNumber: '课题编号',
     amount: '经费',
     role: '角色',
@@ -79,7 +81,7 @@ export const zh: UiStrings = {
   },
   meta: {
     publications: '{name} 的论文列表，可按标题、作者、期刊会议与类型检索。',
-    cv: '{name} 的简历：学历、经历、获奖、论文与科研经费一览。',
+    cv: '{name} 的简历：学历、经历、获奖、论文与研究支持一览。',
   },
   counts: {
     publications: '共 {n} 篇',
@@ -91,7 +93,7 @@ export const zh: UiStrings = {
   highlights: {
     peerReviewed: '同行评审论文',
     firstAuthor: '第一作者成果',
-    principalInvestigator: '主持课题',
+    kakenhiPrincipalInvestigator: '科研费（项目负责人）',
     awards: '获奖',
   },
   activity: {
@@ -103,7 +105,14 @@ export const zh: UiStrings = {
     coauthorAward: {
       afterRecipient: ' 获得',
       beforeAward: '“',
-      afterAward: '”',
+      afterAward: '”。',
+    },
+    statements: {
+      publication: { before: '研究成果《', after: '》已发表。' },
+      award: { before: '获得了“', after: '”。' },
+      grant: { before: '研究课题《', after: '》获批科研费。' },
+      hpc: { before: '研究课题《', after: '》入选计算资源与共同利用项目。' },
+      fellowship: { before: '入选“', after: '”博士生研究支持项目。' },
     },
   },
   actions: {
@@ -126,11 +135,11 @@ export const zh: UiStrings = {
   },
   newsKinds: {
     paper: '论文',
-    award: '获奖',
+    award: '本人获奖',
     'coauthor-award': '合著者获奖',
-    grant: '科研经费',
-    hpc: '计算资源',
-    fellowship: '研究资助',
+    grant: '科研费',
+    hpc: '计算资源与共同利用',
+    fellowship: '博士生研究支持',
     presentation: '报告',
     talk: '演讲',
     media: '媒体',
@@ -138,9 +147,9 @@ export const zh: UiStrings = {
     misc: '通知',
   },
   grantCategories: {
-    funding: '科研经费',
-    hpc: '计算资源',
-    fellowship: '研究资助',
+    funding: '科研费（项目负责人）',
+    hpc: '计算资源与共同利用',
+    fellowship: '博士生研究支持（校内选拔）',
   },
   opportunities: {
     heading: '正在寻找下一份职位',

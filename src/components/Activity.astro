@@ -73,6 +73,7 @@ const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Tokyo' })
                     const until = item.endDate ?? item.date;
                     const upcoming = until >= today;
                     const award = item.coauthorAward;
+                    const statement = item.action ? s.activity.statements[item.action] : undefined;
 
                     return (
                       <li class="activity-row" data-activity-item data-until={until}>
@@ -142,6 +143,7 @@ const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Tokyo' })
                           ) : (
                             <>
                               <p class="mt-1 leading-snug font-medium">
+                                {statement?.before}
                                 {item.href ? (
                                   <a
                                     href={item.href}
@@ -157,6 +159,7 @@ const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Tokyo' })
                                 ) : (
                                   <span lang={item.titleLang}>{item.title}</span>
                                 )}
+                                {statement?.after}
                               </p>
                               {item.detail && <p class="mt-1 text-sm leading-relaxed text-muted">{item.detail}</p>}
                             </>

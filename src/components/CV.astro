@@ -6,11 +6,13 @@ import {
   education,
   awards,
   publications,
+  grantCategoryOrder,
   grants,
   memberships,
   services,
 } from '~/data';
 import { highlightSelf } from '~/data/util';
+import { publicationAwardsFor } from '~/data/relations';
 import { t } from '~/i18n/ui';
 import { L, localizePath } from '~/i18n/locale';
 import { formatAmountJpy, formatRangeParts, formatYearMonth, isoYearMonth } from '~/i18n/format';
@@ -35,6 +37,11 @@ const pubsByType = TYPE_ORDER.map((type) => ({
   type,
   items: sortedPubs.filter((p) => p.type === type),
 })).filter((g) => g.items.length > 0);
+
+const grantsByCategory = grantCategoryOrder.map((category) => ({
+  category,
+  items: grants.filter((grant) => grant.category === category),
+})).filter((group) => group.items.length > 0);
 
 function range(start: string, end?: string) {
   return formatRangeParts(start, end, locale, s.labels.present);
@@ -199,6 +206,7 @@ const reading = L(profile.reading, locale);
           <h3>{s.pubTypes[group.type]}</h3>
           <ol class="cv-pubs">
             {group.items.map((pub) => {
+              const publicationAwards = publicationAwardsFor(pub);
               const titleLang: SourceLocale =
                 pub.titleLang ?? (CJK.test(pub.title) ? 'ja' : 'en');
               const useVenueEn = locale !== 'ja' && Boolean(pub.venueEn);
@@ -229,6 +237,19 @@ const reading = L(profile.reading, locale);
                       {pub.flags.map((f) => ` [${s.flags[f]}]`).join('')}
                     </span>
                   )}
+                  {publicationAwards.map((award) => (
+                    <Fragment>
+                      <br />
+                      <span class="cv-note">
+                        [{s.labels.publicationAward}:{' '}
+                        {award.link ? (
+                          <a href={award.link.href}>{L(award.name, locale)}</a>
+                        ) : (
+                          L(award.name, locale)
+                        )}]
+                      </span>
+                    </Fragment>
+                  ))}
                   {pub.coauthorAwards?.map((award) => (
                     <Fragment>
                       <br />
@@ -259,31 +280,38 @@ const reading = L(profile.reading, locale);
 
   <section class="cv-section">
     <h2>{s.sections.grants}</h2>
-    <ol class="cv-list">
-      {
-        grants.map((g) => {
-          const parts = range(g.start, g.end);
-          const facts = [
-            g.number ? `${s.labels.projectNumber} ${g.number}` : null,
-            g.amountJpy ? `${s.labels.amount} ${formatAmountJpy(g.amountJpy, locale)}` : null,
-            g.role ? L(g.role, locale) : null,
-          ].filter(Boolean) as string[];
-          return (
-            <li>
-              <span class="cv-date">
-                {parts.start} – {parts.end}
-              </span>
-              <span>
-                <strong>{L(g.title, locale)}</strong>
-                <br />
-                <span class="cv-note">{L(g.funder, locale)}</span>
-                {facts.length > 0 && <span class="cv-note"> [{facts.join(' / ')}]</span>}
-              </span>
-            </li>
-          );
-        })
-      }
-    </ol>
+    {
+      grantsByCategory.map((group) => (
+        <div class="cv-support-group">
+          <h3>
+            {s.grantCategories[group.category]} <span class="cv-note">({group.items.length})</span>
+          </h3>
+          <ol class="cv-list">
+            {group.items.map((g) => {
+              const parts = range(g.start, g.end);
+              const facts = [
+                g.number ? `${s.labels.projectNumber} ${g.number}` : null,
+                g.amountJpy ? `${s.labels.amount} ${formatAmountJpy(g.amountJpy, locale)}` : null,
+                g.role ? L(g.role, locale) : null,
+              ].filter(Boolean) as string[];
+              return (
+                <li>
+                  <span class="cv-date">
+                    {parts.start} – {parts.end}
+                  </span>
+                  <span>
+                    <strong>{L(g.title, locale)}</strong>
+                    <br />
+                    <span class="cv-note">{L(g.funder, locale)}</span>
+                    {facts.length > 0 && <span class="cv-note"> [{facts.join(' / ')}]</span>}
+                  </span>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+      ))
+    }
   </section>
 
   <section class="cv-section">
@@ -437,7 +465,8 @@ const reading = L(profile.reading, locale);
     border-bottom: 1px solid var(--border);
     break-after: avoid-page;
   }
-  .cv-pub-group > h3 {
+  .cv-pub-group > h3,
+  .cv-support-group > h3 {
     margin: 1rem 0 0.4rem;
     font-size: 0.8125rem;
     font-weight: 600;
@@ -453,7 +482,8 @@ const reading = L(profile.reading, locale);
   }
   .cv-list > li,
   .cv-pubs > li,
-  .cv-pub-group {
+  .cv-pub-group,
+  .cv-support-group {
     break-inside: avoid-page;
   }
   .cv-list > li {

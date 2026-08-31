@@ -31,7 +31,8 @@ const ja = {
     awards: '受賞',
     career: '経歴',
     education: '学歴',
-    grants: '研究費・計算資源',
+    grants: '研究支援',
+    academicActivities: '学術活動',
     services: '学術貢献',
     memberships: '所属学会',
     contact: '連絡先',
@@ -44,6 +45,7 @@ const ja = {
     recipients: '受賞者',
     recipient: '受賞者',
     coauthorAward: '共著者の受賞',
+    publicationAward: '受賞',
     projectNumber: '課題番号',
     amount: '配分額',
     role: '役割',
@@ -83,7 +85,7 @@ const ja = {
   /** `<meta name="description">` per page. `{name}` is substituted. */
   meta: {
     publications: '{name} の論文一覧。タイトル・著者・掲載先・種別で検索できます。',
-    cv: '{name} の履歴書。学歴・経歴・受賞・論文・研究費の一覧。',
+    cv: '{name} の履歴書。学歴・経歴・受賞・論文・研究支援の一覧。',
   },
   counts: {
     publications: '全 {n} 件',
@@ -95,7 +97,7 @@ const ja = {
   highlights: {
     peerReviewed: '査読付き論文',
     firstAuthor: '筆頭著者業績',
-    principalInvestigator: '研究代表課題',
+    kakenhiPrincipalInvestigator: '科研費（研究代表者）',
     awards: '受賞実績',
   },
   activity: {
@@ -107,7 +109,14 @@ const ja = {
     coauthorAward: {
       afterRecipient: '氏が',
       beforeAward: '「',
-      afterAward: '」を受賞',
+      afterAward: '」を受賞しました。',
+    },
+    statements: {
+      publication: { before: '研究成果「', after: '」を発表しました。' },
+      award: { before: '「', after: '」を受賞しました。' },
+      grant: { before: '研究課題「', after: '」が科研費に採択されました。' },
+      hpc: { before: '研究課題「', after: '」が計算資源・共同利用課題に採択されました。' },
+      fellowship: { before: '「', after: '」の支援対象に選ばれました。' },
     },
   },
   actions: {
@@ -130,11 +139,11 @@ const ja = {
   },
   newsKinds: {
     paper: '論文',
-    award: '受賞',
+    award: '本人の受賞',
     'coauthor-award': '共著者の受賞',
-    grant: '研究費',
-    hpc: '計算資源',
-    fellowship: 'フェローシップ',
+    grant: '科研費',
+    hpc: '計算資源・共同利用',
+    fellowship: '博士課程支援',
     presentation: '発表',
     talk: '講演',
     media: 'メディア',
@@ -142,9 +151,9 @@ const ja = {
     misc: 'お知らせ',
   },
   grantCategories: {
-    funding: '研究費',
-    hpc: '計算資源',
-    fellowship: 'フェローシップ',
+    funding: '科研費（研究代表者）',
+    hpc: '計算資源・共同利用',
+    fellowship: '博士課程研究支援（学内選抜）',
   },
   opportunities: {
     heading: '次のポストを探しています',
@@ -181,7 +190,7 @@ const en: UiStrings = {
     publications: 'Publications',
     awards: 'Awards',
     career: 'Career',
-    grants: 'Funding',
+    grants: 'Research support',
     contact: 'Contact',
     cv: 'CV',
   },
@@ -196,7 +205,8 @@ const en: UiStrings = {
     awards: 'Awards',
     career: 'Career',
     education: 'Education',
-    grants: 'Funding & compute',
+    grants: 'Research support',
+    academicActivities: 'Academic activities',
     services: 'Academic service',
     memberships: 'Memberships',
     contact: 'Contact',
@@ -209,6 +219,7 @@ const en: UiStrings = {
     recipients: 'Recipients',
     recipient: 'Recipient',
     coauthorAward: 'Coauthor award',
+    publicationAward: 'Award',
     projectNumber: 'Project no.',
     amount: 'Award',
     role: 'Role',
@@ -247,7 +258,7 @@ const en: UiStrings = {
   },
   meta: {
     publications: 'Publications by {name}, searchable by title, author, venue, and type.',
-    cv: 'Curriculum vitae of {name}: education, career, awards, publications, and funding.',
+    cv: 'Curriculum vitae of {name}: education, career, awards, publications, and research support.',
   },
   counts: {
     publications: '{n} total',
@@ -259,7 +270,7 @@ const en: UiStrings = {
   highlights: {
     peerReviewed: 'Peer-reviewed papers',
     firstAuthor: 'First-author works',
-    principalInvestigator: 'Projects as PI',
+    kakenhiPrincipalInvestigator: 'JSPS KAKENHI (PI)',
     awards: 'Awards',
   },
   activity: {
@@ -270,8 +281,15 @@ const en: UiStrings = {
     relatedPublication: 'Related publication',
     coauthorAward: {
       afterRecipient: ' received ',
-      beforeAward: '',
-      afterAward: '',
+      beforeAward: 'the ',
+      afterAward: '.',
+    },
+    statements: {
+      publication: { before: 'The research output “', after: '” was published.' },
+      award: { before: 'I received the “', after: '”.' },
+      grant: { before: 'The project “', after: '” received JSPS KAKENHI funding.' },
+      hpc: { before: 'The project “', after: '” was selected for shared computing support.' },
+      fellowship: { before: 'I was selected for doctoral research support through “', after: '”.' },
     },
   },
   actions: {
@@ -294,11 +312,11 @@ const en: UiStrings = {
   },
   newsKinds: {
     paper: 'Paper',
-    award: 'Award',
+    award: 'Personal award',
     'coauthor-award': 'Coauthor award',
-    grant: 'Grant',
-    hpc: 'Compute',
-    fellowship: 'Fellowship',
+    grant: 'KAKENHI',
+    hpc: 'Compute & shared use',
+    fellowship: 'Doctoral support',
     presentation: 'Presentation',
     talk: 'Talk',
     media: 'Media',
@@ -306,9 +324,9 @@ const en: UiStrings = {
     misc: 'Update',
   },
   grantCategories: {
-    funding: 'Grant',
-    hpc: 'Compute',
-    fellowship: 'Fellowship',
+    funding: 'JSPS KAKENHI (PI)',
+    hpc: 'Compute & shared-use programs',
+    fellowship: 'Doctoral research support (internal selection)',
   },
   opportunities: {
     heading: 'Looking for my next position',

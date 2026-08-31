@@ -1,0 +1,38 @@
+---
+import type { AwardEntry, Locale } from '~/data/types';
+import { L } from '~/i18n/locale';
+import { t } from '~/i18n/ui';
+
+type Props = {
+  awards: AwardEntry[];
+  locale: Locale;
+};
+
+const { awards, locale } = Astro.props;
+const s = t(locale);
+---
+
+<ul class="space-y-1" aria-label={s.labels.publicationAward}>
+  {
+    awards.map((award) => (
+      <li class="text-sm leading-relaxed">
+        <span class="tag tag-accent">{s.labels.publicationAward}</span>
+        <span aria-hidden="true"> · </span>
+        {award.link ? (
+          <a
+            href={award.link.href}
+            target="_blank"
+            rel="noopener noreferrer external"
+            class="link"
+          >
+            {L(award.name, locale)}
+            <span aria-hidden="true"> ↗</span>
+            <span class="sr-only">{s.labels.newTab}</span>
+          </a>
+        ) : (
+          <span>{L(award.name, locale)}</span>
+        )}
+      </li>
+    ))
+  }
+</ul>

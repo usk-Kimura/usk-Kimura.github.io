@@ -10,11 +10,13 @@ import {
   highlightSelf,
 } from '~/data/util';
 import { breadcrumbJsonLd } from '~/data/jsonld';
+import { publicationAwardsFor } from '~/data/relations';
 import { t } from '~/i18n/ui';
 import { L, LO, localeMeta, localizePath } from '~/i18n/locale';
 import { formatYearMonth } from '~/i18n/format';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import CoauthorAwards from './CoauthorAwards.astro';
+import PublicationAwards from './PublicationAwards.astro';
 
 type Props = { pub: Publication; locale: Locale };
 const { pub, locale } = Astro.props;
@@ -44,6 +46,7 @@ const dateIso = pub.month
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
 const externalUrl = pub.url ?? (pub.doi ? `https://doi.org/${pub.doi}` : null);
+const publicationAwards = publicationAwardsFor(pub);
 const abstract = LO(pub.abstract, locale);
 // Abstracts are frequently English-only. Tag the element with the language the
 // text is actually in, not the page locale, so a Korean page reading an English
@@ -139,6 +142,12 @@ const pageDesc = abstract ?? `${pub.authors}. ${venueText}, ${dateLabel}.`;
         </ul>
       )
     }
+
+    {publicationAwards.length > 0 && (
+      <div class="mt-4 border-l-2 border-[var(--accent)] pl-3">
+        <PublicationAwards awards={publicationAwards} locale={locale} />
+      </div>
+    )}
 
     {pub.coauthorAwards && (
       <div class="mt-4 border-l-2 border-[var(--accent)] pl-3">

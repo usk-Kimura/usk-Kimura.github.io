@@ -88,6 +88,10 @@ export type AwardEntry = {
     href: string;
   };
   recipients: string;
+  /** Stable ID of the publication that this award directly recognizes.
+   *  Omitted for presentation, pitch, and other awards that are not attached
+   *  to a publication record. */
+  relatedPublicationId?: string;
 };
 
 export type PublicationType =
@@ -114,6 +118,9 @@ export type CoauthorAward = {
 };
 
 export type Publication = {
+  /** Stable relation key used when another record (for example an award)
+   *  points to this publication. This is separate from the generated URL slug. */
+  id?: string;
   /** Title rendered as published. Academic convention is to keep this as-is
    *  across languages so citations remain searchable. */
   title: string;
@@ -160,6 +167,8 @@ export type GrantEntry = {
   start: string;
   end: string;
   role?: LocalizedString;
+  /** Machine-readable role used for derived counts; display copy remains localized. */
+  roleCode?: 'principal-investigator';
   category: GrantCategory;
   /** Total award including indirect costs, in JPY. Rendered only if set. */
   amountJpy?: number;

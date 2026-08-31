@@ -10,6 +10,8 @@ export const stats = {
   peerReviewed: publications.filter((p) => p.flags?.includes('peer-reviewed')).length,
   international: publications.filter((p) => p.type === 'international-conference').length,
   hpcAllocations: grants.filter((g) => g.category === 'hpc').length,
-  principalInvestigator: grants.filter((g) => g.role?.en === 'Principal Investigator').length,
+  kakenhiPrincipalInvestigator: grants.filter(
+    (g) => g.category === 'funding' && g.roleCode === 'principal-investigator',
+  ).length,
   awards: awards.length,
 };

@@ -28,8 +28,9 @@ export const ko: UiStrings = {
     awards: '수상',
     career: '경력',
     education: '학력',
-    grants: '연구비·계산 자원',
-    services: '학술 활동',
+    grants: '연구 지원',
+    academicActivities: '학술 활동',
+    services: '학술 기여',
     memberships: '소속 학회',
     contact: '연락처',
   },
@@ -41,6 +42,7 @@ export const ko: UiStrings = {
     recipients: '수상자',
     recipient: '수상자',
     coauthorAward: '공동 저자의 수상',
+    publicationAward: '수상',
     projectNumber: '과제번호',
     amount: '지원 금액',
     role: '역할',
@@ -79,7 +81,7 @@ export const ko: UiStrings = {
   },
   meta: {
     publications: '{name}의 논문 목록. 제목, 저자, 게재처, 유형으로 검색할 수 있습니다.',
-    cv: '{name}의 이력서: 학력, 경력, 수상, 논문, 연구비 목록.',
+    cv: '{name}의 이력서: 학력, 경력, 수상, 논문, 연구 지원 목록.',
   },
   counts: {
     publications: '총 {n}편',
@@ -91,7 +93,7 @@ export const ko: UiStrings = {
   highlights: {
     peerReviewed: '동료 심사 논문',
     firstAuthor: '제1저자 연구 실적',
-    principalInvestigator: '연구대표 과제',
+    kakenhiPrincipalInvestigator: '과학연구비(연구대표자)',
     awards: '수상',
   },
   activity: {
@@ -103,7 +105,14 @@ export const ko: UiStrings = {
     coauthorAward: {
       afterRecipient: ' 님이 ',
       beforeAward: '‘',
-      afterAward: '’ 수상',
+      afterAward: '’ 수상자로 선정되었습니다.',
+    },
+    statements: {
+      publication: { before: '연구 성과를 발표했습니다: “', after: '”.' },
+      award: { before: '수상했습니다: “', after: '”.' },
+      grant: { before: '과학연구비 과제로 선정되었습니다: “', after: '”.' },
+      hpc: { before: '계산 자원·공동 이용 과제로 선정되었습니다: “', after: '”.' },
+      fellowship: { before: '박사과정 연구 지원 대상으로 선정되었습니다: “', after: '”.' },
     },
   },
   actions: {
@@ -126,11 +135,11 @@ export const ko: UiStrings = {
   },
   newsKinds: {
     paper: '논문',
-    award: '수상',
+    award: '본인 수상',
     'coauthor-award': '공동 저자 수상',
-    grant: '연구비',
-    hpc: '계산 자원',
-    fellowship: '펠로십',
+    grant: '과학연구비',
+    hpc: '계산 자원·공동 이용',
+    fellowship: '박사과정 연구 지원',
     presentation: '발표',
     talk: '강연',
     media: '미디어',
@@ -138,9 +147,9 @@ export const ko: UiStrings = {
     misc: '소식',
   },
   grantCategories: {
-    funding: '연구비',
-    hpc: '계산 자원',
-    fellowship: '펠로십',
+    funding: '과학연구비(연구대표자)',
+    hpc: '계산 자원·공동 이용',
+    fellowship: '박사과정 연구 지원(교내 선발)',
   },
   opportunities: {
     heading: '다음 자리를 찾고 있습니다',

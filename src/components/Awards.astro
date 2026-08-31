@@ -1,9 +1,10 @@
 ---
 import type { Locale } from '~/data/types';
 import { awards } from '~/data';
-import { isPdfUrl } from '~/data/util';
+import { isPdfUrl, pubSlug } from '~/data/util';
+import { publicationForAward } from '~/data/relations';
 import { t, fmt } from '~/i18n/ui';
-import { L } from '~/i18n/locale';
+import { L, localizePath } from '~/i18n/locale';
 import { formatYearMonth, isoYearMonth } from '~/i18n/format';
 import Section from './Section.astro';
 
@@ -15,39 +16,51 @@ const s = t(locale);
 <Section id="awards" title={s.sections.awards} meta={fmt(s.counts.awards, { n: awards.length })} home>
   <ol class="divided">
     {
-      awards.map((award) => (
-        <li class="entry">
-          <p class="entry-date">
-            <time datetime={isoYearMonth(award.date)}>{formatYearMonth(award.date, locale)}</time>
-          </p>
-          <div class="min-w-0">
-            <h3 class="leading-snug font-medium">{L(award.name, locale)}</h3>
-            <p class="mt-0.5 text-sm text-muted">{L(award.organization, locale)}</p>
-            <p class="mt-1.5 text-sm">{L(award.work, locale)}</p>
-            {award.context && (
-              <p class="mt-1 text-sm text-muted">{L(award.context, locale)}</p>
-            )}
-            {award.link && (
-              <p class="mt-1.5 text-sm">
-                <a
-                  href={award.link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="link"
-                  data-astro-prefetch={isPdfUrl(award.link.href) ? 'false' : undefined}
-                >
-                  {L(award.link.label, locale)}
-                  <span aria-hidden="true"> ↗</span>
-                  <span class="sr-only">{s.labels.newTab}</span>
-                </a>
-              </p>
-            )}
-            <p class="mt-1.5 text-xs text-muted">
-              {s.labels.recipients}: {award.recipients}
+      awards.map((award) => {
+        const relatedPublication = publicationForAward(award);
+        const publicationHref = relatedPublication
+          ? localizePath(`/p/${pubSlug(relatedPublication)}/`, locale)
+          : undefined;
+        return (
+          <li class="entry">
+            <p class="entry-date">
+              <time datetime={isoYearMonth(award.date)}>{formatYearMonth(award.date, locale)}</time>
             </p>
-          </div>
-        </li>
-      ))
+            <div class="min-w-0">
+              <h3 class="leading-snug font-medium">{L(award.name, locale)}</h3>
+              <p class="mt-0.5 text-sm text-muted">{L(award.organization, locale)}</p>
+              <p class="mt-1.5 text-sm">
+                {publicationHref ? (
+                  <a href={publicationHref} class="link">{L(award.work, locale)}</a>
+                ) : (
+                  L(award.work, locale)
+                )}
+              </p>
+              {award.context && (
+                <p class="mt-1 text-sm text-muted">{L(award.context, locale)}</p>
+              )}
+              {award.link && (
+                <p class="mt-1.5 text-sm">
+                  <a
+                    href={award.link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="link"
+                    data-astro-prefetch={isPdfUrl(award.link.href) ? 'false' : undefined}
+                  >
+                    {L(award.link.label, locale)}
+                    <span aria-hidden="true"> ↗</span>
+                    <span class="sr-only">{s.labels.newTab}</span>
+                  </a>
+                </p>
+              )}
+              <p class="mt-1.5 text-xs text-muted">
+                {s.labels.recipients}: {award.recipients}
+              </p>
+            </div>
+          </li>
+        );
+      })
     }
   </ol>
 </Section>

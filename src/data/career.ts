@@ -33,22 +33,6 @@ export const career: CareerEntry[] = [
     },
   },
   {
-    start: '2023-04',
-    end: '2024-03',
-    organization: {
-      ja: '同志社大学大学院',
-      en: 'Doshisha University Graduate School',
-      zh: '同志社大学研究生院',
-      ko: '도시샤대학 대학원',
-    },
-    role: {
-      ja: '博士後期課程 次世代研究者挑戦的研究プロジェクト (SPRING) 支援対象学生',
-      en: 'JST SPRING Fellow (Doctoral Program)',
-      zh: '博士课程（后期课程） 新一代研究者挑战性研究项目（SPRING）资助对象学生',
-      ko: '박사과정(후기과정) 차세대 연구자 도전적 연구 프로젝트(SPRING) 지원 대상 학생',
-    },
-  },
-  {
     start: '2023-02',
     end: '2023-03',
     organization: {
@@ -62,22 +46,6 @@ export const career: CareerEntry[] = [
       en: 'Research Internship',
       zh: '研究实习',
       ko: '연구 인턴십',
-    },
-  },
-  {
-    start: '2022-04',
-    end: '2023-03',
-    organization: {
-      ja: '同志社大学大学院',
-      en: 'Doshisha University Graduate School',
-      zh: '同志社大学研究生院',
-      ko: '도시샤대학 대학원',
-    },
-    role: {
-      ja: '博士後期課程 若手研究者育成フェローシップ制度（フェローシップ支給対象学生）',
-      en: 'Recipient, Doctoral Fellowship for Young Researchers',
-      zh: '博士课程（后期课程） 青年研究者培育资助制度（资助对象学生）',
-      ko: '박사과정(후기과정) 신진연구자 육성 펠로십 제도(펠로십 지급 대상 학생)',
     },
   },
   {

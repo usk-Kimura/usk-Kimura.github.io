@@ -1,4 +1,10 @@
-import type { GrantEntry, ServiceEntry } from './types';
+import type { GrantCategory, GrantEntry, ServiceEntry } from './types';
+
+export const grantCategoryOrder = [
+  'funding',
+  'hpc',
+  'fellowship',
+] as const satisfies readonly GrantCategory[];
 
 export const grants: GrantEntry[] = [
   {
@@ -18,6 +24,7 @@ export const grants: GrantEntry[] = [
     start: '2026-07',
     end: '2028-03',
     role: { ja: '研究代表者', en: 'Principal Investigator', zh: '研究负责人', ko: '연구대표자' },
+    roleCode: 'principal-investigator',
     category: 'funding',
     amountJpy: 2_600_000,
     url: 'https://kaken.nii.ac.jp/grant/KAKENHI-PROJECT-26K25590/',
@@ -72,6 +79,7 @@ export const grants: GrantEntry[] = [
     start: '2026-04',
     end: '2027-03',
     role: { ja: '研究代表者', en: 'Principal Investigator', zh: '研究负责人', ko: '연구대표자' },
+    roleCode: 'principal-investigator',
     category: 'hpc',
   },
   {
@@ -108,6 +116,54 @@ export const grants: GrantEntry[] = [
     start: '2025-09',
     end: '2026-03',
     category: 'hpc',
+  },
+  {
+    title: {
+      ja: '次世代研究者挑戦的研究プロジェクト（SPRING）',
+      en: 'Doshisha University SPRING Program',
+      zh: '同志社大学 新一代研究者挑战性研究项目（SPRING）',
+      ko: '도시샤대학 차세대 연구자 도전적 연구 프로젝트(SPRING)',
+    },
+    funder: {
+      ja: '同志社大学大学院（学内選抜）',
+      en: 'Doshisha University Graduate School (competitive internal selection)',
+      zh: '同志社大学研究生院（校内选拔）',
+      ko: '도시샤대학 대학원(교내 선발)',
+    },
+    start: '2023-04',
+    end: '2024-03',
+    role: {
+      ja: '支援対象学生',
+      en: 'SPRING-supported doctoral student',
+      zh: '资助对象学生',
+      ko: '지원 대상 학생',
+    },
+    category: 'fellowship',
+    url: 'https://rd.doshisha.ac.jp/rd/inside/wakate/spring/index.html',
+  },
+  {
+    title: {
+      ja: '博士後期課程 若手研究者育成フェローシップ制度',
+      en: 'Doshisha University Doctoral Fellowship for Young Researchers',
+      zh: '博士课程青年研究者培育资助制度',
+      ko: '박사과정 신진연구자 육성 펠로십 제도',
+    },
+    funder: {
+      ja: '同志社大学大学院（学内選抜）',
+      en: 'Doshisha University Graduate School (competitive internal selection)',
+      zh: '同志社大学研究生院（校内选拔）',
+      ko: '도시샤대학 대학원(교내 선발)',
+    },
+    start: '2022-04',
+    end: '2023-03',
+    role: {
+      ja: 'フェローシップ支給対象学生',
+      en: 'Fellowship recipient',
+      zh: '资助对象学生',
+      ko: '펠로십 지급 대상 학생',
+    },
+    category: 'fellowship',
+    url: 'https://rd.doshisha.ac.jp/rd/inside/wakate/fellowship/fellowship.html',
   },
 ];
 

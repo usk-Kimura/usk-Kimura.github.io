@@ -117,10 +117,10 @@ export const awards: AwardEntry[] = [
   {
     date: '2025-11',
     name: {
-      ja: '優秀論文賞',
-      en: 'Best Paper Award',
-      zh: '优秀论文奖',
-      ko: '우수논문상',
+      ja: '優秀研究賞',
+      en: 'Outstanding Research Award',
+      zh: '优秀研究奖',
+      ko: '우수연구상',
     },
     organization: {
       ja: 'アカデミック・リソース・ガイド Web インテリジェンスとインタラクション研究会',
@@ -134,7 +134,17 @@ export const awards: AwardEntry[] = [
       zh: '用于外部知识优先输出生成的相似度核平滑方法',
       ko: '외부 지식을 우선하는 출력 생성을 위한 유사도 커널 평활화 기법',
     },
+    link: {
+      label: {
+        ja: '第21回WI2研究会 開催報告',
+        en: '21st WI2 meeting report',
+        zh: '第21届WI2研究会举办报告',
+        ko: '제21회 WI2 연구회 개최 보고',
+      },
+      href: 'https://www.sigwi2.org/report-no21.html#award',
+    },
     recipients: '森岡 葵子, 吉丸 直希, 木村 優介, 波多野 賢治',
+    relatedPublicationId: 'wi2-2025-kernel-smoothing',
   },
   {
     date: '2019-09',

@@ -16,6 +16,9 @@ export type ActivityItem = {
   /** Final day of a multi-day event, if any. */
   endDate?: string;
   kind: NewsKind;
+  /** Verb phrase applied around `title` by the localized activity UI.
+   *  Manual news omits this because its title is already a complete sentence. */
+  action?: ActivityAction;
   /** Already localized to the requested locale. */
   title: string;
   /** Language of a publication title shown as originally published. */
@@ -37,6 +40,8 @@ export type ActivityItem = {
     publicationHref: string;
   };
 };
+
+export type ActivityAction = 'publication' | 'award' | 'grant' | 'hpc' | 'fellowship';
 
 function toIso(year: number, month?: number, day?: number): string {
   return `${year}-${String(month ?? 1).padStart(2, '0')}-${String(day ?? 1).padStart(2, '0')}`;
@@ -68,6 +73,7 @@ export function buildActivity(locale: Locale, limit?: number): ActivityItem[] {
       date: toIso(p.year, p.month, p.day),
       display,
       kind: 'paper',
+      action: 'publication',
       title: p.title,
       titleLang,
       detail: locale === 'ja' ? p.venue : (p.venueEn ?? p.venue),
@@ -107,8 +113,11 @@ export function buildActivity(locale: Locale, limit?: number): ActivityItem[] {
       date: padDate(a.date),
       display: a.date,
       kind: 'award',
+      action: 'award',
       title: L(a.name, locale),
       detail: L(a.organization, locale),
+      href: a.link?.href,
+      external: isExternalHref(a.link?.href),
     });
   }
 
@@ -122,6 +131,7 @@ export function buildActivity(locale: Locale, limit?: number): ActivityItem[] {
       date: padDate(g.start),
       display: g.start,
       kind,
+      action: kind,
       title: L(g.title, locale),
       detail: L(g.funder, locale),
       href: g.url,

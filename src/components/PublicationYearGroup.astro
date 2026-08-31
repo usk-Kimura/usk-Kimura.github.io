@@ -1,6 +1,7 @@
 ---
 import type { Locale, Publication } from '~/data/types';
 import { L } from '~/i18n/locale';
+import { publicationAwardsFor } from '~/data/relations';
 import PublicationItem from './PublicationItem.astro';
 
 type Props = {
@@ -24,15 +25,25 @@ const { year, items, locale } = Astro.props;
   </h2>
   <ol class="divided">
     {
-      items.map((pub) => (
-        <li
-          data-pub-item
-          data-pub-type={pub.type}
-          data-pub-search={`${pub.title} ${pub.authors} ${pub.venue} ${pub.venueEn ?? ''} ${pub.year} ${pub.coauthorAwards?.map((award) => `${L(award.name, locale)} ${award.recipient}`).join(' ') ?? ''}`}
-        >
-          <PublicationItem pub={pub} locale={locale} />
-        </li>
-      ))
+      items.map((pub) => {
+        const publicationAwards = publicationAwardsFor(pub);
+        const awardSearch = publicationAwards
+          .map((award) => `${L(award.name, locale)} ${L(award.organization, locale)} ${award.recipients}`)
+          .join(' ');
+        const coauthorAwardSearch =
+          pub.coauthorAwards
+            ?.map((award) => `${L(award.name, locale)} ${award.recipient}`)
+            .join(' ') ?? '';
+        return (
+          <li
+            data-pub-item
+            data-pub-type={pub.type}
+            data-pub-search={`${pub.title} ${pub.authors} ${pub.venue} ${pub.venueEn ?? ''} ${pub.year} ${awardSearch} ${coauthorAwardSearch}`}
+          >
+            <PublicationItem pub={pub} locale={locale} />
+          </li>
+        );
+      })
     }
   </ol>
 </section>
