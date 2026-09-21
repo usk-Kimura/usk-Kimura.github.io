@@ -59,6 +59,8 @@ export const ko: UiStrings = {
     noResults: '조건에 맞는 연구 실적이 없습니다.',
     posterDescription: '프로시딩에 수록되지 않은 포스터 발표이며 논문 및 프로시딩 건수에는 포함하지 않습니다.',
     posterPdf: '발표 포스터(PDF)',
+    slidesPdf: '발표 슬라이드(PDF)',
+    proposalPdf: '연구계획조서(PDF)',
     officialProgram: '공식 프로그램',
     noProceedings: '프로시딩 논문 없음',
     copyEmail: '복사',

@@ -3,7 +3,7 @@ import type { Locale, Publication, SourceLocale } from '~/data/types';
 import { t } from '~/i18n/ui';
 import { formatYearMonth } from '~/i18n/format';
 import { localizePath } from '~/i18n/locale';
-import { pubSlug, highlightSelf } from '~/data/util';
+import { pubSlug, highlightSelf, isPdfUrl } from '~/data/util';
 import { publicationAwardsFor } from '~/data/relations';
 import CoauthorAwards from './CoauthorAwards.astro';
 import PublicationAwards from './PublicationAwards.astro';
@@ -76,9 +76,24 @@ const venueLang: SourceLocale = useVenueEn ? 'en' : CJK.test(pub.venue) ? 'ja' :
     )}
 
     {
-      ((pub.flags && pub.flags.length > 0) || externalUrl) && (
+      ((pub.flags && pub.flags.length > 0) || externalUrl || pub.slidesUrl) && (
         <ul class="flagset mt-1.5">
           {pub.flags?.map((f) => <li>{s.flags[f]}</li>)}
+          {pub.slidesUrl && (
+            <li>
+              <a
+                href={pub.slidesUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="link"
+                data-astro-prefetch={isPdfUrl(pub.slidesUrl) ? 'false' : undefined}
+              >
+                {s.labels.slidesPdf}
+                <span aria-hidden="true"> ↗</span>
+                <span class="sr-only">{s.labels.newTab}</span>
+              </a>
+            </li>
+          )}
           {externalUrl && (
             <li>
               <a href={externalUrl} target="_blank" rel="noopener noreferrer external" class="link">

@@ -166,6 +166,21 @@ const pageDesc = abstract ?? `${pub.authors}. ${venueText}, ${dateLabel}.`;
 
     <div class="mt-8 flex flex-wrap gap-2">
       {
+        pub.slidesUrl && (
+          <a
+            href={pub.slidesUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-primary"
+            data-astro-prefetch={isPdfUrl(pub.slidesUrl) ? 'false' : undefined}
+          >
+            {s.labels.slidesPdf}
+            <span aria-hidden="true">↗</span>
+            <span class="sr-only">{s.labels.newTab}</span>
+          </a>
+        )
+      }
+      {
         externalUrl && (
           <a
             href={externalUrl}

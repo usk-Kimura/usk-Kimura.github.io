@@ -3,6 +3,45 @@ import type { Publication } from './types';
 // Sorted newest first.
 export const publications: Publication[] = [
   {
+    id: 'nl269-bytetopk-opd',
+    title: 'ByteTop-k OPD: バイト列表現に基づく語彙の異なる LLM 間のオンポリシ蒸留',
+    authors: '木村 優介, 駒水 孝裕, 波多野 賢治, 石川 佳治',
+    venue: '情報処理学会研究報告 2026-NL-269',
+    venueEn: 'IPSJ SIG-NL Technical Report 2026-NL-269',
+    year: 2026,
+    month: 9,
+    day: 16,
+    type: 'domestic-conference',
+    flags: ['first-author', 'corresponding-author'],
+    slidesUrl: '/nl269-bytetopk-opd-slides.pdf',
+    abstract: {
+      ja: 'オンポリシ蒸留は生徒モデル自身が生成した文脈上で教師モデルの予測を学習する手法だが，教師と生徒の語彙が異なる場合には次トークン分布を直接比較できない．既存手法は両モデルの語彙に共通して現れるトークンや，生成文中で文字列として対応づくまとまりに比較対象を限っており，生徒モデルの有力候補であっても比較対象から外れることがある．本稿では，生徒分布の上位 k 候補をバイト列として表現し，これを教師モデルの語彙上で実現しうるトークン列に対応づけることで共通の比較ラベルを構成する ByteTop-k OPD を提案する．',
+      en: 'On-policy distillation trains a student model on the teacher’s predictions over contexts the student itself generates, but the two next-token distributions cannot be compared directly when teacher and student use different vocabularies. Existing methods restrict the comparison to tokens shared by both vocabularies, or to spans of the generated text that align as strings, so a candidate the student assigns high probability to can fall outside the comparison entirely. This paper proposes ByteTop-k OPD, which represents the student’s top-k candidates as byte strings and maps them onto the token sequences that realize them in the teacher’s vocabulary, yielding a common set of comparison labels.',
+    },
+  },
+  {
+    title: 'LLM を用いた Web アプリケーションのチューニング',
+    authors: '杉浦 射央, 杉浦 健人, 石川 佳治, 木村 優介',
+    venue: '令和8年度電気・電子・情報関係学会東海支部連合大会講演論文集 (2B-1-4)',
+    venueEn:
+      '2026 Tokai-Section Joint Conference on Electrical, Electronics, Information, and Related Engineering (2B-1-4)',
+    year: 2026,
+    month: 8,
+    type: 'domestic-conference',
+    flags: ['corresponding-author'],
+  },
+  {
+    title: '機械学習ベースの索引チューニングにおける説明可能 AI の適用',
+    authors: '張 智嘉, 石川 佳治, 杉浦 健人, 木村 優介',
+    venue: '令和8年度電気・電子・情報関係学会東海支部連合大会講演論文集 (2B-1-3)',
+    venueEn:
+      '2026 Tokai-Section Joint Conference on Electrical, Electronics, Information, and Related Engineering (2B-1-3)',
+    year: 2026,
+    month: 8,
+    type: 'domestic-conference',
+    flags: ['corresponding-author'],
+  },
+  {
     title: 'LoRAマルチタスク学習における更新空間の分離による学習偏りの抑制',
     authors: '平子 翔太, 木村 優介, 波多野 賢治',
     venue: '情報処理学会研究報告 2026-IFAT-162(4)',
@@ -300,7 +339,7 @@ export const publications: Publication[] = [
     venue: 'Procedia Computer Science',
     year: 2023,
     pages: '225, 3948-3957',
-    type: 'journal',
+    type: 'international-conference',
     flags: ['peer-reviewed'],
     doi: '10.1016/j.procs.2023.10.390',
     abstract: {

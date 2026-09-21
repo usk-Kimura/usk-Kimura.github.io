@@ -28,6 +28,7 @@ export const grants: GrantEntry[] = [
     category: 'funding',
     amountJpy: 2_600_000,
     url: 'https://kaken.nii.ac.jp/grant/KAKENHI-PROJECT-26K25590/',
+    proposalUrl: '/kakenhi-26k25590-proposal.pdf',
   },
   {
     title: {
@@ -170,14 +171,25 @@ export const grants: GrantEntry[] = [
 export const services: ServiceEntry[] = [
   {
     title: {
-      ja: 'iiWAS2026 Reviewer',
-      en: 'iiWAS2026 Reviewer',
-      zh: 'iiWAS2026 审稿人',
-      ko: 'iiWAS2026 심사위원',
+      ja: 'SoICT2026 プログラム委員',
+      en: 'SoICT2026 Program Committee',
+      zh: 'SoICT2026 程序委员会委员',
+      ko: 'SoICT2026 프로그램 위원',
     },
     kind: { ja: '査読', en: 'Peer Review', zh: '同行评审', ko: '동료 심사(피어 리뷰)' },
-    start: '2026-08',
-    end: '2026-08',
+    start: '2026-12',
+    end: '2026-12',
+  },
+  {
+    title: {
+      ja: 'iiWAS2026 プログラム委員',
+      en: 'iiWAS2026 Program Committee',
+      zh: 'iiWAS2026 程序委员会委员',
+      ko: 'iiWAS2026 프로그램 위원',
+    },
+    kind: { ja: '査読', en: 'Peer Review', zh: '同行评审', ko: '동료 심사(피어 리뷰)' },
+    start: '2026-12',
+    end: '2026-12',
   },
   {
     title: {

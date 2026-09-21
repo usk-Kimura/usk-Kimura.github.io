@@ -3,6 +3,7 @@ import type { Locale } from '~/data/types';
 import { grantCategoryOrder, grants } from '~/data';
 import { t } from '~/i18n/ui';
 import { L } from '~/i18n/locale';
+import { isPdfUrl } from '~/data/util';
 import { formatAmountJpy, formatRangeParts, isoYearMonth } from '~/i18n/format';
 import Section from './Section.astro';
 
@@ -69,11 +70,26 @@ function range(start: string, end?: string) {
                       )}
                     </h4>
                     <p class="mt-0.5 text-sm text-muted">{L(grant.funder, locale)}</p>
-                    {facts.length > 0 && (
+                    {(facts.length > 0 || grant.proposalUrl) && (
                       <ul class="flagset mt-1.5">
                         {facts.map((fact) => (
                           <li>{fact}</li>
                         ))}
+                        {grant.proposalUrl && (
+                          <li>
+                            <a
+                              href={grant.proposalUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              class="link"
+                              data-astro-prefetch={isPdfUrl(grant.proposalUrl) ? 'false' : undefined}
+                            >
+                              {s.labels.proposalPdf}
+                              <span aria-hidden="true"> ↗</span>
+                              <span class="sr-only">{s.labels.newTab}</span>
+                            </a>
+                          </li>
+                        )}
                       </ul>
                     )}
                   </div>

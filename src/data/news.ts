@@ -73,6 +73,22 @@ export type NewsItem = {
  */
 export const news: NewsItem[] = [
   {
+    date: '2026-09-17',
+    kind: 'misc',
+    title: {
+      ja: '国際会議 SoICT 2026 のプログラム委員を務めます．',
+      en: 'I am serving on the programme committee of SoICT 2026.',
+      zh: '担任国际会议 SoICT 2026 的程序委员会委员。',
+      ko: '국제회의 SoICT 2026의 프로그램 위원을 맡습니다.',
+    },
+    detail: {
+      ja: 'The 15th International Symposium on Information and Communication Technology（2026年12月開催）',
+      en: 'The 15th International Symposium on Information and Communication Technology (December 2026)',
+      zh: 'The 15th International Symposium on Information and Communication Technology（2026年12月举办）',
+      ko: 'The 15th International Symposium on Information and Communication Technology(2026년 12월 개최)',
+    },
+  },
+  {
     date: '2026-07-31',
     kind: 'grant',
     title: {
@@ -88,34 +104,6 @@ export const news: NewsItem[] = [
       ko: '과제번호 26K25590 “학습이 충분하지 않은 도메인에 대한 언어 모델 경량 적응을 위한 학습 시 갱신 자원 배분 제어 연구” (연구대표자, 2026–2027년도)',
     },
     href: 'https://kaken.nii.ac.jp/grant/KAKENHI-PROJECT-26K25590/',
-  },
-  {
-    date: '2026-09-14',
-    endDate: '2026-09-16',
-    kind: 'presentation',
-    title: {
-      ja: '「ByteTop-k OPD：バイト列表現に基づく語彙の異なる LLM 間のオンポリシ蒸留」を発表する予定です．',
-      en: 'I will present “ByteTop-k OPD: On-Policy Distillation between LLMs with Different Vocabularies Based on Byte-String Representations”.',
-      zh: '即将报告《ByteTop-k OPD：基于字节串表示的不同词表 LLM 之间的同策略蒸馏》。',
-      ko: '“ByteTop-k OPD: 바이트열 표현에 기반한 어휘가 다른 LLM 간 온폴리시 증류”를 발표할 예정입니다.',
-    },
-    detail: {
-      ja: '情報処理学会 第269回自然言語処理研究発表会｜帯広＋オンライン',
-      en: 'IPSJ SIG-NL 269th Meeting · Obihiro + online',
-      zh: '信息处理学会 第269次自然语言处理研究会｜带广＋线上',
-      ko: '정보처리학회 제269회 자연어 처리 연구발표회 | 오비히로 + 온라인',
-    },
-    event: {
-      label: { ja: 'NL研 269', en: 'SIG-NL 269', zh: 'SIG-NL 269', ko: 'SIG-NL 269' },
-      name: {
-        ja: '情報処理学会 第269回自然言語処理研究発表会',
-        en: 'IPSJ SIG-NL 269th Meeting',
-        zh: '信息处理学会（IPSJ）第269次自然语言处理研究会',
-        ko: '정보처리학회(IPSJ) 제269회 자연어 처리 연구발표회',
-      },
-      venue: { ja: '帯広＋オンライン', en: 'Obihiro + online', zh: '带广＋线上', ko: '오비히로 + 온라인' },
-    },
-    href: 'https://www.ipsj.or.jp/kenkyukai/event/nl269.html',
   },
   {
     date: '2026-08-17',

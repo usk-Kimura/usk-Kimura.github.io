@@ -59,6 +59,8 @@ export const zh: UiStrings = {
     noResults: '没有符合条件的研究成果。',
     posterDescription: '未收录于会议录的海报报告，不计入论文与会议录数量。',
     posterPdf: '报告海报（PDF）',
+    slidesPdf: '报告幻灯片（PDF）',
+    proposalPdf: '研究计划书（PDF）',
     officialProgram: '官方日程',
     noProceedings: '无会议录论文',
     copyEmail: '复制',

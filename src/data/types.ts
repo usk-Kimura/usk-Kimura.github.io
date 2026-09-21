@@ -148,6 +148,9 @@ export type Publication = {
   coauthorAwards?: CoauthorAward[];
   doi?: string;
   url?: string;
+  /** Self-hosted slide deck for the talk that presented this paper. Kept
+   *  separate from `url` so the external record link is not displaced by it. */
+  slidesUrl?: string;
   /** Author-written abstract. Scholar's inclusion policy says detail pages
    *  with bare bibliographic data may not be indexed — fill this in to
    *  improve odds of getting picked up. Partial localization is allowed:
@@ -194,6 +197,9 @@ export type GrantEntry = {
   amountJpy?: number;
   /** Public database record for the award (e.g. the KAKEN project page). */
   url?: string;
+  /** Self-hosted application document, published so the proposal itself can be
+   *  read. Separate from `url`, which points at the official database record. */
+  proposalUrl?: string;
 };
 
 export type ServiceEntry = {
