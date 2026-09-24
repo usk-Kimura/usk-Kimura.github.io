@@ -153,7 +153,7 @@ export const zh: UiStrings = {
     grant: '科研费',
     hpc: '计算资源与共同利用',
     fellowship: '博士生研究支持',
-    participation: '参加与报告',
+    participation: '参加',
     presentation: '报告',
     talk: '演讲',
     media: '媒体',

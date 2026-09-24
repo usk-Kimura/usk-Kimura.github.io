@@ -29,12 +29,12 @@ export const awards: AwardEntry[] = [
     },
     link: {
       label: {
-        ja: '公式受賞結果',
-        en: 'Official award results',
-        zh: '官方获奖结果',
-        ko: '공식 수상 결과',
+        ja: '公式開催報告・受賞理由',
+        en: 'Official report and award rationale',
+        zh: '官方活动报告与获奖理由',
+        ko: '공식 개최 보고 및 수상 이유',
       },
-      href: 'https://yans.anlp.jp/entry/award#株式会社ELYZA賞',
+      href: 'https://yans.anlp.jp/entry/yans2026report#株式会社ELYZA賞',
     },
     recipients: '木村 優介',
     relatedPresentationId: 'yans-2026-on-policy-distillation',

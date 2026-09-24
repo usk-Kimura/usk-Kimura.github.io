@@ -73,6 +73,41 @@ export type NewsItem = {
  */
 export const news: NewsItem[] = [
   {
+    date: '2026-09-22',
+    endDate: '2026-09-23',
+    kind: 'participation',
+    title: {
+      ja: '東海関西データベースワークショップ 2026（DBWS 2026）に教員として聴講参加しました．',
+      en: 'I attended the Tokai–Kansai Database Workshop 2026 (DBWS 2026) as a faculty member, listening to the presentations.',
+      zh: '以教师身份旁听参加了东海关西数据库研讨会 2026（DBWS 2026）。',
+      ko: '도카이·간사이 데이터베이스 워크숍 2026(DBWS 2026)에 교원으로서 청강 참가했습니다.',
+    },
+    detail: {
+      ja: '東海・関西地域のデータ工学分野の大学研究室が集まり，ポスター発表と研究交流を行う合同ワークショップ｜静岡大学 浜松キャンパス',
+      en: 'A joint workshop where university laboratories in data engineering from the Tokai and Kansai regions gather for poster presentations and research exchange · Shizuoka University, Hamamatsu Campus',
+      zh: '东海与关西地区数据工程领域的大学研究室开展海报报告与研究交流的联合研讨会｜静冈大学滨松校区',
+      ko: '도카이·간사이 지역 데이터 공학 분야 대학 연구실이 모여 포스터 발표와 연구 교류를 진행하는 합동 워크숍 | 시즈오카대학교 하마마쓰 캠퍼스',
+    },
+    href: 'https://dbws2026.github.io/',
+  },
+  {
+    date: '2026-09-08',
+    kind: 'media',
+    title: {
+      ja: 'YANS 2026 の公式開催報告が公開され，株式会社ELYZA賞の受賞理由が掲載されました．',
+      en: 'The official YANS 2026 report has been published, including the selection rationale for my ELYZA Award.',
+      zh: 'YANS 2026 官方活动报告已发布，其中刊载了我获得 ELYZA 股份有限公司奖的评选理由。',
+      ko: 'YANS 2026 공식 개최 보고가 공개되었으며, 저의 주식회사 ELYZA상 수상 이유가 게재되었습니다.',
+    },
+    detail: {
+      ja: '「異なる語彙を持つ LLM 間のオンポリシ蒸留」｜語彙の違いを直接扱う提案手法と，実用性・今後の発展性が評価されました．',
+      en: '“On-Policy Distillation between LLMs with Different Vocabularies” · Recognized for directly addressing vocabulary differences, practical potential, and prospects for further development.',
+      zh: '《不同词表 LLM 间的同策略蒸馏》｜直接处理词表差异的方法及其实用潜力与未来发展前景获得认可。',
+      ko: '“서로 다른 어휘를 가진 LLM 간 온폴리시 증류” | 어휘 차이를 직접 다루는 제안 방법과 실용성, 향후 발전 가능성을 인정받았습니다.',
+    },
+    href: 'https://yans.anlp.jp/entry/yans2026report#株式会社ELYZA賞',
+  },
+  {
     date: '2026-09-17',
     kind: 'misc',
     title: {
@@ -110,7 +145,7 @@ export const news: NewsItem[] = [
     endDate: '2026-08-18',
     // Tagged as an award, not a presentation: this entry stands in for the
     // awards.ts record, which `recent.ts` dedups out of the feed because both
-    // link to the official award results.
+    // link to the official report and award rationale.
     kind: 'award',
     title: {
       ja: '「異なる語彙を持つ LLM 間のオンポリシ蒸留」をポスター発表し，株式会社ELYZA賞を受賞しました．',
@@ -119,10 +154,10 @@ export const news: NewsItem[] = [
       ko: '“서로 다른 어휘를 가진 LLM 간 온폴리시 증류”를 포스터로 발표하고 주식회사 ELYZA상을 수상했습니다.',
     },
     detail: {
-      ja: '第21回言語処理若手シンポジウム（YANS 2026）｜仙台国際センター｜リンク先は公式受賞結果',
-      en: 'The 21st YANS Symposium (YANS 2026) · Sendai International Center · Link opens the official award results',
-      zh: '第21届语言处理青年研究者研讨会（YANS 2026）｜仙台国际中心｜链接为官方获奖结果',
-      ko: '제21회 언어 처리 젊은 연구자 심포지엄(YANS 2026) | 센다이 국제센터 | 링크는 공식 수상 결과',
+      ja: '第21回言語処理若手シンポジウム（YANS 2026）｜仙台国際センター｜リンク先は受賞理由を掲載した公式開催報告',
+      en: 'The 21st YANS Symposium (YANS 2026) · Sendai International Center · Link opens the official report with the award rationale',
+      zh: '第21届语言处理青年研究者研讨会（YANS 2026）｜仙台国际中心｜链接为载有获奖理由的官方活动报告',
+      ko: '제21회 언어 처리 젊은 연구자 심포지엄(YANS 2026) | 센다이 국제센터 | 링크는 수상 이유가 게재된 공식 개최 보고',
     },
     event: {
       label: { ja: 'YANS 2026', en: 'YANS 2026', zh: 'YANS 2026', ko: 'YANS 2026' },
@@ -134,17 +169,17 @@ export const news: NewsItem[] = [
       },
       venue: { ja: '仙台国際センター', en: 'Sendai International Center', zh: '仙台国际中心', ko: '센다이 국제센터' },
     },
-    href: 'https://yans.anlp.jp/entry/award#株式会社ELYZA賞',
+    href: 'https://yans.anlp.jp/entry/yans2026report#株式会社ELYZA賞',
   },
   {
     date: '2025-09-11',
     endDate: '2025-09-12',
-    kind: 'participation',
+    kind: 'presentation',
     title: {
-      ja: '東海関西データベースワークショップ 2025（DBWS 2025）に参加し，「アダプタを効果的に学習する量子化スケジューラに関する研究」をポスター発表しました．',
-      en: 'I participated in the Tokai–Kansai Database Workshop 2025 (DBWS 2025) and presented the poster “A Study on a Quantization Scheduler for Effective Adapter Training”.',
-      zh: '参加了东海关西数据库研讨会2025（DBWS 2025），并以海报形式报告了《有效训练适配器的量化调度器研究》。',
-      ko: '도카이·간사이 데이터베이스 워크숍 2025(DBWS 2025)에 참가하여 “어댑터를 효과적으로 학습하는 양자화 스케줄러에 관한 연구”를 포스터로 발표했습니다.',
+      ja: '東海関西データベースワークショップ 2025（DBWS 2025）に学生として参加し，「アダプタを効果的に学習する量子化スケジューラに関する研究」をポスター発表しました．',
+      en: 'I participated in the Tokai–Kansai Database Workshop 2025 (DBWS 2025) as a student and presented the poster “A Study on a Quantization Scheduler for Effective Adapter Training”.',
+      zh: '以学生身份参加了东海关西数据库研讨会2025（DBWS 2025），并以海报形式报告了《有效训练适配器的量化调度器研究》。',
+      ko: '도카이·간사이 데이터베이스 워크숍 2025(DBWS 2025)에 학생으로 참가하여 “어댑터를 효과적으로 학습하는 양자화 스케줄러에 관한 연구”를 포스터로 발표했습니다.',
     },
     detail: {
       ja: '関西・東海地域の複数大学・研究室による合同ワークショップ｜同志社大学 今出川キャンパス',
@@ -153,5 +188,60 @@ export const news: NewsItem[] = [
       ko: '간사이·도카이 지역 여러 대학 및 연구실의 합동 워크숍 | 도시샤대학교 이마데가와 캠퍼스',
     },
     href: 'https://www.milcis.doshisha.ac.jp/portfolio/dbws-2025/',
+  },
+  {
+    // Presentation title and student status: MIL official report linked below.
+    date: '2022-09-20',
+    endDate: '2022-09-21',
+    kind: 'presentation',
+    title: {
+      ja: '東海関西データベースワークショップ 2022（DBWS 2022）に学生として参加し，「自己教師あり学習を用いた文書分類のためのマルチタスク学習フレームワーク」をポスター発表しました．',
+      en: 'I attended the Tokai–Kansai Database Workshop 2022 (DBWS 2022) as a student and presented the poster “A Multi-task Learning Framework for Document Classification Using Self-supervised Learning”.',
+      zh: '以学生身份参加了东海关西数据库研讨会 2022（DBWS 2022），并作海报报告。',
+      ko: '도카이·간사이 데이터베이스 워크숍 2022(DBWS 2022)에 학생으로 참가하여 포스터 발표를 했습니다.',
+    },
+    detail: {
+      ja: '東海・関西地域の大学研究室による合同ワークショップ｜甲南大学 平生記念セミナーハウス',
+      en: 'Joint workshop of university laboratories in the Tokai and Kansai regions · Konan University, Hirao Memorial Seminar House',
+      zh: '报告题目（日文）：自己教師あり学習を用いた文書分類のためのマルチタスク学習フレームワーク｜东海与关西地区大学研究室的联合研讨会｜甲南大学平生纪念研讨中心',
+      ko: '발표 제목(일본어): 自己教師あり学習を用いた文書分類のためのマルチタスク学習フレームワーク | 도카이·간사이 지역 대학 연구실의 합동 워크숍 | 고난대학교 히라오 기념 세미나 하우스',
+    },
+    href: 'https://www.milcis.doshisha.ac.jp/portfolio/dbws2022/',
+  },
+  {
+    date: '2021-09-05',
+    endDate: '2021-09-06',
+    kind: 'presentation',
+    title: {
+      ja: '東海関西データベースワークショップ 2021（DBWS 2021）に学生として参加し，「高精度情報検索実現のためのトークナイザの提案」をポスター発表しました．',
+      en: 'I attended the Tokai–Kansai Database Workshop 2021 (DBWS 2021) as a student and presented the poster “A Tokenizer for High-accuracy Information Retrieval”.',
+      zh: '以学生身份参加了东海关西数据库研讨会 2021（DBWS 2021），并作海报报告。',
+      ko: '도카이·간사이 데이터베이스 워크숍 2021(DBWS 2021)에 학생으로 참가하여 포스터 발표를 했습니다.',
+    },
+    detail: {
+      ja: '東海・関西地域の大学研究室による合同ワークショップ｜オンライン開催',
+      en: 'Joint workshop of university laboratories in the Tokai and Kansai regions · Online',
+      zh: '报告题目（日文）：高精度情報検索実現のためのトークナイザの提案｜东海与关西地区大学研究室的联合研讨会｜线上举办',
+      ko: '발표 제목(일본어): 高精度情報検索実現のためのトークナイザの提案 | 도카이·간사이 지역 대학 연구실의 합동 워크숍 | 온라인 개최',
+    },
+    href: 'https://www.milcis.doshisha.ac.jp/portfolio/dbws2021/',
+  },
+  {
+    date: '2019-09-15',
+    endDate: '2019-09-16',
+    kind: 'presentation',
+    title: {
+      ja: '東海関西データベースワークショップ 2019（DBWS 2019）に学生として参加し，「係り受け/照応関係を用いた専門用語自動抽出手法の提案」をポスター発表しました．',
+      en: 'I attended the Tokai–Kansai Database Workshop 2019 (DBWS 2019) as a student and presented the poster “Automatic Term Extraction Using Dependency and Anaphoric Relations”.',
+      zh: '以学生身份参加了东海关西数据库研讨会 2019（DBWS 2019），并作海报报告。',
+      ko: '도카이·간사이 데이터베이스 워크숍 2019(DBWS 2019)에 학생으로 참가하여 포스터 발표를 했습니다.',
+    },
+    detail: {
+      ja: '東海・関西地域の大学研究室による合同ワークショップ｜兵庫県立大学 神戸情報科学キャンパス',
+      en: 'Joint workshop of university laboratories in the Tokai and Kansai regions · University of Hyogo, Kobe Campus for Information Science',
+      zh: '报告题目（日文）：係り受け/照応関係を用いた専門用語自動抽出手法の提案｜东海与关西地区大学研究室的联合研讨会｜兵库县立大学神户信息科学校区',
+      ko: '발표 제목(일본어): 係り受け/照応関係を用いた専門用語自動抽出手法の提案 | 도카이·간사이 지역 대학 연구실의 합동 워크숍 | 효고현립대학교 고베 정보과학 캠퍼스',
+    },
+    href: 'https://yu-suzuki.github.io/dbws2019/program/',
   },
 ];

@@ -153,7 +153,7 @@ export const ko: UiStrings = {
     grant: '과학연구비',
     hpc: '계산 자원·공동 이용',
     fellowship: '박사과정 연구 지원',
-    participation: '참가 및 발표',
+    participation: '참가',
     presentation: '발표',
     talk: '강연',
     media: '미디어',
