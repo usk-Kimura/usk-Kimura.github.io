@@ -25,6 +25,8 @@ export type ActivityItem = {
   titleLang?: SourceLocale;
   detail?: string;
   href?: string;
+  links?: { label: string; href: string }[];
+  completed?: boolean;
   /** True when `href` points off-site. */
   external?: boolean;
   /** Structured links for recognition awarded to a coauthor. Keeping this
@@ -148,6 +150,8 @@ export function buildActivity(locale: Locale, limit?: number): ActivityItem[] {
       title: L(item.title, locale),
       detail: item.detail ? L(item.detail, locale) : undefined,
       href: item.href,
+      links: item.links?.map((link) => ({ label: L(link.label, locale), href: link.href })),
+      completed: item.completed,
       external: isExternalHref(item.href),
     });
   }

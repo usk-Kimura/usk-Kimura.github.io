@@ -31,6 +31,10 @@ export type NewsItem = {
   };
   /** Optional URL the title links to. */
   href?: string;
+  /** Supporting resources, including any access restrictions in the label. */
+  links?: { label: LocalizedString; href: string }[];
+  /** Explicitly completed events must not appear upcoming on the same day. */
+  completed?: boolean;
 };
 
 /**
@@ -72,6 +76,44 @@ export type NewsItem = {
  * },
  */
 export const news: NewsItem[] = [
+  {
+    date: '2026-09-25',
+    kind: 'talk',
+    completed: true,
+    title: {
+      ja: 'ACL2026読み会@名大で「Find Your Optimal Teacher: Personalized Data Synthesis via Router-Guided Multi-Teacher Distillation」を紹介しました．',
+      en: 'I presented “Find Your Optimal Teacher: Personalized Data Synthesis via Router-Guided Multi-Teacher Distillation” at the ACL 2026 paper reading meeting at Nagoya University.',
+      zh: '在名古屋大学 ACL 2026 论文读书会上介绍了《Find Your Optimal Teacher: Personalized Data Synthesis via Router-Guided Multi-Teacher Distillation》。',
+      ko: '나고야대학교 ACL 2026 논문 읽기 모임에서 “Find Your Optimal Teacher: Personalized Data Synthesis via Router-Guided Multi-Teacher Distillation”을 소개했습니다.',
+    },
+    detail: {
+      ja: '知識蒸留において，生徒モデルに適した教師モデルをクエリごとに選択する研究の紹介｜名古屋大学',
+      en: 'A paper discussion on selecting a suitable teacher model for each query in knowledge distillation · Nagoya University',
+      zh: '介绍在知识蒸馏中为每个查询选择适合学生模型的教师模型的研究｜名古屋大学',
+      ko: '지식 증류에서 학생 모델에 적합한 교사 모델을 쿼리마다 선택하는 연구 소개 | 나고야대학교',
+    },
+    href: 'https://speakerdeck.com/uskimura/acl-yomikai-2026-nagoyadaigaku-find-your-optimal-teacher-personalized-data-synthesis-via-router-guided-multi-teacher-distillation',
+    links: [
+      {
+        label: {
+          ja: '発表スライド（公開）',
+          en: 'Presentation slides (public)',
+          zh: '报告幻灯片（公开）',
+          ko: '발표 슬라이드(공개)',
+        },
+        href: 'https://speakerdeck.com/uskimura/acl-yomikai-2026-nagoyadaigaku-find-your-optimal-teacher-personalized-data-synthesis-via-router-guided-multi-teacher-distillation',
+      },
+      {
+        label: {
+          ja: '読み会サイト（名大ネットワーク内限定）',
+          en: 'Reading meeting website (Nagoya University network only)',
+          zh: '读书会网站（仅限名古屋大学网络访问）',
+          ko: '논문 읽기 모임 웹사이트(나고야대학교 네트워크 내에서만 접속 가능)',
+        },
+        href: 'http://cr.fvcrc.i.nagoya-u.ac.jp/~kisako/acl2026nagoya/',
+      },
+    ],
+  },
   {
     date: '2026-09-22',
     endDate: '2026-09-23',

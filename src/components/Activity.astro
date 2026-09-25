@@ -71,12 +71,12 @@ const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Tokyo' })
                 <ol class="activity-list">
                   {group.items.map((item) => {
                     const until = item.endDate ?? item.date;
-                    const upcoming = until >= today;
+                    const upcoming = !item.completed && until >= today;
                     const award = item.coauthorAward;
                     const statement = item.action ? s.activity.statements[item.action] : undefined;
 
                     return (
-                      <li class="activity-row" data-activity-item data-until={until}>
+                      <li class="activity-row" data-activity-item data-until={until} data-completed={item.completed ? 'true' : undefined}>
                         <p class="activity-date">
                           <time datetime={item.display}>
                             {formatYearMonth(item.display, locale)}
@@ -169,6 +169,25 @@ const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Tokyo' })
                               {item.detail && <p class="mt-1 text-sm leading-relaxed text-muted">{item.detail}</p>}
                             </>
                           )}
+                          {item.links && (
+                            <ul class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm">
+                              {item.links.map((link) => (
+                                <li>
+                                  <a
+                                    href={link.href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="link"
+                                    data-astro-prefetch="false"
+                                  >
+                                    {link.label}
+                                    <span aria-hidden="true"> ↗</span>
+                                    <span class="sr-only">{s.labels.newTab}</span>
+                                  </a>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
                         </div>
                       </li>
                     );
@@ -190,7 +209,7 @@ const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Tokyo' })
     const badge = row.querySelector<HTMLElement>('[data-upcoming-badge]');
     if (!badge) continue;
     const until = row.dataset.until;
-    badge.hidden = !until || until < today;
+    badge.hidden = row.dataset.completed === 'true' || !until || until < today;
   }
 </script>
 
