@@ -1,5 +1,6 @@
 export { profile } from './profile';
 export { career, education } from './career';
+export { teaching } from './teaching';
 export { awards } from './awards';
 export { publications } from './publications';
 export { presentations } from './presentations';

@@ -34,6 +34,7 @@ const ja = {
     awards: '受賞',
     career: '経歴',
     education: '学歴',
+    teaching: '担当授業',
     grants: '研究支援',
     academicActivities: '学術活動',
     services: '学術貢献',
@@ -66,6 +67,7 @@ const ja = {
     proposalPdf: '研究計画調書（PDF）',
     officialProgram: '公式プログラム',
     noProceedings: '予稿集なし',
+    syllabus: 'シラバス',
     copyEmail: 'コピー',
     copied: 'コピーしました',
     backToTop: 'ページ上部へ',
@@ -94,7 +96,7 @@ const ja = {
   /** `<meta name="description">` per page. `{name}` is substituted. */
   meta: {
     publications: '{name} の研究業績一覧．論文・予稿集とポスター発表を，題目・著者・掲載先・種別で検索できます．',
-    cv: '{name} の履歴書．学歴・経歴・受賞・研究業績・研究支援の一覧．',
+    cv: '{name} の履歴書．学歴・経歴・担当授業・受賞・研究業績・研究支援の一覧．',
   },
   counts: {
     publications: '全{n}件',
@@ -223,6 +225,7 @@ const en: UiStrings = {
     awards: 'Awards',
     career: 'Career',
     education: 'Education',
+    teaching: 'Teaching',
     grants: 'Research support',
     academicActivities: 'Academic activities',
     services: 'Academic service',
@@ -255,6 +258,7 @@ const en: UiStrings = {
     proposalPdf: 'Proposal (PDF)',
     officialProgram: 'Official programme',
     noProceedings: 'No proceedings paper',
+    syllabus: 'Syllabus',
     copyEmail: 'Copy',
     copied: 'Copied',
     backToTop: 'Back to top',
@@ -282,7 +286,7 @@ const en: UiStrings = {
   },
   meta: {
     publications: 'Research outputs by {name}: papers, proceedings, and poster presentations, searchable by title, author, venue, and type.',
-    cv: 'Curriculum vitae of {name}: education, career, awards, research outputs, and research support.',
+    cv: 'Curriculum vitae of {name}: education, career, teaching, awards, research outputs, and research support.',
   },
   counts: {
     publications: '{n} total',

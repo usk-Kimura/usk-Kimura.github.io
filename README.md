@@ -81,6 +81,7 @@ All the visible text comes from the typed data layer:
 
 - **Profile / bio / links / researcher IDs / researchmap update date** — `src/data/profile.ts`
 - **Career & education** — `src/data/career.ts`
+- **Teaching (home page and CV)** — `src/data/teaching.ts`
 - **Awards** — `src/data/awards.ts`
 - **Publications** — `src/data/publications.ts` (newest first; `venueEn` is used outside `/`)
 - **Non-archival poster presentations** — `src/data/presentations.ts` (shown under research outputs,

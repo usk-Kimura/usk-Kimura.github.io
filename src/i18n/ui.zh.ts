@@ -31,6 +31,7 @@ export const zh: UiStrings = {
     awards: '获奖',
     career: '经历',
     education: '学历',
+    teaching: '授课课程',
     grants: '研究支持',
     academicActivities: '学术活动',
     services: '学术服务',
@@ -63,6 +64,7 @@ export const zh: UiStrings = {
     proposalPdf: '研究计划书（PDF）',
     officialProgram: '官方日程',
     noProceedings: '无会议录论文',
+    syllabus: '教学大纲',
     copyEmail: '复制',
     copied: '已复制',
     backToTop: '返回页首',
@@ -90,7 +92,7 @@ export const zh: UiStrings = {
   },
   meta: {
     publications: '{name} 的研究成果列表，包括论文、会议录与海报报告，可按标题、作者、发表处与类型检索。',
-    cv: '{name} 的简历：学历、经历、获奖、研究成果与研究支持一览。',
+    cv: '{name} 的简历：学历、经历、授课课程、获奖、研究成果与研究支持一览。',
   },
   counts: {
     publications: '共 {n} 篇',

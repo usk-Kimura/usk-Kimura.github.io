@@ -4,6 +4,7 @@ import {
   profile,
   career,
   education,
+  teaching,
   awards,
   presentations,
   publications,
@@ -169,6 +170,26 @@ const reading = L(profile.reading, locale);
           );
         })
       }
+    </ol>
+  </section>
+
+  <section id="teaching" class="cv-section" aria-labelledby="teaching-heading">
+    <h2 id="teaching-heading">{s.sections.teaching}</h2>
+    <ol class="cv-list">
+      {teaching.map((course) => (
+        <li>
+          <span class="cv-date">{L(course.term, locale)}</span>
+          <span>
+            <strong>{L(course.title, locale)}</strong>
+            <br />
+            {L(course.organization, locale)}
+            <br />
+            <span class="cv-note">{L(course.details, locale)}</span>
+            <br />
+            <a href={course.syllabusUrl} class="link cv-note" data-astro-prefetch="false">{s.labels.syllabus}</a>
+          </span>
+        </li>
+      ))}
     </ol>
   </section>
 

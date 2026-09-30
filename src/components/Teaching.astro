@@ -1,0 +1,33 @@
+---
+import type { Locale } from '~/data/types';
+import { teaching } from '~/data';
+import { L } from '~/i18n/locale';
+import { t } from '~/i18n/ui';
+import Section from './Section.astro';
+
+type Props = { locale: Locale };
+const { locale } = Astro.props;
+const s = t(locale);
+---
+
+<Section id="teaching" title={s.sections.teaching} home>
+  <ol class="divided">
+    {teaching.map((course) => (
+      <li class="entry">
+        <p class="entry-date">{L(course.term, locale)}</p>
+        <div class="min-w-0">
+          <h3 class="leading-snug font-medium">{L(course.title, locale)}</h3>
+          <p class="mt-0.5 text-sm">{L(course.organization, locale)}</p>
+          <p class="mt-1 text-sm text-muted">{L(course.details, locale)}</p>
+          <p class="mt-1.5 text-sm">
+            <a href={course.syllabusUrl} target="_blank" rel="noopener noreferrer" class="link" data-astro-prefetch="false">
+              {s.labels.syllabus}
+              <span aria-hidden="true"> ↗</span>
+              <span class="sr-only">{s.labels.newTab}</span>
+            </a>
+          </p>
+        </div>
+      </li>
+    ))}
+  </ol>
+</Section>

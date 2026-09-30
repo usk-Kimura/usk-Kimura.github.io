@@ -31,6 +31,7 @@ export const ko: UiStrings = {
     awards: '수상',
     career: '경력',
     education: '학력',
+    teaching: '담당 과목',
     grants: '연구 지원',
     academicActivities: '학술 활동',
     services: '학술 기여',
@@ -63,6 +64,7 @@ export const ko: UiStrings = {
     proposalPdf: '연구계획조서(PDF)',
     officialProgram: '공식 프로그램',
     noProceedings: '프로시딩 논문 없음',
+    syllabus: '강의계획서',
     copyEmail: '복사',
     copied: '복사했습니다',
     backToTop: '맨 위로',
@@ -90,7 +92,7 @@ export const ko: UiStrings = {
   },
   meta: {
     publications: '{name}의 연구 실적 목록. 논문, 프로시딩, 포스터 발표를 제목, 저자, 게재처, 유형으로 검색할 수 있습니다.',
-    cv: '{name}의 이력서: 학력, 경력, 수상, 연구 실적, 연구 지원 목록.',
+    cv: '{name}의 이력서: 학력, 경력, 담당 과목, 수상, 연구 실적, 연구 지원 목록.',
   },
   counts: {
     publications: '총 {n}편',

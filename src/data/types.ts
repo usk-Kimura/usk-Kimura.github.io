@@ -74,6 +74,14 @@ export type EducationEntry = {
   program: LocalizedString;
 };
 
+export type TeachingEntry = {
+  term: LocalizedString;
+  title: LocalizedString;
+  organization: LocalizedString;
+  details: LocalizedString;
+  syllabusUrl: string;
+};
+
 export type AwardEntry = {
   date: string; // YYYY-MM or YYYY-MM-DD
   name: LocalizedString;
