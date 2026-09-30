@@ -63,6 +63,8 @@ export const zh: UiStrings = {
     slidesPdf: '报告幻灯片（PDF）',
     proposalPdf: '研究计划书（PDF）',
     officialProgram: '官方日程',
+    presentationRecord: '报告记录（活动报告）',
+    presenter: '报告人',
     noProceedings: '无会议录论文',
     syllabus: '教学大纲',
     copyEmail: '复制',

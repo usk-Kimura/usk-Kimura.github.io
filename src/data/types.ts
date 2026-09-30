@@ -175,16 +175,19 @@ export type Publication = {
  *  peer-review statistics. */
 export type Presentation = {
   id: string;
-  date: string; // YYYY-MM-DD
+  date: string; // YYYY-MM or YYYY-MM-DD, matching the source's precision
   kind: 'poster';
   title: string;
   titleLang: SourceLocale;
-  authors: string;
   event: LocalizedString;
   venue: LocalizedString;
   posterUrl?: string;
   programUrl?: string;
-};
+  recordUrl?: string;
+} & (
+  | { authors: string; presenter?: never }
+  | { authors?: never; presenter: string }
+);
 
 /** Distinguishes a money grant from non-monetary support (compute allocation,
  *  fellowship, etc.). Lets us label cards accurately without lumping HPC

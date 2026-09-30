@@ -28,7 +28,10 @@ const presentationAwards = presentationAwardsFor(presentation);
       {presentation.title}
     </h3>
 
-    <p class="mt-1 text-sm text-muted" set:html={highlightSelf(presentation.authors)} />
+    <p class="mt-1 text-sm text-muted">
+      {presentation.presenter && <span>{s.labels.presenter}: </span>}
+      <span set:html={highlightSelf(presentation.authors ?? presentation.presenter)} />
+    </p>
     <p class="text-sm">
       <em>{L(presentation.event, locale)}</em>
       <span aria-hidden="true"> · </span>
@@ -67,6 +70,13 @@ const presentationAwards = presentationAwardsFor(presentation);
           class="btn min-h-11 justify-center"
         >
           {s.labels.officialProgram}
+          <span aria-hidden="true">↗</span>
+          <span class="sr-only">{s.labels.newTab}</span>
+        </a>
+      )}
+      {presentation.recordUrl && (
+        <a href={presentation.recordUrl} target="_blank" rel="noopener noreferrer external" class="btn min-h-11 justify-center">
+          {s.labels.presentationRecord}
           <span aria-hidden="true">↗</span>
           <span class="sr-only">{s.labels.newTab}</span>
         </a>

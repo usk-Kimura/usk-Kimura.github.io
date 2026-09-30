@@ -63,6 +63,8 @@ export const ko: UiStrings = {
     slidesPdf: '발표 슬라이드(PDF)',
     proposalPdf: '연구계획조서(PDF)',
     officialProgram: '공식 프로그램',
+    presentationRecord: '발표 기록(개최 보고)',
+    presenter: '발표자',
     noProceedings: '프로시딩 논문 없음',
     syllabus: '강의계획서',
     copyEmail: '복사',

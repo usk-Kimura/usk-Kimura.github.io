@@ -123,7 +123,7 @@ const olderCount = olderGroups.reduce((sum, [, items]) => sum + items.length, 0)
                 id={`presentation-${presentation.id}`}
                 data-output-item
                 data-output-type={presentation.kind}
-                data-output-search={`${presentation.title} ${presentation.authors} ${L(presentation.event, locale)} ${L(presentation.venue, locale)} ${presentation.date} ${awardSearch}`}
+                data-output-search={`${presentation.title} ${presentation.authors ?? presentation.presenter} ${L(presentation.event, locale)} ${L(presentation.venue, locale)} ${presentation.date} ${awardSearch}`}
               >
                 <PresentationItem presentation={presentation} locale={locale} />
               </li>

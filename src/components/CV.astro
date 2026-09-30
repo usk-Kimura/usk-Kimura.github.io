@@ -302,7 +302,7 @@ const reading = L(profile.reading, locale);
   </section>
 
   {sortedPresentations.length > 0 && (
-    <section class="cv-section">
+    <section id="poster-presentations" class="cv-section">
       <h2>
         {s.sections.posterPresentations}{' '}
         <span class="cv-note">({sortedPresentations.length})</span>
@@ -312,13 +312,18 @@ const reading = L(profile.reading, locale);
           const presentationAwards = presentationAwardsFor(presentation);
           return (
             <li>
-              <span set:html={highlightSelf(presentation.authors)} />
+              {presentation.presenter && <span>{s.labels.presenter}: </span>}
+              <span set:html={highlightSelf(presentation.authors ?? presentation.presenter)} />
               {'. '}
               <span class="cv-pub-title" lang={presentation.titleLang}>
                 {presentation.title}
               </span>
               {'. '}
-              <em>{L(presentation.event, locale)}</em>
+              <em>
+                {presentation.recordUrl || presentation.programUrl ? (
+                  <a href={presentation.recordUrl ?? presentation.programUrl}>{L(presentation.event, locale)}</a>
+                ) : L(presentation.event, locale)}
+              </em>
               {', '}{L(presentation.venue, locale)}{', '}
               {formatYearMonth(presentation.date, locale)}.
               <span class="cv-note"> [{s.labels.noProceedings}]</span>
