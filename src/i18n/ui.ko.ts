@@ -156,6 +156,7 @@ export const ko: UiStrings = {
     participation: '참가',
     presentation: '발표',
     talk: '강연',
+    teaching: '교육',
     media: '미디어',
     position: '부임',
     misc: '소식',

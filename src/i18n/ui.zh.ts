@@ -156,6 +156,7 @@ export const zh: UiStrings = {
     participation: '参加',
     presentation: '报告',
     talk: '演讲',
+    teaching: '教学',
     media: '媒体',
     position: '任职',
     misc: '通知',

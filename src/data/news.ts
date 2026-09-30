@@ -10,6 +10,7 @@ export type NewsKind =
   | 'participation'
   | 'presentation'
   | 'talk'
+  | 'teaching'
   | 'media'
   | 'position'
   | 'misc';
@@ -76,6 +77,36 @@ export type NewsItem = {
  * },
  */
 export const news: NewsItem[] = [
+  {
+    // Announcement date; the exact date of the first class was not specified.
+    date: '2026-09-30',
+    kind: 'teaching',
+    completed: true,
+    title: {
+      ja: '同志社大学で担当する「データサイエンス・ＡＩ演習－7（自然言語処理の基礎）」の授業が始まりました．',
+      en: 'I have started teaching “Practical Exercises for Data Science and AI–7: Fundamentals of Natural Language Processing” at Doshisha University.',
+      zh: '我在同志社大学负责的“数据科学与人工智能演习－7（自然语言处理基础）”课程已开课。',
+      ko: '도시샤대학교에서 담당하는 “데이터 사이언스·AI 연습－7(자연어 처리의 기초)” 수업이 시작되었습니다.',
+    },
+    detail: {
+      ja: '2026年度秋学期・2単位｜1回生以上を対象に，自然言語処理とLLMの基礎，分類・検索・生成，追加学習を扱う一般教養科目．オンデマンド形式（最終テストは対面）．',
+      en: 'Fall 2026 · 2 credits · A general education course open to first-year students and above, covering NLP and LLM fundamentals, classification, retrieval, generation, and fine-tuning. On-demand lectures with an in-person final test.',
+      zh: '2026年度秋季学期・2学分｜面向一年级及以上学生的通识课程，涵盖自然语言处理与大语言模型基础、分类、检索、生成及微调。采用录播形式，期末考试为线下考试。',
+      ko: '2026년도 가을학기·2학점 | 1학년 이상을 대상으로 자연어 처리와 LLM의 기초, 분류·검색·생성 및 미세조정을 다루는 교양 과목입니다. 온디맨드 방식으로 진행하며 최종 시험은 대면으로 실시합니다.',
+    },
+    href: 'https://syllabus.doshisha.ac.jp/html/2026/6008/16008506007.html',
+    links: [
+      {
+        label: {
+          ja: 'シラバス（同志社大学）',
+          en: 'Syllabus (Doshisha University)',
+          zh: '教学大纲（同志社大学）',
+          ko: '강의계획서(도시샤대학교)',
+        },
+        href: 'https://syllabus.doshisha.ac.jp/html/2026/6008/16008506007.html',
+      },
+    ],
+  },
   {
     date: '2026-09-25',
     kind: 'talk',
