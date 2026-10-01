@@ -111,7 +111,8 @@ const ja = {
   },
   highlights: {
     peerReviewed: '査読付き論文',
-    firstAuthor: '筆頭著者業績',
+    peerReviewedFirstAuthor: '筆頭著者の査読付き論文',
+    peerReviewedBreakdown: '論文誌 {journals} / 国際会議・WS {international}',
     kakenhiPrincipalInvestigator: '科研費（研究代表者）',
     awards: '受賞実績',
   },
@@ -303,7 +304,8 @@ const en: UiStrings = {
   },
   highlights: {
     peerReviewed: 'Peer-reviewed papers',
-    firstAuthor: 'First-author works',
+    peerReviewedFirstAuthor: 'First-author peer-reviewed papers',
+    peerReviewedBreakdown: 'Journals {journals} / International conferences & workshops {international}',
     kakenhiPrincipalInvestigator: 'JSPS KAKENHI (PI)',
     awards: 'Awards',
   },

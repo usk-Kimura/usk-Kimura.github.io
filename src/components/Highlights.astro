@@ -1,7 +1,7 @@
 ---
 import type { Locale } from '~/data/types';
 import { stats } from '~/data/stats';
-import { t } from '~/i18n/ui';
+import { t, fmt } from '~/i18n/ui';
 import { localizePath } from '~/i18n/locale';
 
 type Props = { locale: Locale };
@@ -14,8 +14,20 @@ const publications = localizePath('/publications/', locale);
 // narrower claims than the raw bibliography: domestic presentations
 // are not presented as peer-reviewed papers, and compute awards are not grants.
 const items = [
-  { value: stats.peerReviewed, label: s.highlights.peerReviewed, href: publications },
-  { value: stats.firstAuthor, label: s.highlights.firstAuthor, href: publications },
+  {
+    value: stats.peerReviewed,
+    label: s.highlights.peerReviewed,
+    detail: fmt(s.highlights.peerReviewedBreakdown, {
+      journals: stats.peerReviewedJournals,
+      international: stats.peerReviewedInternational,
+    }),
+    href: publications,
+  },
+  {
+    value: stats.peerReviewedFirstAuthor,
+    label: s.highlights.peerReviewedFirstAuthor,
+    href: publications,
+  },
   {
     value: stats.kakenhiPrincipalInvestigator,
     label: s.highlights.kakenhiPrincipalInvestigator,
@@ -42,6 +54,7 @@ const items = [
               <span class="mt-1.5 block text-sm leading-snug text-muted group-hover:text-[var(--fg)]">
                 {item.label}
               </span>
+              {item.detail && <span class="mt-1 block text-xs leading-relaxed text-muted">{item.detail}</span>}
             </a>
           </li>
         ))

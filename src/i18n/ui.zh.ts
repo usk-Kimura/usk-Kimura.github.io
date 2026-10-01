@@ -107,7 +107,8 @@ export const zh: UiStrings = {
   },
   highlights: {
     peerReviewed: '同行评审论文',
-    firstAuthor: '第一作者成果',
+    peerReviewedFirstAuthor: '第一作者同行评审论文',
+    peerReviewedBreakdown: '期刊 {journals} / 国际会议与研讨会 {international}',
     kakenhiPrincipalInvestigator: '科研费（项目负责人）',
     awards: '获奖',
   },

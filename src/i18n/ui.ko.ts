@@ -107,7 +107,8 @@ export const ko: UiStrings = {
   },
   highlights: {
     peerReviewed: '동료 심사 논문',
-    firstAuthor: '제1저자 연구 실적',
+    peerReviewedFirstAuthor: '제1저자 동료 심사 논문',
+    peerReviewedBreakdown: '학술지 {journals} / 국제회의·워크숍 {international}',
     kakenhiPrincipalInvestigator: '과학연구비(연구대표자)',
     awards: '수상',
   },
