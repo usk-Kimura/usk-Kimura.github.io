@@ -200,7 +200,6 @@ export const services: ServiceEntry[] = [
     },
     kind: { ja: '査読', en: 'Peer Review', zh: '同行评审', ko: '동료 심사(피어 리뷰)' },
     start: '2026-06',
-    end: '2026-06',
   },
   {
     title: {
