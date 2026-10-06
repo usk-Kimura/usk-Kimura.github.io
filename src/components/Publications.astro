@@ -5,6 +5,7 @@ import { presentationAwardsFor } from '~/data/relations';
 import { L } from '~/i18n/locale';
 import { t, fmt } from '~/i18n/ui';
 import Section from './Section.astro';
+import DoctoralThesis from './DoctoralThesis.astro';
 import PresentationItem from './PresentationItem.astro';
 import PublicationYearGroup from './PublicationYearGroup.astro';
 
@@ -186,6 +187,8 @@ const olderCount = olderGroups.reduce((sum, [, items]) => sum + items.length, 0)
     <p id="output-empty" class="hidden py-8 text-center text-muted">{s.labels.noResults}</p>
   </div>
 </Section>
+
+<DoctoralThesis locale={locale} />
 
 <script is:inline define:vars={{ matchTemplate: s.counts.matching }}>
   const buttons = document.querySelectorAll('.output-filter');

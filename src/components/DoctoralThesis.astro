@@ -1,0 +1,32 @@
+---
+import type { Locale } from '~/data/types';
+import { doctoralThesis as thesis, profile } from '~/data';
+import { L } from '~/i18n/locale';
+import { formatYearMonth } from '~/i18n/format';
+import { t } from '~/i18n/ui';
+import Section from './Section.astro';
+
+type Props = { locale: Locale; home?: boolean };
+const { locale, home = false } = Astro.props;
+const s = t(locale);
+---
+
+<Section id="doctoral-thesis" title={L(thesis.kind, locale)} home={home}>
+  <div class="entry">
+    <p class="entry-date">
+      <time datetime={thesis.date}>{formatYearMonth(thesis.date, locale)}</time>
+    </p>
+    <div class="min-w-0">
+      <h3 lang="en" class="leading-snug font-medium">{thesis.title}</h3>
+      <p class="mt-1 text-sm">{L(profile.name, locale)}</p>
+      <p class="mt-1 text-sm text-muted">{L(thesis.institution, locale)}</p>
+      <p class="mt-1.5 text-sm">
+        <a href={thesis.recordUrl} target="_blank" rel="noopener noreferrer" class="link" data-astro-prefetch="false">
+          {L(thesis.recordLabel, locale)}
+          <span aria-hidden="true"> ↗</span>
+          <span class="sr-only">{s.labels.newTab}</span>
+        </a>
+      </p>
+    </div>
+  </div>
+</Section>

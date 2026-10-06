@@ -4,6 +4,7 @@ import {
   profile,
   career,
   education,
+  doctoralThesis,
   teaching,
   awards,
   presentations,
@@ -299,6 +300,19 @@ const reading = L(profile.reading, locale);
         </div>
       ))
     }
+  </section>
+
+  <section id="doctoral-thesis" class="cv-section">
+    <h2>{L(doctoralThesis.kind, locale)}</h2>
+    <ol class="cv-pubs">
+      <li>
+        <strong>{name}</strong>{'. '}
+        <span class="cv-pub-title" lang="en">{doctoralThesis.title}</span>{'. '}
+        {L(doctoralThesis.institution, locale)}{', '}
+        <time datetime={doctoralThesis.date}>{formatYearMonth(doctoralThesis.date, locale)}</time>.
+        {' '}<a href={doctoralThesis.recordUrl}>{L(doctoralThesis.recordLabel, locale)}</a>
+      </li>
+    </ol>
   </section>
 
   {sortedPresentations.length > 0 && (
