@@ -24,6 +24,7 @@ export default defineConfig({
   },
   integrations: [
     sitemap({
+      customSitemaps: ['https://usk-kimura.github.io/awesome-cross-tokenizer-opd/sitemap.xml'],
       serialize(item) {
         item.lastmod = new Date().toISOString();
         // Prioritise main landing pages; publication detail pages lower.

@@ -1,4 +1,4 @@
-import type { LocalizedString } from './types';
+import type { Locale, LocalizedString } from './types';
 
 export type ResearchAgendaItem = {
   title: LocalizedString;
@@ -6,6 +6,40 @@ export type ResearchAgendaItem = {
   description: LocalizedString;
   /** Short role tag, e.g. primary vs collaborative. */
   tag: LocalizedString;
+};
+
+export const opdCatalogue = {
+  title: 'Cross-Tokenizer OPD',
+  label: {
+    ja: 'サーベイ・研究資料',
+    en: 'Survey & research resources',
+    zh: '综述与研究资料',
+    ko: '서베이·연구 자료',
+  },
+  description: {
+    ja: 'トークナイザーが異なるモデル間のOPDを扱う研究カタログです。論文の主張、手法、モデルの組み合わせ、公式コード、引用情報を確認できます。',
+    en: 'A research catalogue of on-policy distillation between models with different tokenizers. Explore paper claims, methods, teacher–student pairs, official code, and citations.',
+    zh: '整理不同分词器模型之间 on-policy 蒸馏研究的目录，可查阅论文主张、方法、教师与学生模型组合、官方代码及引用信息。',
+    ko: '서로 다른 토크나이저를 사용하는 모델 간 on-policy 증류 연구 목록입니다. 논문의 주장, 방법, 교사·학생 모델 조합, 공식 코드와 인용 정보를 확인할 수 있습니다.',
+  },
+  action: {
+    ja: '研究カタログを開く',
+    en: 'Open research catalogue',
+    zh: '打开研究目录',
+    ko: '연구 목록 열기',
+  },
+  href: {
+    ja: 'https://usk-kimura.github.io/awesome-cross-tokenizer-opd/ja/',
+    en: 'https://usk-kimura.github.io/awesome-cross-tokenizer-opd/',
+    zh: 'https://usk-kimura.github.io/awesome-cross-tokenizer-opd/zh/',
+    ko: 'https://usk-kimura.github.io/awesome-cross-tokenizer-opd/ko/',
+  },
+} satisfies {
+  title: string;
+  label: LocalizedString;
+  description: LocalizedString;
+  action: LocalizedString;
+  href: Record<Locale, string>;
 };
 
 // NOTE: this is the scan layer, not the full story — a fellow researcher should

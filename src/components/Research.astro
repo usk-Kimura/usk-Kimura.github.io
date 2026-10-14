@@ -1,7 +1,7 @@
 ---
 import type { Locale } from '~/data/types';
 import { profile } from '~/data';
-import { researchAgenda } from '~/data/research';
+import { researchAgenda, opdCatalogue } from '~/data/research';
 import { t } from '~/i18n/ui';
 import { L } from '~/i18n/locale';
 import Section from './Section.astro';
@@ -28,6 +28,25 @@ const s = t(locale);
       ))
     }
   </div>
+
+  <article
+    class="mt-5 rounded-xl border p-5 hairline md:p-6"
+    style="background: var(--bg-soft);"
+    data-research-resource="cross-tokenizer-opd"
+  >
+    <p class="tag">{L(opdCatalogue.label, locale)}</p>
+    <h3 class="mt-2 leading-snug font-semibold" lang="en">{opdCatalogue.title}</h3>
+    <p class="mt-3 max-w-[54rem] text-sm leading-[1.85] text-muted">
+      {L(opdCatalogue.description, locale)}
+    </p>
+    <a
+      href={opdCatalogue.href[locale]}
+      class="link mt-3 inline-flex min-h-11 items-center gap-2 text-sm font-medium"
+    >
+      {L(opdCatalogue.action, locale)}
+      <span aria-hidden="true">↗</span>
+    </a>
+  </article>
 
   <dl class="mt-7 grid gap-4 border-y py-4 text-sm hairline sm:grid-cols-2 sm:gap-8">
     <div>
