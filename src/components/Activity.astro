@@ -105,34 +105,39 @@ const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Tokyo' })
                           {award ? (
                             <>
                               <p class="mt-1 leading-snug font-medium">
-                                {award.recipientUrl ? (
-                                  <a
-                                    href={award.recipientUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="link-title"
-                                  >
-                                    {award.recipient}
-                                    <span class="sr-only">{s.labels.newTab}</span>
-                                  </a>
-                                ) : (
-                                  <span>{award.recipient}</span>
-                                )}
-                                {s.activity.coauthorAward.afterRecipient}
-                                {award.url ? (
-                                  <a
-                                    href={award.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="link-title"
-                                  >
-                                    {s.activity.coauthorAward.beforeAward}{award.name}{s.activity.coauthorAward.afterAward}
-                                    <span class="sr-only">{s.labels.newTab}</span>
-                                  </a>
-                                ) : (
-                                  <span>{s.activity.coauthorAward.beforeAward}{award.name}{s.activity.coauthorAward.afterAward}</span>
+                                {award.announcement ? award.announcement : (
+                                  <>
+                                    {award.recipientUrl ? (
+                                      <a
+                                        href={award.recipientUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="link-title"
+                                      >
+                                        {award.recipient}
+                                        <span class="sr-only">{s.labels.newTab}</span>
+                                      </a>
+                                    ) : (
+                                      <span>{award.recipient}</span>
+                                    )}
+                                    {s.activity.coauthorAward.afterRecipient}
+                                    {award.url ? (
+                                      <a
+                                        href={award.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="link-title"
+                                      >
+                                        {s.activity.coauthorAward.beforeAward}{award.name}{s.activity.coauthorAward.afterAward}
+                                        <span class="sr-only">{s.labels.newTab}</span>
+                                      </a>
+                                    ) : (
+                                      <span>{s.activity.coauthorAward.beforeAward}{award.name}{s.activity.coauthorAward.afterAward}</span>
+                                    )}
+                                  </>
                                 )}
                               </p>
+                              {award.context && <p class="mt-1 text-sm leading-relaxed text-muted">{award.context}</p>}
                               <p class="mt-1.5 text-sm leading-relaxed">
                                 <span class="text-muted">{s.activity.relatedPublication}: </span>
                                 <a

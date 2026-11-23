@@ -290,6 +290,7 @@ const reading = L(profile.reading, locale);
                         ) : (
                           award.recipient
                         )}]
+                        {award.context && <> {L(award.context, locale)}</>}
                       </span>
                     </Fragment>
                   ))}

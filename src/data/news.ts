@@ -78,6 +78,24 @@ export type NewsItem = {
  */
 export const news: NewsItem[] = [
   {
+    date: '2026-11-20',
+    kind: 'misc',
+    completed: true,
+    title: {
+      ja: 'DEIM 2027 の広報副委員長に就任しました．',
+      en: 'I have been appointed Publicity Vice Chair for DEIM 2027.',
+      zh: '我已获任 DEIM 2027 宣传副主席。',
+      ko: 'DEIM 2027 홍보 부위원장으로 위촉되었습니다.',
+    },
+    detail: {
+      ja: 'WebサイトやSNS等を通じた情報発信を担当します．',
+      en: 'I will help share conference information through the website, social media, and other channels.',
+      zh: '负责通过网站、社交媒体等渠道发布会议信息。',
+      ko: '웹사이트와 SNS 등을 통한 학회 정보 발신을 담당합니다.',
+    },
+    href: 'https://pub.confit.atlas.jp/ja/event/deim2027',
+  },
+  {
     // Announcement date; the exact date of the first class was not specified.
     date: '2026-09-30',
     kind: 'teaching',

@@ -29,6 +29,32 @@ export const publications: Publication[] = [
     month: 8,
     type: 'domestic-conference',
     flags: ['corresponding-author'],
+    coauthorAwards: [
+      {
+        // Recognition was confirmed in November; the ceremony is scheduled
+        // separately, and the exact notification day is not established.
+        date: '2026-11',
+        name: {
+          ja: 'IEEE名古屋支部学生奨励賞',
+          en: 'IEEE Nagoya Section Student Paper Award',
+          zh: 'IEEE名古屋支部学生鼓励奖',
+          ko: 'IEEE 나고야 지부 학생 장려상',
+        },
+        recipient: '杉浦 射央',
+        announcement: {
+          ja: '杉浦 射央氏の「IEEE名古屋支部学生奨励賞」の受賞が決定しました．',
+          en: 'Io Sugiura has been selected for the IEEE Nagoya Section Student Paper Award.',
+          zh: '杉浦射央获选为IEEE名古屋支部学生鼓励奖得主。',
+          ko: '스기우라 이오가 IEEE 나고야 지부 학생 장려상 수상자로 선정되었습니다.',
+        },
+        context: {
+          ja: '表彰は2027年1月21日に予定されています．',
+          en: 'The award ceremony is scheduled for January 21, 2027.',
+          zh: '颁奖仪式预定于2027年1月21日举行。',
+          ko: '시상식은 2027년 1월 21일에 열릴 예정입니다.',
+        },
+      },
+    ],
   },
   {
     title: '機械学習ベースの索引チューニングにおける説明可能 AI の適用',

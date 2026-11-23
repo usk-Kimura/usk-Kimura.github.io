@@ -49,6 +49,7 @@ const s = t(locale);
             award.recipient
           )}
         </span>
+        {award.context && <p class="mt-1 text-sm text-muted">{L(award.context, locale)}</p>}
       </li>
     ))
   }

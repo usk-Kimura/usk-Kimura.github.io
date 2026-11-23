@@ -37,6 +37,8 @@ export type ActivityItem = {
     recipientUrl?: string;
     name: string;
     url?: string;
+    announcement?: string;
+    context?: string;
     publicationTitle: string;
     publicationTitleLang: SourceLocale;
     publicationHref: string;
@@ -90,13 +92,15 @@ export function buildActivity(locale: Locale, limit?: number): ActivityItem[] {
         kind: 'coauthor-award',
         // This neutral fallback is useful to data consumers; Activity.astro
         // renders the linked recipient and award with locale-aware grammar.
-        title: `${award.recipient}: ${awardName}`,
+        title: award.announcement ? L(award.announcement, locale) : `${award.recipient}: ${awardName}`,
         detail: locale === 'ja' ? p.venue : (p.venueEn ?? p.venue),
         coauthorAward: {
           recipient: award.recipient,
           recipientUrl: award.recipientUrl,
           name: awardName,
           url: award.url,
+          announcement: award.announcement ? L(award.announcement, locale) : undefined,
+          context: award.context ? L(award.context, locale) : undefined,
           publicationTitle: p.title,
           publicationTitleLang: titleLang,
           publicationHref,

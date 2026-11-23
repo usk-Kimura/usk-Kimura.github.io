@@ -127,6 +127,10 @@ export type CoauthorAward = {
   recipient: string;
   recipientUrl?: string;
   url?: string;
+  /** Optional full announcement when selection precedes the award ceremony. */
+  announcement?: LocalizedString;
+  /** Additional context, such as a forthcoming award ceremony. */
+  context?: LocalizedString;
 };
 
 export type Publication = {

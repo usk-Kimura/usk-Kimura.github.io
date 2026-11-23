@@ -171,6 +171,21 @@ export const grants: GrantEntry[] = [
 export const services: ServiceEntry[] = [
   {
     title: {
+      ja: 'DEIM 2027 広報副委員長',
+      en: 'DEIM 2027 Publicity Vice Chair',
+      zh: 'DEIM 2027 宣传副主席',
+      ko: 'DEIM 2027 홍보 부위원장',
+    },
+    kind: {
+      ja: '学会運営・広報（Webサイト・SNS等）',
+      en: 'Conference organization and publicity (website, social media, and other channels)',
+      zh: '会议组织与宣传（网站、社交媒体等）',
+      ko: '학회 운영 및 홍보(웹사이트·SNS 등)',
+    },
+    start: '2026-11',
+  },
+  {
+    title: {
       ja: 'SoICT2026 プログラム委員',
       en: 'SoICT2026 Program Committee',
       zh: 'SoICT2026 程序委员会委员',
