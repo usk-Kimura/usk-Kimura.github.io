@@ -2,7 +2,7 @@ import type { CareerEntry, EducationEntry } from './types';
 
 export const career: CareerEntry[] = [
   {
-    start: '2026-04',
+    start: '2026-11',
     organization: {
       ja: '名古屋大学 大学院情報学研究科 知能システム学専攻',
       en: 'Graduate School of Informatics, Nagoya University',
@@ -10,10 +10,26 @@ export const career: CareerEntry[] = [
       ko: '나고야대학 대학원 정보학연구과 지능시스템학 전공',
     },
     role: {
-      ja: '研究員',
-      en: 'Researcher',
-      zh: '研究员',
-      ko: '연구원',
+      ja: '研究員（科学研究費助成事業）',
+      en: 'Researcher (KAKENHI-funded)',
+      zh: '研究员（科学研究费助成事业）',
+      ko: '연구원(과학연구비조성사업)',
+    },
+  },
+  {
+    start: '2026-04',
+    end: '2026-10',
+    organization: {
+      ja: '名古屋大学 大学院情報学研究科 知能システム学専攻',
+      en: 'Graduate School of Informatics, Nagoya University',
+      zh: '名古屋大学 研究生院信息学研究科 智能系统学专业',
+      ko: '나고야대학 대학원 정보학연구과 지능시스템학 전공',
+    },
+    role: {
+      ja: '研究員（JST CREST雇用）',
+      en: 'Researcher (JST CREST-funded)',
+      zh: '研究员（JST CREST资助）',
+      ko: '연구원(JST CREST 고용)',
     },
   },
   {
