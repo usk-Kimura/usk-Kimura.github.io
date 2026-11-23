@@ -225,7 +225,6 @@ export const services: ServiceEntry[] = [
     },
     kind: { ja: '査読', en: 'Peer Review', zh: '同行评审', ko: '동료 심사(피어 리뷰)' },
     start: '2026-04',
-    end: '2026-04',
   },
   {
     title: { ja: 'EMNLP Workshop Reviewer', en: 'EMNLP Workshop Reviewer', zh: 'EMNLP 研讨会审稿人', ko: 'EMNLP 워크숍 심사위원' },

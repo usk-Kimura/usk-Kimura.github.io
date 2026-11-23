@@ -17,10 +17,10 @@ export const profile: Profile = {
     ko: '나고야대학 대학원 정보학연구과 지능시스템학 전공',
   },
   position: {
-    ja: '科学技術振興機構 戦略的創造研究推進事業 研究員（CREST雇用）',
-    en: 'Researcher, JST CREST (Strategic Basic Research Programs)',
-    zh: '日本科学技术振兴机构（JST）战略性创造研究推进事业（CREST）研究员',
-    ko: '일본과학기술진흥기구(JST) 전략적창조연구추진사업(CREST) 연구원',
+    ja: '研究員',
+    en: 'Researcher',
+    zh: '研究员',
+    ko: '연구원',
   },
   degree: {
     ja: '博士（文化情報学）（2026年3月，同志社大学）',
