@@ -68,20 +68,7 @@ export const profile: Profile = {
       ko: '기무라 유스케의 프로필 사진',
     },
   },
-  openToOpportunities: {
-    startFrom: {
-      ja: '2027年4月着任可能',
-      en: 'Available April 2027',
-      zh: '2027年4月起可到岗',
-      ko: '2027년 4월 부임 가능',
-    },
-    detail: {
-      ja: 'ポスドク・助教・研究員・企業研究職を希望（NLP / LLM，アカデミア・産業界とも）',
-      en: 'Seeking postdoc, faculty-track, or research-scientist roles in NLP / LLMs (academia or industry)',
-      zh: '希望从事博士后、助理教授、研究员或企业研究等工作（NLP / LLM 领域，学术界与产业界均可）',
-      ko: '박사후연구원·조교수·연구원·기업 연구직 희망 (NLP / LLM 분야, 학계·산업계 모두 가능)',
-    },
-  },
+  openToOpportunities: null,
   links: [
     {
       label: { ja: 'Google Scholar', en: 'Google Scholar', zh: 'Google Scholar', ko: 'Google Scholar' },
